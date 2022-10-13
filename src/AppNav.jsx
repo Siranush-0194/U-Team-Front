@@ -1,15 +1,18 @@
-import React from "react"
-import { BrowserRouter, Route, Routes} from "react-router-dom"
-import NavBar from "./AdminPage/Navbar/Navbar";
+import React, { Component } from 'react';
+import Header from './AdminPage/Navbar/Header';
+import Content from './AdminPage/Content';
+import SideBar from './AdminPage/SideBar';
+class AppAdmin extends Component {
 
-
-function AppNav() {
-
-  return (
-    <main className="App">
-  
-      <NavBar/>
-    </main>
-  );
+  render() {
+    return (
+      <div>
+        <Header />
+        <SideBar />
+        <Content />
+      </div>
+    );
+  }
 }
-export default AppNav;
+
+export default AppAdmin;

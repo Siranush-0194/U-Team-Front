@@ -1,20 +1,30 @@
 
 
+import { getSuggestedQuery } from '@testing-library/react';
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "../context/AuthProvider";
 import axios from './axios';
-import { useStickyState } from '../../hooks/usesticku';
+import { useCookies } from 'react-cookie';
+// import { useStickyState } from '../../hooks/usesticku';
 const LOGIN_URL = '/admin/login';
 
 const Login = () => {
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
-
     const [email, setUser] = useState('');
     const [password, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
+    const[success,setSuccess]=useState(false);
+    const [cookie, setcookie] = useCookies(['admin']);
+
+    const handle = () => {
+        setcookie('Name', email, { path: '/' });
+        setcookie('Password', password, { path: '/' });
+     };
+
+
+
 
     useEffect(() => {
         userRef.current.focus();
@@ -24,9 +34,19 @@ const Login = () => {
         setErrMsg('');
     }, [email, password])
 
+
+    // useEffect(()=>{
+    //     getUser();
+    // },[]);
+
+    // async function getUser(){
+    //     const csrf=axios.get('/sanctum/csrf-cookie');
+    //     console.log('csrf=',csrf);
+    // }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+ 
         try {
             const response = await axios.post(LOGIN_URL,
                 JSON.stringify({ email, password }),
@@ -35,7 +55,7 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
+            // console.log(JSON.stringify(response?.data));
             console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
@@ -43,6 +63,9 @@ const Login = () => {
             setUser('');
             setPwd('');
             setSuccess(true);
+                
+           
+
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');
@@ -91,7 +114,7 @@ const Login = () => {
                             value={password}
                             required
                         />
-                        <button>Sign In</button>
+                        <button onClick={handle}>Sign In</button>
                     </form>
                     <p>
                         Need an Account?<br />
