@@ -1,12 +1,16 @@
 
 
-import { getSuggestedQuery } from '@testing-library/react';
+import { Link} from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "../context/AuthProvider";
 import axios from './axios';
-import { useCookies } from 'react-cookie';
+import AdminDashboard from '../../AdminPage/Components/AdminDashboard';
+
+import { Routes,Route } from 'react-router-dom';
+// import { useCookies } from 'react-cookie';
 // import { useStickyState } from '../../hooks/usesticku';
 const LOGIN_URL = '/admin/login';
+
 
 const Login = () => {
     const { setAuth } = useContext(AuthContext);
@@ -16,12 +20,9 @@ const Login = () => {
     const [password, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const[success,setSuccess]=useState(false);
-    const [cookie, setcookie] = useCookies(['admin']);
+    // const [cookie, setcookie] = useCookies(['admin']);
 
-    const handle = () => {
-        setcookie('Name', email, { path: '/' });
-        setcookie('Password', password, { path: '/' });
-     };
+  
 
 
 
@@ -35,14 +36,7 @@ const Login = () => {
     }, [email, password])
 
 
-    // useEffect(()=>{
-    //     getUser();
-    // },[]);
-
-    // async function getUser(){
-    //     const csrf=axios.get('/sanctum/csrf-cookie');
-    //     console.log('csrf=',csrf);
-    // }
+   
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,10 +53,12 @@ const Login = () => {
             console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
+        console.log(response)
             setAuth({ email, password, roles, accessToken });
             setUser('');
             setPwd('');
             setSuccess(true);
+           
                 
            
 
@@ -79,21 +75,30 @@ const Login = () => {
             errRef.current.focus();
         }
     }
-
+ 
     return (
+        <div>
+        <Routes>
+          
+          <Route path="/" element={<Login/>}></Route>
+          <Route path="/admin" element={ <AdminDashboard/>
+                }></Route>
+          
+         
+        </Routes>
+      
+       
         <>
-            {success ? (
-                <section>
-                    <h1>You are logged in!</h1>
-                    <br />
-                    <p>
-                        <a href="#">Go to Home</a>
-                    </p>
-                </section>
+        
+            {success ? (     
+                <AdminDashboard/>
+                
             ) : (
                 <section>
+                    
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <h1>Sign In</h1>
+                    
                     <form onSubmit={handleSubmit}>
                         <label htmlFor="username">Username:</label>
                         <input
@@ -114,18 +119,21 @@ const Login = () => {
                             value={password}
                             required
                         />
-                        <button onClick={handle}>Sign In</button>
+                                                                        
+                          <button >  Sign In</button>
+                       
                     </form>
                     <p>
                         Need an Account?<br />
                         <span className="line">
-                            {/*put router link here*/}
+                           
                             <a href="#">Sign Up</a>
                         </span>
                     </p>
                 </section>
             )}
         </>
+        </div>
     )
 }
 

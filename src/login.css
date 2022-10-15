@@ -76,12 +76,12 @@
 html {
     font-family: 'Nunito', sans-serif;
     font-size: 22px;
-    color: #fff;
+    color: rgb(194, 48, 48);
 }
 
 body {
     min-height: 100vh;
-    background-color: dodgerblue;
+    background-color: rgb(255, 255, 255);
 }
 
 .App {
@@ -113,7 +113,7 @@ form {
 }
 
 a, a:visited {
-    color: #fff;
+    color: rgb(110, 81, 81);
 }
 
 input[type="text"],
