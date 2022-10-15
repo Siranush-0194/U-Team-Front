@@ -37,7 +37,6 @@ const Login = () => {
 
 
    
-
     const handleSubmit = async (e) => {
         e.preventDefault();
  
@@ -79,10 +78,6 @@ const Login = () => {
     return (
         <div>
         <Routes>
-          
-          <Route path="/" element={<Login/>}></Route>
-          <Route path="/admin" element={ <AdminDashboard/>
-                }></Route>
           
          
         </Routes>
