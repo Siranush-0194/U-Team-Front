@@ -3,7 +3,7 @@
 import { Link} from 'react-router-dom';
 import { useRef, useState, useEffect, useContext} from 'react';
 import AuthContext from "../context/AuthProvider";
-import axios from './axios';
+import axios from '../../modules/axios';
 import AdminDashboard from '../../AdminPage/Components/AdminDashboard';
 import { useNavigate } from 'react-router-dom';
 import { Routes}from 'react-router-dom';

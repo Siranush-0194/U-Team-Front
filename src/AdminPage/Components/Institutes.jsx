@@ -1,11 +1,9 @@
 import React from "react";
 
 import { useState,useEffect } from "react";
-import axios from "axios";
+import axios from "../../modules/axios";
 
 const INSTITUTES_URL='/institute/getAll'
-
-
 
 export default function Institutes() {
     const [post, setPost] = useState(null);
