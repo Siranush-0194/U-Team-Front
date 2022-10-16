@@ -1,18 +1,19 @@
 
 
 import { Link} from 'react-router-dom';
-import { useRef, useState, useEffect, useContext } from 'react';
+import { useRef, useState, useEffect, useContext} from 'react';
 import AuthContext from "../context/AuthProvider";
 import axios from './axios';
 import AdminDashboard from '../../AdminPage/Components/AdminDashboard';
-
-import { Routes,Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Routes}from 'react-router-dom';
 // import { useCookies } from 'react-cookie';
 // import { useStickyState } from '../../hooks/usesticku';
 const LOGIN_URL = '/admin/login';
 
 
-const Login = () => {
+function Login () {
+    const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
@@ -86,7 +87,8 @@ const Login = () => {
         <>
         
             {success ? (     
-                <AdminDashboard/>
+                navigate("/dashboard")
+          
                 
             ) : (
                 <section>
@@ -118,13 +120,7 @@ const Login = () => {
                           <button >  Sign In</button>
                        
                     </form>
-                    <p>
-                        Need an Account?<br />
-                        <span className="line">
-                           
-                            <a href="#">Sign Up</a>
-                        </span>
-                    </p>
+                   
                 </section>
             )}
         </>

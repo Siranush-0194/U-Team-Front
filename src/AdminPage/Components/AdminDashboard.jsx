@@ -60,12 +60,10 @@ function SideMenu() {
 function Content() {
   return (
     <div>
-      <Routes>
-        
-        <Route path="/dashboard" element={<div>Dashboard</div>}></Route>
-        
+      <Routes>    
+               
         <Route path="/institutes" element={<Institutes/>}></Route>
-        <Route path="/profile" element={<div>Profile</div>}></Route>
+        <Route path="/profile" element={<div>sdjnclksjcndkj</div>}></Route>
       </Routes>
     </div>
   )
