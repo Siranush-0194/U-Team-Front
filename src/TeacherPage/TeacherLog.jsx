@@ -1,18 +1,17 @@
 
-
-import { Link} from 'react-router-dom';
 import { useRef, useState, useEffect, useContext} from 'react';
-import AuthContext from "../context/AuthProvider";
-import axios from '../../modules/axios';
-import AdminDashboard from '../../AdminPage/Components/AdminDashboard';
+
+import AuthContext from '../AdminPage/Login/context/AuthProvider';
+
+import axios from '../modules/axios';
+
 import { useNavigate } from 'react-router-dom';
 import { Routes}from 'react-router-dom';
-// import { useCookies } from 'react-cookie';
-// import { useStickyState } from '../../hooks/usesticku';
-const LOGIN_URL = '/admin/login';
+import '../login.css';
 
+const LOGIN_URL_TEACHER = '/teacher/login';
 
-function Login () {
+function TeachLogin () {
     const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
@@ -35,17 +34,21 @@ function Login () {
     useEffect(() => {
         setErrMsg('');
     }, [email, password])
-
+console.log(email +"      "+ password);
 
    
     const handleSubmit = async (e) => {
         e.preventDefault();
  
         try {
-            const response = await axios.post(LOGIN_URL,
+            
+            const response = await axios.post(LOGIN_URL_TEACHER,
                 JSON.stringify({ email, password }),
                 {
-                    headers: { 'Content-Type': 'application/json',},
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept' : 'application/json'
+                    },
                     withCredentials: true
                 }
             );
@@ -53,7 +56,6 @@ function Login () {
             console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
-        console.log(response)
             setAuth({ email, password, roles, accessToken });
             setUser('');
             setPwd('');
@@ -68,6 +70,7 @@ function Login () {
             } else if (err.response?.status === 400) {
                 setErrMsg('Missing Username or Password');
             } else if (err.response?.status === 401) {
+                console.log(e.errMsg)
                 setErrMsg('Unauthorized');
             } else {
                 setErrMsg('Login Failed');
@@ -87,7 +90,7 @@ function Login () {
         <>
         
             {success ? (     
-                navigate("/dashboard")
+                navigate("/teachposts")
           
                 
             ) : (
@@ -120,6 +123,8 @@ function Login () {
                           <button >  Sign In</button>
                        
                     </form>
+                    <a href='admin'>Login as admin</a>
+                    <a href='student'>Login as student</a>
                    
                 </section>
             )}
@@ -128,4 +133,4 @@ function Login () {
     )
 }
 
-export default Login
+export default TeachLogin;

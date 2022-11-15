@@ -1,15 +1,12 @@
-
-import Login from "./Login/api/LogIn";
+import Login from './AdminPage/Login/api/LogIn';
+// import ResetPass from "./Registration/resetPassword";
 import './login.css';
-import AdminPage from "./AdminPage/Components/AdminDashboard";
 
 function App() {
-
   return (
     <main className="App">
-      <Login />
-      {/* <AdminPage/> */}
-      
+      <Login /> ;
+      {/* <ResetPass/> */}
     </main>
   );
 }

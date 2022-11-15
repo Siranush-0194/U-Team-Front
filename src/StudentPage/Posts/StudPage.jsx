@@ -1,19 +1,20 @@
 import { Menu } from "antd";
 import "antd/dist/antd.min.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
+
 // import "./App.css";
-import Institutes from "./Institutes";
+
 import { PoweroffOutlined, UserOutlined, BankOutlined, DashboardOutlined } from "@ant-design/icons";
 
-function AdminDashboard() {
+function StudPage() {
 
   return (
     <div >
       <div  >
         <Header />
         <div style={{ display: "block", flexDirection: 'row'}}>
-          <SideMenu />
-          <Content />
+           <SideMenu />
+        
         </div>
        
       </div>
@@ -25,7 +26,7 @@ function AdminDashboard() {
 function Header() {
   return (<div style={{display:"block", position: "absolute",left: "700px",top:"20px"}}>
     
-                      Header                    
+                 STUDENTS                 
             </div>)
 }
 
@@ -45,30 +46,18 @@ function SideMenu() {
             navigate(key);
           }
         }}
-          
-      items={[
+        items={[
         
           { label: "Dashboard", key: "/dashboard", icon: <DashboardOutlined />},     
           { label: "Institutes", key: "/institutes", icon: <BankOutlined />},
           { label: "Profile", key: "/profile", icon: <UserOutlined /> },
-          { label: "Signout", key: "/admsignout", icon: <PoweroffOutlined />, danger: true }
+          { label: "Signout", key: "/studsignout", icon: <PoweroffOutlined />, danger: true }
 
         ]}>
                 </Menu>
     </div>)
 }
 
-function Content() {
-  return (
-    <div>
-      <Routes>    
-               
-        <Route path="/institutes" element={<Institutes/>}></Route>
-        <Route path="/profile" element={<div>sdjnclksjcndkj</div>}></Route>
-      </Routes>
-    </div>
-  )
-}
 
 
-export default AdminDashboard;
+export default StudPage;
