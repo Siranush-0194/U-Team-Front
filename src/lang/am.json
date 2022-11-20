@@ -1,0 +1,15 @@
+{
+    "translation": {
+        "Login Admin": "Մուտք Ադմին",
+        "Login Student": "Մուտք Ուսանղ",
+        "Login Teacher": "Մուտք Դասախոս",
+        "Please input your Email!": "Խնդրում ենք լրացնել ձեր Email!",
+        "Please input your Password!": "Խնդրում ենք լրացնե ձեր գաղտնաբառը",
+        "admin":  "ադմին",
+        "student": "ուսանող",
+        "teacher": "դասախոս",
+        "Remember me": "Հիշել ինձ",
+        "Forgot password": "Մոռացել եմ գաղտնաբառը",
+        "Log in": "Մուտք"
+    }
+}

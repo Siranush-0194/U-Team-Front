@@ -1,0 +1,17 @@
+.Login__{
+    &form {
+        top: 50%;
+        left: 50%;
+        width: 30vw;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.ant-form-item-control-input-content {
+    gap: 5px;
+    flex: auto;
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+}

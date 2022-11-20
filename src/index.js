@@ -1,50 +1,58 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter,Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './AdminPage/Login/context/AuthProvider';
-
-import AdminDashboard from './AdminPage/Components/AdminDashboard';
-import Institutes from './AdminPage/Components/Institutes';
-import Login from './AdminPage/Login/api/LogIn';
+import ReactDOM from 'react-dom/client';
+import './index.scss';
 import App from './App';
-import StudPage from './StudentPage/Posts/StudPage';
-import StudLogin from './StudentPage/StudLogin';
-import TeacherPage from './TeacherPage/Posts/TeacherPage';
+import reportWebVitals from './reportWebVitals';
 
-import TeachLogin from './TeacherPage/TeacherLog';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import { PublicRoute, PrivateRoute } from "./routes";
 
+import { Provider } from "react-redux";
 
+// Init Store
+import store from "./redux/store";
 
-ReactDOM.render(
+// Public
+import PageNotFound from "./pages/PageNotFound";
+
+// Private
+import Dashboard from "./pages/auth/Dashboard";
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-     
-        <Routes>
-       <Route index element={<App/>} /> 
-        <Route path='/admin'  element={<Login/>}/>
-        <Route path="/dashboard" element={<AdminDashboard/>}/>
-        <Route path="/institutes" element={<Institutes/>}/>
-        <Route path="/profile" element={<div>sdjnclksjcndkj</div>}></Route>
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          {/* PUBLIC ROUTES */}
+          <PublicRoute exact path="/">
+            <App />
+          </PublicRoute>
 
- 
-        <Route path='/student' element={<StudLogin/>}/>
-        <Route path='/posts' element={<StudPage/>}/>
+          {/* PRIVATE ROUTES */}
+          <PrivateRoute path="/dashboard">
+            <Dashboard />
+          </PrivateRoute>
 
-       
-        <Route path='/teacher' element={<TeachLogin/>}/>
-        <Route path='/teachposts' element={<TeacherPage/>}/>
+          
 
-        <Route path='/admsignout'  element={<Login/>}/>
-        <Route path='/studsignout' element={<StudLogin/>}/>
-        <Route path='/teachsignout' element={<TeachLogin/>}/>
-
-        <Route path="/institutes" element={<Institutes/>}></Route>
-        <Route path="/profile" element={<div>sdjnclksjcndkj</div>}></Route>
         
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+
+          <Route path="*">
+            <PageNotFound />
+          </Route>
+        </Switch>
+      </Router>
+    </Provider>
+
+  </React.StrictMode>
 );
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
