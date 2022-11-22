@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import axios from '../../axios';
 
-function Dashboard() {
+function Posts() {
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -21,11 +21,11 @@ function Dashboard() {
 
     return (
         <div>
-            Dashboard
+            POsts
 
             <Button type='primary' danger onClick={logout}>Logout</Button>
         </div>
     );
 }
 
-export default Dashboard;
+export default Posts;

@@ -18,32 +18,32 @@ const store = createStore(function (state, action) {
             return state;
     }
 }, {
-    rule: "admin",
-    rules: {
-        admin: {       
-            title: "Login Admin",
-            submit: '/admin/login'
+        rule: "admin",
+        rules: {
+            admin: {
+                title: "Login Admin",
+                submit: '/admin/login'
+            },
+            student: {
+                title: "Login Student",
+                submit: '/student/login'
+            },
+            teacher: {
+                title: "Login Teacher",
+                submit: '/teacher/login'
+            }
         },
-        student: {
-            title: "Login Student",
-            submit: '/student/login'
-        },
-        teacher: {
-            title: "Login Teacher",
-            submit: '/teacher/login'
-        }
-    },
-    user: (() => {
-        let user = {};
+        user: (() => {
+            let user = {};
 
-        try {
-            user = JSON.parse(localStorage.getItem("user") || JSON.stringify({}));
-        } catch (e) {
-            user = {};
-        }
+            try {
+                user = JSON.parse(localStorage.getItem("user") || JSON.stringify({}));
+            } catch (e) {
+                user = {};
+            }
 
-        return user;
-    })()
-})
+            return user;
+        })()
+    })
 
 export default store;

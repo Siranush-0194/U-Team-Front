@@ -20,7 +20,7 @@ import store from "./redux/store";
 import PageNotFound from "./pages/PageNotFound";
 
 // Private
-import Dashboard from "./pages/auth/Dashboard";
+import Dashboard from "./pages/auth/Dashboard/index";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -37,10 +37,6 @@ root.render(
           <PrivateRoute path="/dashboard">
             <Dashboard />
           </PrivateRoute>
-
-          
-
-        
 
           <Route path="*">
             <PageNotFound />

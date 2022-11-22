@@ -11,10 +11,14 @@ import "./style.scss";
 
 function Login() {
   const history = useHistory();
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
 
+  const dispatch = useDispatch();
+
+  const { t } = useTranslation();
+  
   const [type, setType] = useState("admin");
+
+  const [form] = Form.useForm();
 
   const rules = useSelector(function (state) {
     return state.rules;
@@ -41,7 +45,20 @@ function Login() {
         history.push("dashboard")
       }
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.data && error.response.data.errors) {
+        let fields = ["email", "password"];
+
+        fields.forEach(field => {
+          if (error.response.data.errors[field]) {
+            form.setFields([
+              {
+                name: field,
+                errors: [t(error.response.data.errors[field][0])]
+              }
+            ]);
+          }
+        });
+      }
     }
   };
 
@@ -54,25 +71,25 @@ function Login() {
       })}
     >
       <Form
+        form={form}
         name="normal_login"
         className="login-form"
-        initialValues={{ remember: true }}
+        initialValues={{ remember: false }}
         onFinish={onFinish}
       >
-        <Form.Item
-          name="email"
-          rules={[{ required: true, message: t('Please input your Email!') }]}
+        <Form.Item name="email"
+          rules={[{ required: true, message: t("The email field is required.") }]}
         >
           <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: t('Please input your Password!') }]}
+          rules={[{ required: true, message: t("The password field is required.") }]}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
-            placeholder= "Password"
+            placeholder="Password"
           />
         </Form.Item>
         <Form.Item>
@@ -81,13 +98,13 @@ function Login() {
           </Form.Item>
 
           <a className="login-form-forgot" href="/">
-           {t("Forgot password")}
+            {t("Forgot password")}
           </a>
         </Form.Item>
 
         <Form.Item>
           <Button type="primary" htmlType="submit" className="login-form-button">
-          { t("Log in")}
+            {t("Log in")}
           </Button>
         </Form.Item>
       </Form>

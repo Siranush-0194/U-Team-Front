@@ -5,11 +5,13 @@
         "Login Teacher": "Մուտք Դասախոս",
         "Please input your Email!": "Խնդրում ենք լրացնել ձեր Email!",
         "Please input your Password!": "Խնդրում ենք լրացնե ձեր գաղտնաբառը",
-        "admin":  "ադմին",
+        "admin": "Ադմին",
         "student": "ուսանող",
         "teacher": "դասախոս",
         "Remember me": "Հիշել ինձ",
         "Forgot password": "Մոռացել եմ գաղտնաբառը",
-        "Log in": "Մուտք"
+        "Log in": "Մուտք",
+        "The email field is required.": "Էլեկտրոնային փոստի դաշտը պարտադիր է",
+        "The password field is required.": "Գաղտնաբառի դաշտը պարտադիր է"
     }
 }
