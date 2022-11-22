@@ -2,17 +2,18 @@ import React, { useMemo, useState } from 'react';
 import { Menu, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { UsergroupAddOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined, LogoutOutlined, HomeOutlined } from '@ant-design/icons';
 
-import axios from '../../../axios';
+import axios from '../../axios';
 
 function getItem(label, key, icon, children, type) {
     return { key, icon, children, label, type };
 }
 
 const items = [
-    getItem('Students', 'students', <UsergroupAddOutlined />),
-    getItem('Teachers', 'teachers', <UsergroupAddOutlined />),
+    getItem('Home', 'home', <HomeOutlined />),
+    getItem('Institutes', 'institutes', <UsergroupAddOutlined />),
+
     getItem('Logout', 'logout', <LogoutOutlined />),
 ];
 
@@ -24,8 +25,8 @@ const NavBar = () => {
 
     const menu = useMemo(() => {
         return {
-            students: () => history.push("/dashboard/students"),
-            teachers: () => history.push("/dashboard/teachers"),
+            home: () => history.push("/dashboard"),
+            institutes: () => history.push("/dashboard/institutes"),
 
             logout: async (action) => {
                 try {

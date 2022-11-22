@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import axios from '../../../axios';
+import axios from '../../axios';
 
 import "./style.scss";
 

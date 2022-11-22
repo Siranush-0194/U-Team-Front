@@ -7,7 +7,7 @@ import './i18n';
 import { useTranslation } from 'react-i18next';
 
 // Components
-import Login from "./components/auth/Login";
+import Login from "./components/Login";
 
 function App() {
   const { i18n } = useTranslation();

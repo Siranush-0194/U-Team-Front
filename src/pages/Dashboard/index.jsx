@@ -3,8 +3,11 @@ import { Route } from "react-router-dom";
 
 import "./style.scss";
 
+// Pages
+import Institutes from './Institutes';
+
 // Components
-import Menu from '../../../components/auth/Menu';
+import Menu from '../../components/Menu';
 
 const Dashboard = () => {
   return (
@@ -14,13 +17,13 @@ const Dashboard = () => {
       </aside>
 
       <section>
-        <Route path="/dashboard/students">
-          Students
-        </Route>
+          <Route exact path='/dashboard'>
+            Home
+          </Route>
 
-        <Route path="/dashboard/teachers">
-          Teachers
-        </Route>
+          <Route path="/dashboard/institutes">
+            <Institutes />
+          </Route>
       </section>
     </div>
   );

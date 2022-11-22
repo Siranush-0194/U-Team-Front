@@ -20,7 +20,7 @@ import store from "./redux/store";
 import PageNotFound from "./pages/PageNotFound";
 
 // Private
-import Dashboard from "./pages/auth/Dashboard/index";
+import Dashboard from "./pages/Dashboard/index";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
