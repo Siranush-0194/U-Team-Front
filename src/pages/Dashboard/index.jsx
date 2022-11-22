@@ -16,7 +16,7 @@ const Dashboard = () => {
         <Menu />
       </aside>
 
-      <section>
+      <section style={{ width: '100%' }}>
           <Route exact path='/dashboard'>
             Home
           </Route>
