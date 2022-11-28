@@ -1,13 +1,17 @@
 import React from 'react';
 import { Route } from "react-router-dom";
 
+
 import "./style.scss";
 
 // Pages
 import Institutes from './Institutes';
+import Invitation from './Invitation/Invitation';
+
 
 // Components
 import Menu from '../../components/Menu';
+import ResetPassword from './Invitation/resetPass';
 
 const Dashboard = () => {
   return (
@@ -23,6 +27,10 @@ const Dashboard = () => {
 
           <Route path="/dashboard/institutes">
             <Institutes />
+          </Route>
+
+          <Route path='/dashboard/invitation'>
+            <Invitation/>
           </Route>
       </section>
     </div>

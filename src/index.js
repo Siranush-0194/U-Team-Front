@@ -21,6 +21,8 @@ import PageNotFound from "./pages/PageNotFound";
 
 // Private
 import Dashboard from "./pages/Dashboard/index";
+import ResetPassword from './pages/Dashboard/Invitation/resetPass';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -37,6 +39,10 @@ root.render(
           <PrivateRoute path="/dashboard">
             <Dashboard />
           </PrivateRoute>
+
+          <PublicRoute path="/accept/invitation/:token">
+            <ResetPassword/>
+          </PublicRoute>
 
           <Route path="*">
             <PageNotFound />

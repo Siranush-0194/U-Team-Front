@@ -3,23 +3,24 @@ import { useParams } from 'react-router-dom';
 import { Table } from 'antd';
 
 import axios from "../../../axios";
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
+import Courses from './course';
 
 // import "./style.scss";
 
-const Institute = () => {
-    const { id } = useParams();
+const Departments = () => {
+    const { instituteId } = useParams();
 
     const [departments, setDepartments] = useState(null);
 
     useEffect(() => {
-        axios.get(`/api/institute/get/${id}/departments`).then((response) => {
+        axios.get(`/api/institute/get/${instituteId}/departments`).then((response) => {
             setDepartments(response.data)
         }).catch(() => setDepartments([]));
     }, []);
 
     return (
-        <div className='institute'>
+        <div className='department'>
             {!departments
                 ? <></>
                 : <Table
@@ -35,12 +36,14 @@ const Institute = () => {
                             title: 'Name',
                             dataIndex: 'name',
                             key: 'name',
-                            render: (name, row) => <Link to={`/dashboard/institutes/${id}/${row.id}`}>{name}</Link>
+                            render: (name, row) => <Link to={`/dashboard/institutes/${instituteId}/${row.id}`}>{name}</Link>
                         }
                     ]} />}
+            <Route path='/dashboard/institutes/:instituteId/:departmentId'>
+                <Courses />
+            </Route>
         </div>
     );
 }
 
-
-export default Institute;
+export default Departments;

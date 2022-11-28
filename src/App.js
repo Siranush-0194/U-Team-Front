@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 // Components
 import Login from "./components/Login";
+import ResetPassword from './pages/Dashboard/Invitation/resetPass';
 
 function App() {
   const { i18n } = useTranslation();
@@ -32,6 +33,7 @@ function App() {
 
       <section>
         <Login />
+        
       </section>
     </div>
   );

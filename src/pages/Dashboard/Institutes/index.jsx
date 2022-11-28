@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Table, Popconfirm } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 import axios from "../../../axios";
 import { Link, Route } from 'react-router-dom';
 
 // import "./style.scss";
-
-import SingleInstitute from "./single"
+import Departments from './single';
 
 const Institutes = () => {
   const [institutes, setInstitutes] = useState(null);
@@ -16,6 +16,11 @@ const Institutes = () => {
       setInstitutes(response.data)
     }).catch(() => setInstitutes([]));
   }, []);
+
+  const handleDelete = (rowKey) => {
+    const newData = institutes.filter((item) => item.rowKey !== rowKey);
+    setInstitutes(newData);
+  };
 
   return (
     <div className='institutes'>
@@ -36,12 +41,22 @@ const Institutes = () => {
                 dataIndex: 'name',
                 key: 'name',
                 render: (name, row) => <Link to={`/dashboard/institutes/${row.id}`}>{name}</Link>
+              },
+              {
+                title: 'Actions',
+                dataIndex: 'actions',
+                render: (_, record) =>
+                  institutes.length >= 1 ? (
+                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.rowKey)}>
+                      <DeleteOutlined />
+                    </Popconfirm>
+                  ) : null,
               }
-            ]} />}
+            ]}
+          />}
       </Route>
-
-      <Route path='/dashboard/institutes/:id'>
-        <SingleInstitute />
+      <Route path='/dashboard/institutes/:instituteId'>
+        <Departments />
       </Route>
     </div>
   );
