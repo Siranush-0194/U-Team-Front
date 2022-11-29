@@ -40,7 +40,7 @@ root.render(
             <Dashboard />
           </PrivateRoute>
 
-          <PublicRoute path="/accept/invitation/:token">
+          <PublicRoute path="/accept/invitation">
             <ResetPassword/>
           </PublicRoute>
 

@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Input, Form, Button, Card } from "antd";
 
-import { useParams } from "react-router-dom";
 import axios from "../../../axios";
+import useQuery from "../../../hooks/useQuery";
 
 const ResetPassword = () => {
-  const { token } = useParams()
+  const query = useQuery()
   const [user, setUser] = useState(null);
-
-  console.log(token);
+  
+  const [ token ] = useState(query.get('token'))
+  
 
   useEffect(() => {
-    axios.get(`/accept/invitation?token=${token}`).then((response) => {
+    axios.get(`accept/invitation?token=${token}`).then((response) => {
       setUser(response.data[0])
     }).catch(() => setUser([token]));
   }, [token]);
-  console.log(token)
+  console.log(token);
+  // console.log(response)
   const onFinish = (values) => {
     console.log(values);
 
@@ -24,9 +26,9 @@ const ResetPassword = () => {
 
     delete values.confirm;
 
-    axios.post('/accept/invitation', values).then((response) => {
-      console.log(response);
-    })
+    // axios.post('/accept/invitation', values).then((response) => {
+    //   console.log(response);
+    // })
   }
 
   return (
