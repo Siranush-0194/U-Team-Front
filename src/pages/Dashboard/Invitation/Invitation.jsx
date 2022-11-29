@@ -144,13 +144,7 @@ const Invitation = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item  
-          name='password' 
-         label="Password"
-         
-         >
-          <Input type="password"/>
-        </Form.Item>
+      
 
         <Form.Item label="Institute" name='instituteId'>
             <Select  defaultValue="..." options={institutes} onChange={handleChangeInstitute} />
