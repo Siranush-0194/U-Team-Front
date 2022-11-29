@@ -7,35 +7,28 @@ import useQuery from "../../../hooks/useQuery";
 const ResetPassword = () => {
   const query = useQuery()
   const [user, setUser] = useState(null);
-  
-  const [ token ] = useState(query.get('token'))
-  
+  const [token] = useState(query.get('token'))
 
   useEffect(() => {
     axios.get(`accept/invitation?token=${token}`).then((response) => {
       setUser(response.data[0])
     }).catch(() => setUser([token]));
   }, [token]);
-  console.log(token);
-  // console.log(response)
-  const onFinish = (values) => {
-    console.log(values);
 
+  const onFinish = (values) => {
     values.token = token;
     values.password_confirmation = values.confirm;
 
     delete values.confirm;
 
-    // axios.post('/accept/invitation', values).then((response) => {
-    //   console.log(response);
-    // })
+   axios.post('/accept/invitation', values).then((response) => {
+      console.log(response);
+    })
   }
 
   return (
-
     <>
-      {!user ? <></> : <Card title={ user.firstName + ' ' + user.lastName + '' + user.email} style={{ width: 600 }}>
-
+      {!user ? <></> : <Card title={user.firstName + ' ' + user.lastName + '' + user.email} style={{ width: 600 }}>
         <Form onFinish={onFinish}>
           <Form.Item
             name="password"
@@ -81,8 +74,6 @@ const ResetPassword = () => {
           </Form.Item>
         </Form>
       </Card>}
-
-
     </>
   )
 }

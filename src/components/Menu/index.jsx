@@ -51,8 +51,6 @@ const NavBar = () => {
         if (menu[e.key] && typeof menu[e.key] === "function") {
             return menu[e.key](1);
         }
-
-        console.log(e)
     };
 
     return (

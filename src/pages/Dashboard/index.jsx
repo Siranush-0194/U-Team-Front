@@ -11,7 +11,6 @@ import Invitation from './Invitation/Invitation';
 
 // Components
 import Menu from '../../components/Menu';
-import ResetPassword from './Invitation/resetPass';
 
 const Dashboard = () => {
   return (

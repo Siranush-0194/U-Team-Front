@@ -11,7 +11,6 @@ const Courses = () => {
     const [courses, setCourses] = useState(null);
 
     useEffect(() => {
-        console.log(courseId);
         axios.get(`api/department/get/${courseId}/courses`).then((response) => {
             setCourses(response.data)
         }).catch(() => setCourses([]));

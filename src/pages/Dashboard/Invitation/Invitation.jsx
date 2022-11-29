@@ -1,6 +1,6 @@
 
 
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from '../../../axios';
 
 import {
@@ -8,29 +8,19 @@ import {
   Input,
   Button,
   Select,
-  Cascader,
   DatePicker,
-  InputNumber,
   TreeSelect
 } from 'antd';
 
-
-const { RangePicker } = DatePicker;
-const { TextArea } = Input;
 const Invitation = () => {
   const [form] = Form.useForm();
 
-  const [componentDisabled, setComponentDisabled] = useState(true);
-  const onFormLayoutChange = ({ disabled }) => {
-    setComponentDisabled(disabled);
-  };
-      
-    const [institutes, setInstitutes] = useState(null);
-    const [ departments, setDepartments ] = useState({});
-    const [selectInstitute, setSelectInstitute] = useState(null);
-    const [ course, setCourse] = useState({});
-    const [selectDepartments, setSelectDepartments] = useState(null);
-    const [selectGroup, setSelectGroup] = useState(null);
+  const [institutes, setInstitutes] = useState(null);
+  const [departments, setDepartments] = useState({});
+  const [selectInstitute, setSelectInstitute] = useState(null);
+  const [course, setCourse] = useState({});
+  const [selectDepartments, setSelectDepartments] = useState(null);
+  const [selectGroup, setSelectGroup] = useState(null);
 
   useEffect(() => {
     axios.get("/api/institute/get").then((response) => {
@@ -52,12 +42,12 @@ const Invitation = () => {
               children: []
             })
           } else {
-              let findData = data.find(item => item.value === group.parentId);
+            let findData = data.find(item => item.value === group.parentId);
 
-              findData.children.push({
-                  value: group.id,
-                  label: group.number
-              })
+            findData.children.push({
+              value: group.id,
+              label: group.number
+            })
           }
 
           setSelectGroup(data)
@@ -90,7 +80,7 @@ const Invitation = () => {
         setCourse({
           ...course,
           [value]: response.data.map(course => ({
-            value: course.id,
+            value: course.number,
             label: course.name
           }))
         })
@@ -99,19 +89,15 @@ const Invitation = () => {
   };
 
   const onFinish = async () => {
-      const values = await form.validateFields();
-      values.birthDate = values['birthDate'].format('YYYY-MM-DD')
-      axios.post(`/send-invitation`, values).then((response) => {
-        console.log(response);
-      })
-      
-      // values
+    const values = await form.validateFields();
+    values.birthDate = values['birthDate'].format('YYYY-MM-DD')
+    axios.post(`/send-invitation`, values).then((response) => {});
   }
 
   return (
     <>
       <Form
-      form={form}
+        form={form}
         labelCol={{
           span: 4,
         }}
@@ -120,64 +106,51 @@ const Invitation = () => {
         }}
         layout="horizontal"
         onFinish={onFinish}
-        onValuesChange={onFormLayoutChange}    
       >
-       
-        
         <Form.Item label="FirstName" name='firstName' >
           <Input />
         </Form.Item>
 
         <Form.Item label="LastName" name='lastName'>
-          <Input  />
-        </Form.Item>
-
-        <Form.Item label="Patronymic"  name='patronymic'>
           <Input />
         </Form.Item>
 
-        <Form.Item label="DatePicker"  name='birthDate'>
+        <Form.Item label="Patronymic" name='patronymic'>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="DatePicker" name='birthDate'>
           <DatePicker />
         </Form.Item>
 
-        <Form.Item label="Email"  name='email'>
+        <Form.Item label="Email" name='email'>
           <Input />
         </Form.Item>
 
-      
-
         <Form.Item label="Institute" name='instituteId'>
-            <Select  defaultValue="..." options={institutes} onChange={handleChangeInstitute} />
+          <Select defaultValue="..." options={institutes} onChange={handleChangeInstitute} />
         </Form.Item>
 
-        <Form.Item label="Department" name='departmentId'>      
-          <Select  defaultValue="..." options={departments[selectInstitute]} onChange={handleChangeDepartments} />
+        <Form.Item label="Department" name='departmentId'>
+          <Select defaultValue="..." options={departments[selectInstitute]} onChange={handleChangeDepartments} />
         </Form.Item>
 
         <Form.Item label="Course" name='courseId'>
           <Select defaultValue="..." options={course[selectDepartments]} />
-        
         </Form.Item>
 
-        
         <Form.Item label="Group" name='groupId'>
-          <TreeSelect
-            
-            treeData={selectGroup}
-          />
-        </Form.Item>  
+          <TreeSelect treeData={selectGroup} />
+        </Form.Item>
+ 
         <Form.Item>
           <Button type="primary" htmlType="submit" className="submit-form-button">
             Save
           </Button>
         </Form.Item>
- 
       </Form>
     </>
- 
   );
 };
 
-export default () => <Invitation/>;
-
-
+export default () => <Invitation />;
