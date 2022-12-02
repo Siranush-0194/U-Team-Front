@@ -17,9 +17,8 @@ const Institutes = () => {
     }).catch(() => setInstitutes([]));
   }, []);
 
-  const handleDelete = (rowKey) => {
-    const newData = institutes.filter((item) => item.rowKey !== rowKey);
-    setInstitutes(newData);
+  const handleDelete = (instid) => {
+    setInstitutes(institutes => institutes.filter(item => item.Id !== instid));
   };
 
   return (
