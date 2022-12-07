@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect,useMemo } from 'react';
-import axios from '../../../axios';
+import axios from '../../../../axios';
 import { useSelector } from 'react-redux';
 
 import {
@@ -10,22 +10,27 @@ import {
   Button,
   Select,
   DatePicker,
-  Card
+  Cascader,
+  Checkbox
 } from 'antd';
+
+
 
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-const Invitation = () => {
+const TeacherInvitation = () => {
   const [form] = Form.useForm();
   const { id } = useParams();
   const history = useHistory();
 
+
+
   const [institutes, setInstitutes] = useState(null);
   const [departments, setDepartments] = useState({});
   const [selectInstitute, setSelectInstitute] = useState(null);
-  const [course, setCourse] = useState({});
-  const [group, setGroup] = useState({});
+  const [courses, setCourses] = useState(null);
+  const [groups, setGroups] = useState({});
   const [subgroup, setSubGroup] = useState(null);
   const [selectDepartments, setSelectDepartments] = useState(null);
   const [selectGroup, setSelectGroup] = useState(null);
@@ -39,9 +44,20 @@ const Invitation = () => {
         value: institute.id,
         label: institute.name
       })))
-    }).catch(() => setInstitutes([]));   
-  }, []);
+    }).catch(() => setInstitutes([]));
 
+    axios.get("/api/course/get").then((response) => {
+      console.log(response);
+      setCourses(response.data.map( course => ({
+        value: course.id,
+        label: course.number + "-" + course.degree + "-" + course.type,
+        children: []
+      })))
+    }).catch(() => setCourses([]));
+  
+},[])
+
+      
 
 
   const handleChangeInstitute = (value) => {
@@ -59,49 +75,36 @@ const Invitation = () => {
       }).catch(() => setDepartments([]));
     }
   };
-
-  const handleChangeDepartments = (value) => {
-    setSelectDepartments(value);
-
-    if (!course[value]) {
-      axios.get(`/api/department/get/${value}/courses`).then((response) => {
-        setCourse({
-          ...course,
-          [value]: response.data.map(course => ({
-            value: course.id,
-            label: course.number +  "-"  +  course.degree  +  "-"  +  course.type
-          }))
-        })
-      }).catch(() => setDepartments([]));
-    }
-  };
+  
 
 
-  const handleChangeCourse = (id) => {
-    setSelectCourse(id);
 
-    if (!group[id]) {
-      axios.get(`/api/course/get/${id}/groups`).then((response) => {
-        setGroup({
-          ...group,
-          [id]: {
-            data: response.data,
-            parents: response.data.filter(g => !g.parentId).map(group => ({
-              value: group.id,
-              label: group.number
-            }))
-          }
-        })
-      }).catch(() => setGroup([]));
-    }
-  };
 
-  const handleSubGroup = (id) => {
-    setSubGroup(group[selectCourse].data.filter(subGroup => subGroup.parentId === id).map(subGroup => ({
-      value: subGroup.id,
-      label: subGroup.number
-    })));
-  }
+  // const handleChangeCourse = (id) => {
+  //   setSelectCourse(id);  
+    
+  //   if (!groups[id]) {
+  //     axios.get(`/api/course/get/${id}/groups`).then((response) => {
+  //       setGroups({
+  //         ...groups,
+  //         [id]: {
+  //           data: response.data,
+  //           parents: response.data.filter(g => !g.parentId).map(group => ({
+  //             value: group.id,
+  //             label: group.number
+  //           }))
+  //         }
+  //       })
+  //     }).catch(() => setGroups([]));
+  //   }
+  // };
+
+  // const handleSubGroup = (id) => {
+  //   setSubGroup(groups[selectCourse].data.filter(subGroup => subGroup.parentId === id).map(subGroup => ({
+  //     value: subGroup.id,
+  //     label: subGroup.number
+  //   })));
+  // }
  
 
 
@@ -113,23 +116,51 @@ const Invitation = () => {
     return rules[type];
   }, [type, rules]);
   
-  // const navigateToAdminIvitation = () => {
-  //   // 👇️ navigate to /contacts
-  //   navigate('/admin/send-invitation')
-  // };
+ 
   const NavigateAdminInvitation=()=>{
     history.push('/dashboard/admin-invitation')
   }
 
-  const NavigateTeacherInvitation=()=>{
-    history.push('/dashboard/teacher-invitation')
+  const NavigateStudentInvitation=()=>{
+    history.push('/dashboard/invitation')
   }
 
   const onFinish = async () => {
     const values = await form.validateFields();
     values.birthDate = values['birthDate'].format('YYYY-MM-DD')
-    axios.post(`student/send-invitation`, values).then((response) => { });
+    axios.post(`teacher/send-invitation`, values).then((response) => { });
   }
+
+  
+
+
+  const options = [
+    {
+      label: 'Bamboo',
+      value: 'bamboo',
+      children: [
+        {
+          label: 'Little',
+          value: 'little',
+          children: [
+            {
+              label: 'Toy Fish',
+              value: 'fish',
+            },
+            {
+              label: 'Toy Cards',
+              value: 'cards',
+            },
+            {
+              label: 'Toy Bird',
+              value: 'bird',
+            },
+          ],
+        },
+      ],
+    },
+  ];
+const { SHOW_CHILD } = Cascader;
 
   return (
     <>
@@ -156,11 +187,12 @@ const Invitation = () => {
         <Form.Item label="LastName" name='lastName'>
           <Input />
         </Form.Item>
+        
 
         <Form.Item label="Patronymic" name='patronymic'>
           <Input />
         </Form.Item>
-
+   
         <Form.Item label="DatePicker" name='birthDate'>
           <DatePicker />
         </Form.Item>
@@ -170,24 +202,44 @@ const Invitation = () => {
         </Form.Item>
 
         <Form.Item label="Institute" name='instituteId'>
-          <Select defaultValue="..." options={institutes} onChange={handleChangeInstitute} />
+          <Select defaultValue="..." options=  {institutes} onChange={handleChangeInstitute} />
         </Form.Item>
 
         <Form.Item label="Department" name='departmentId'>
-          <Select defaultValue="..." options={departments[selectInstitute]} onChange={handleChangeDepartments} />
+          <Select defaultValue="..." options={departments[selectInstitute]} />
         </Form.Item>
 
-        <Form.Item label="Course" name='courseId'>
-          <Select defaultValue="..." options={course[selectDepartments]} onChange={handleChangeCourse} />
-        </Form.Item>
-
+        <Form.Item label="Course" name='courseId'>       
+          <Cascader options={courses} multiple //  onChange={handleChangeCourse}  
+            />         
+        </Form.Item>     
+   
+   
         <Form.Item label="Group" name='groupId'>
-          <Select defaultValue="..." options={group[selectCourse]?.parents} onChange={handleSubGroup} />
+          <Select     defaultValue="..." options={groups[selectCourse]?.parents} 
+          // onChange={handleSubGroup} 
+           />
         </Form.Item>
 
         <Form.Item label="SubGroup" name='subgroupId'>
-          <Select defaultValue="..." options={subgroup} />
+          <Select   defaultValue="..." options={subgroup} />
         </Form.Item>
+
+
+        {/* <Cascader
+        style={{
+          width: '100%',
+          height:'100%',
+        }}
+        options={courses}
+        onChange={(event) => {
+          console.log(event);
+        }}
+        multiple
+        maxTagCount="responsive"
+        showCheckedStrategy={SHOW_CHILD}
+      
+      /> */}
 
         <Form.Item>
           <Button type="primary" htmlType="submit" className="submit-form-button">
@@ -195,7 +247,7 @@ const Invitation = () => {
           </Button>
         </Form.Item>
         <Button onClick={NavigateAdminInvitation}>Admin</Button>
-        <Button onClick={NavigateTeacherInvitation}>Teacher</Button>
+        <Button onClick={NavigateStudentInvitation}>Student</Button>
      
       </Form>
       {/* </Card> */}
@@ -203,4 +255,4 @@ const Invitation = () => {
   );
 };
 
-export default () => <Invitation />;
+export default () => <TeacherInvitation />;

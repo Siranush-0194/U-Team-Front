@@ -22,15 +22,18 @@ const store = createStore(function (state, action) {
     rules: {
         admin: {
             title: "Login Admin",
-            submit: '/admin/login'
+            submit: '/admin/login',
+            invitation: '/admin/send-invitation'
         },
         student: {
             title: "Login Student",
-            submit: '/student/login'
+            submit: '/student/login',
+            invitation: '/student/send-invitation'
         },
         teacher: {
             title: "Login Teacher",
-            submit: '/teacher/login'
+            submit: '/teacher/login',
+            invitation: '/teacher/send-invitation'
         }
     },
     user: (() => {

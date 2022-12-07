@@ -28,6 +28,7 @@ const NavBar = () => {
             home: () => history.push("/dashboard"),
             institutes: () => history.push("/dashboard/institutes"),
             invitation: () => history.push("/dashboard/invitation"),
+            
           
 
             logout: async (action) => {

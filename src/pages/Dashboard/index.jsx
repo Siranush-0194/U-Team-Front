@@ -7,6 +7,8 @@ import "./style.scss";
 // Pages
 import Institutes from './Institutes';
 import Invitation from './Invitation/Invitation';
+import AdminInvitation from './Invitation/Forms/AdminForm';
+import TeacherInvitation from './Invitation/Forms/TeacherForm'
 
 
 // Components
@@ -31,6 +33,15 @@ const Dashboard = () => {
           <Route path='/dashboard/invitation'>
             <Invitation/>
           </Route>
+
+          <Route path='/dashboard/teacher-invitation'>
+            <TeacherInvitation/>
+          </Route>
+
+          <Route path='/dashboard/admin-invitation'>
+            <AdminInvitation/>
+          </Route>
+
       </section>
     </div>
   );
