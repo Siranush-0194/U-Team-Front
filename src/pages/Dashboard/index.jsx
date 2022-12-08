@@ -9,6 +9,7 @@ import Institutes from './Institutes';
 import StudentInvitation from './Invitation/Forms/StudentForm';
 import AdminInvitation from './Invitation/Forms/AdminForm';
 import TeacherInvitation from './Invitation/Forms/TeacherForm'
+import Admins from './AdminGet/Admins';
 
 // Components
 import Menu from '../../components/Menu';
@@ -40,6 +41,10 @@ const Dashboard = () => {
 
           <Route path='/dashboard/admin-invitation'>
             <AdminInvitation/>
+          </Route>
+
+          <Route path='/dashboard/editAdmins'>
+            <Admins/>
           </Route>
       </section>
     </div>

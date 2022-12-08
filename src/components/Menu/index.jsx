@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Menu, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { UsergroupAddOutlined, LogoutOutlined, HomeOutlined, SendOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined, LogoutOutlined, HomeOutlined, SendOutlined, UserOutlined } from '@ant-design/icons';
 
 import axios from '../../axios';
 
@@ -14,6 +14,7 @@ const items = [
     getItem('Home', 'home', <HomeOutlined />),
     getItem('Institutes', 'institutes', <UsergroupAddOutlined />),
     getItem('Invitation', 'invitation', <SendOutlined/> ),
+    getItem('Admins','admins', <UserOutlined />),
     getItem('Logout', 'logout', <LogoutOutlined />),
 ];
 
@@ -28,6 +29,7 @@ const NavBar = () => {
             home: () => history.push("/dashboard"),
             institutes: () => history.push("/dashboard/institutes"),
             invitation: () => history.push("/dashboard/student-invitation"),
+            admins: () => history.push("/dashboard/editAdmins"),
             
           
 

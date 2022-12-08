@@ -48,7 +48,7 @@ const Departments = () => {
             }
           })
         } else {
-          axios.post(`/api/department/create`, modal.data).then(response => {
+          axios.post(`/api/department/create`, { ...modal.data, institute_id: instituteId, }).then(response => {
             if (response.status === 201) {
               setDepartments(departments.concat(response.data));
 
@@ -64,13 +64,14 @@ const Departments = () => {
             ...modal,
             data: {
               ...modal.data,
-              name: event.target.value
+              name: event.target.value,
+              
             }
           })
         }} />
       </Modal>
             <Route exact path='/dashboard/institutes/:instituteId'>
-            <Button onClick={() => setModal({ isOpen: true, data: {} })}>Add Department</Button>
+            <Button onClick={() => setModal({ isOpen: true, data: {}})}>Add Department</Button>
                 {!departments
                     ? <></>
                     : <Table
@@ -97,7 +98,7 @@ const Departments = () => {
                                     <Popconfirm title="Sure to delete?" onConfirm={() => removeDepartment(row.id)}>
                                       <DeleteOutlined />
                                     </Popconfirm>
-                                    <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
+                                    <EditOutlined onClick={() => setModal({ isOpen: true, data: row, instituteId })} />
                                   </div>
                               }
                         ]} />}

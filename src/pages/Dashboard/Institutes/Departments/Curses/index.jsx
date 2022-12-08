@@ -7,8 +7,8 @@ import axios from "../../../../../axios";
 import { Link } from 'react-router-dom';
 
 const Courses = (props) => {
-    const { departmentId } = useParams();
-
+    const { departmentId} = useParams();
+    const [ type,number, degree] = useState();
     const [courses, setCourses] = useState(null);
     const [modal, setModal] = useState({ isOpen: false, data: {} });
 
@@ -27,7 +27,7 @@ const Courses = (props) => {
 
     return (
         <div className='course'>
-              <Modal title={modal?.data?.id ? 'Edit Institute name' : 'Add Institute name'} open={modal.isOpen} onOk={() => {
+              <Modal title={modal?.data?.id ? 'Edit Course number' : 'Add Course number'} open={modal.isOpen} onOk={() => {
         if (modal.data.id) {
           axios.patch(`/api/course/edit/${modal.data.id}`, modal.data).then(response => {
             if (response.status === 200) {
@@ -47,7 +47,7 @@ const Courses = (props) => {
             }
           })
         } else {
-          axios.post('/api/course/create', modal.data).then(response => {
+          axios.post('/api/course/create', { ...modal.data, department_id: departmentId, }).then(response => {
             if (response.status === 201) {
               setCourses(courses.concat(response.data));
 
@@ -58,12 +58,12 @@ const Courses = (props) => {
           })
         }
       }} onCancel={() => setModal({ isOpen: false, data: {} })}>
-        <Input placeholder="Institute name" value={modal?.data?.name} onChange={(event) => {
+        <Input placeholder="Course number" value={modal?.data?.number} onChange={(event) => {
           setModal({
             ...modal,
             data: {
               ...modal.data,
-              name: event.target.value
+              number: event.target.value
             }
           })
         }} />
