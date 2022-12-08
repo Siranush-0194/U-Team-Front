@@ -1,26 +1,19 @@
-
-
 import React, { useState, useEffect,useMemo } from 'react';
-import axios from '../../../axios';
+import axios from '../../../../axios';
 import { useSelector } from 'react-redux';
-
 import {
   Form,
   Input,
   Button,
   Select,
   DatePicker,
-  Card
 } from 'antd';
-
 import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-const Invitation = () => {
+const StudentInvitation = () => {
   const [form] = Form.useForm();
-  const { id } = useParams();
   const history = useHistory();
-
   const [institutes, setInstitutes] = useState(null);
   const [departments, setDepartments] = useState({});
   const [selectInstitute, setSelectInstitute] = useState(null);
@@ -113,10 +106,7 @@ const Invitation = () => {
     return rules[type];
   }, [type, rules]);
   
-  // const navigateToAdminIvitation = () => {
-  //   // 👇️ navigate to /contacts
-  //   navigate('/admin/send-invitation')
-  // };
+
   const NavigateAdminInvitation=()=>{
     history.push('/dashboard/admin-invitation')
   }
@@ -203,4 +193,4 @@ const Invitation = () => {
   );
 };
 
-export default () => <Invitation />;
+export default () => <StudentInvitation />;

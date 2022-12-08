@@ -28,7 +28,7 @@ const AdminInvitation = () => {
   }
 
   const NavigateStudentInvitation=()=>{
-    history.push('/dashboard/invitation')
+    history.push('/dashboard/student-invitation')
   }
  
 

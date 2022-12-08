@@ -30,13 +30,12 @@ const TeacherInvitation = () => {
   const [departments, setDepartments] = useState({});
   const [selectInstitute, setSelectInstitute] = useState(null);
   const [courses, setCourses] = useState(null);
-  const [groups, setGroups] = useState({});
+  const [groups, setGroups] = useState(null);
   const [subgroup, setSubGroup] = useState(null);
   const [selectDepartments, setSelectDepartments] = useState(null);
   const [selectGroup, setSelectGroup] = useState(null);
   const [selectCourse, setSelectCourse] = useState(null);
   const [type, setType] = useState("admin");
-
 
   useEffect(() => {
     axios.get("/api/institute/get").then((response) => {
@@ -47,14 +46,33 @@ const TeacherInvitation = () => {
     }).catch(() => setInstitutes([]));
 
     axios.get("/api/course/get").then((response) => {
-      console.log(response);
+      // console.log(response);
       setCourses(response.data.map( course => ({
         value: course.id,
         label: course.number + "-" + course.degree + "-" + course.type,
         children: []
       })))
     }).catch(() => setCourses([]));
-  
+
+    axios.get("/api/group/get-course").then((response) => {
+      console.log(response);
+      setGroups(response.data.map( group => ({
+        value: group.id,
+        label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
+        children: []
+      })))
+    }).catch(() => setCourses([]));
+
+    // axios.get("/api/group/get-course").then((response) => {
+    //   console.log(response);
+    //   setSubGroup(response.data.map( subgroup => ({
+    //     value: subgroup.id,
+    //     label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
+    //     children: []
+    //   })))
+    // }).catch(() => setCourses([]));
+
+ 
 },[])
 
       
@@ -75,36 +93,6 @@ const TeacherInvitation = () => {
       }).catch(() => setDepartments([]));
     }
   };
-  
-
-
-
-
-  // const handleChangeCourse = (id) => {
-  //   setSelectCourse(id);  
-    
-  //   if (!groups[id]) {
-  //     axios.get(`/api/course/get/${id}/groups`).then((response) => {
-  //       setGroups({
-  //         ...groups,
-  //         [id]: {
-  //           data: response.data,
-  //           parents: response.data.filter(g => !g.parentId).map(group => ({
-  //             value: group.id,
-  //             label: group.number
-  //           }))
-  //         }
-  //       })
-  //     }).catch(() => setGroups([]));
-  //   }
-  // };
-
-  // const handleSubGroup = (id) => {
-  //   setSubGroup(groups[selectCourse].data.filter(subGroup => subGroup.parentId === id).map(subGroup => ({
-  //     value: subGroup.id,
-  //     label: subGroup.number
-  //   })));
-  // }
  
 
 
@@ -122,7 +110,7 @@ const TeacherInvitation = () => {
   }
 
   const NavigateStudentInvitation=()=>{
-    history.push('/dashboard/invitation')
+    history.push('/dashboard/student-invitation')
   }
 
   const onFinish = async () => {
@@ -134,34 +122,7 @@ const TeacherInvitation = () => {
   
 
 
-  const options = [
-    {
-      label: 'Bamboo',
-      value: 'bamboo',
-      children: [
-        {
-          label: 'Little',
-          value: 'little',
-          children: [
-            {
-              label: 'Toy Fish',
-              value: 'fish',
-            },
-            {
-              label: 'Toy Cards',
-              value: 'cards',
-            },
-            {
-              label: 'Toy Bird',
-              value: 'bird',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-const { SHOW_CHILD } = Cascader;
-
+ 
   return (
     <>
      {/* <Card     
@@ -210,19 +171,17 @@ const { SHOW_CHILD } = Cascader;
         </Form.Item>
 
         <Form.Item label="Course" name='courseId'>       
-          <Cascader options={courses} multiple //  onChange={handleChangeCourse}  
+          <Cascader options={courses} multiple  
             />         
         </Form.Item>     
    
    
         <Form.Item label="Group" name='groupId'>
-          <Select     defaultValue="..." options={groups[selectCourse]?.parents} 
-          // onChange={handleSubGroup} 
-           />
+          <Cascader options={groups} multiple  />
         </Form.Item>
 
         <Form.Item label="SubGroup" name='subgroupId'>
-          <Select   defaultValue="..." options={subgroup} />
+          <Cascader options={subgroup} multiple />
         </Form.Item>
 
 

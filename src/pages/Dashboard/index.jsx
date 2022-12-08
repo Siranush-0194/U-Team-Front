@@ -6,10 +6,9 @@ import "./style.scss";
 
 // Pages
 import Institutes from './Institutes';
-import Invitation from './Invitation/Invitation';
+import StudentInvitation from './Invitation/Forms/StudentForm';
 import AdminInvitation from './Invitation/Forms/AdminForm';
 import TeacherInvitation from './Invitation/Forms/TeacherForm'
-
 
 // Components
 import Menu from '../../components/Menu';
@@ -17,6 +16,7 @@ import Menu from '../../components/Menu';
 const Dashboard = () => {
   return (
     <div className='dashboard'>
+      {console.log(1)}
       <aside>
         <Menu />
       </aside>
@@ -30,8 +30,8 @@ const Dashboard = () => {
             <Institutes />
           </Route>
 
-          <Route path='/dashboard/invitation'>
-            <Invitation/>
+          <Route path='/dashboard/student-invitation'>
+            <StudentInvitation/>
           </Route>
 
           <Route path='/dashboard/teacher-invitation'>
@@ -41,7 +41,6 @@ const Dashboard = () => {
           <Route path='/dashboard/admin-invitation'>
             <AdminInvitation/>
           </Route>
-
       </section>
     </div>
   );

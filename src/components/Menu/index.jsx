@@ -27,7 +27,7 @@ const NavBar = () => {
         return {
             home: () => history.push("/dashboard"),
             institutes: () => history.push("/dashboard/institutes"),
-            invitation: () => history.push("/dashboard/invitation"),
+            invitation: () => history.push("/dashboard/student-invitation"),
             
           
 

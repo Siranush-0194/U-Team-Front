@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Popconfirm, Typography,Form, Input, Button } from 'antd';
+import { Table, Popconfirm, Input, Modal, Button, PopconfirmProps} from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import axios from "../../../axios";
 import { Link, Route } from 'react-router-dom';
 
-// import "./style.scss";
-import Departments from './single';
+import Departments from './Departments';
 
 const Institutes = () => {
   const [institutes, setInstitutes] = useState(null);
-  const [editId, setEditId] = useState(null);
-  const [form] = Form.useForm();
-
+  const [modal, setModal] = useState({ isOpen: false, data: {} });
 
   useEffect(() => {
     axios.get("/api/institute/get").then((response) => {
@@ -20,25 +17,59 @@ const Institutes = () => {
     }).catch(() => setInstitutes([]));
   }, []);
 
-  const removeInstitute= (id) => {
-    let updateInstitutes = [...institutes].filter((institute) => institute.id !== id);
-    setInstitutes(updateInstitutes);
+  const removeInstitute = (id) => {
+    axios.delete(`/api/institute/delete/${id}`).then((response) => {
+      let updateInstitutes = [...institutes].filter((institute) => institute.id !== id);
+      setInstitutes(updateInstitutes);
+    });
   };
-
-  const handleEdit = (id) => {
-    const editInstitute= institutes.find((i) => i.id === id);
-    setInstitutes(editInstitute.institute);
-    setEditId(id);
-  };
-
-  
-  
 
   return (
-    
     <div className='institutes'>
-     
+      <Modal title={modal?.data?.id ? 'Edit Institute name' : 'Add Institute name'} open={modal.isOpen} onOk={() => {
+        if (modal.data.id) {
+          axios.patch(`/api/institute/edit/${modal.data.id}`, modal.data).then(response => {
+            if (response.status === 200) {
+              let newInstitutes = institutes.map(element => {
+                if (element.id === response.data.id) {
+                  element = response.data
+                }
+
+                return element
+              });
+
+              setInstitutes(newInstitutes);
+
+              setModal({ isOpen: false, data: {} })
+            } else {
+              console.log(response);
+            }
+          })
+        } else {
+          axios.post(`/api/institute/create`, modal.data).then(response => {
+            if (response.status === 201) {
+              setInstitutes(institutes.concat(response.data));
+
+              setModal({ isOpen: false, data: {} });
+            } else {
+              console.log(response);
+            }
+          })
+        }
+      }} onCancel={() => setModal({ isOpen: false, data: {} })}>
+        <Input placeholder="Institute name" value={modal?.data?.name} onChange={(event) => {
+          setModal({
+            ...modal,
+            data: {
+              ...modal.data,
+              name: event.target.value
+            }
+          })
+        }} />
+      </Modal>
+
       <Route exact path='/dashboard/institutes'>
+        <Button onClick={() => setModal({ isOpen: true, data: {} })}>Add Institute</Button>
         {!institutes
           ? <></>
           : <Table
@@ -49,42 +80,26 @@ const Institutes = () => {
                 title: 'ID',
                 dataIndex: 'id',
                 key: 'id',
-                
+
               },
               {
                 title: 'Name',
                 dataIndex: 'name',
                 key: 'name',
-                // render: (text, record,name,row) => {
-                //   if (editingRow === record.key) {
-                //     return (
-                //       <Form.Item name="name">
-                //         <Input />
-                //       </Form.Item>
-                //     );
-                //   } else {
-                //     return <p>{text}</p>;
-                //   }
-                // },
-                
                 render: (name, row) => <Link to={`/dashboard/institutes/${row.id}`}>{name}</Link>
-                
               },
-              
               {
-                title: 'Delete',
-                dataIndex: 'delete',   
-                render: (_,row) =>
-                  institutes.length >= 1 ? (
-                    <Popconfirm title="Sure to delete?" onClick={() => removeInstitute(row.id)}>
-                      <DeleteOutlined />                    
+                title: 'Actions',
+                dataIndex: 'actions',
+                width: 50,
+                render: (_, row) =>
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => removeInstitute(row.id)}>
+                      <DeleteOutlined />
                     </Popconfirm>
-                  ) : null,       
-              },
-              {
-                title: 'Edit',
-                dataIndex: 'edit'
-                }, 
+                    <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
+                  </div>
+              }
             ]}
           />}
       </Route>

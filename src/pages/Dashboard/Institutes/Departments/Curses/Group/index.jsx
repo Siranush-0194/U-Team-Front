@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Route, useParams } from 'react-router-dom';
 import { Table } from 'antd';
 
-import axios from "../../../axios";
+import axios from '../../../../../../axios';
 import { Link } from 'react-router-dom';
 
-const Courses = () => {
-    const {departmentID} = useParams();
+const Groups = (props) => {
+    const { courseId } = useParams();
 
-    const [courses, setCourses] = useState(null);
+    const [groups, setGroups] = useState(null);
 
     useEffect(() => {
-        
-        axios.get(`/api/department/get/${departmentID}/courses`).then((response) => {
-            console.log(1);
-            setCourses(response.data)            
-        }).catch(() => setCourses([]));      
-
+        axios.get(`/api/course/get/${courseId}/groups`).then((response) => {
+            setGroups(response.data)
+        }).catch(() => setGroups([]));
     }, []);
 
     return (
-        <div className='course'>
-            {!courses
+        <div className='group'>
+            {!groups
                 ? <></>
                 : <Table
                     rowKey="id"
-                    dataSource={courses}
+                    dataSource={groups}
                     columns={[
                         {
                             title: 'ID',
@@ -36,11 +33,12 @@ const Courses = () => {
                             title: 'Number',
                             dataIndex: 'number',
                             key: 'number',
-                            render: (number, row) => <Link to={`/dashboard/institutes/departments/${departmentID}/${row.id}`}>{number}</Link>
+                            render: (number, row) => <Link to={`/dashboard/institutes/departments/course/${courseId}/${row.id}`}>{number}</Link>
                         }
                     ]} />}
+                    
         </div>
     );
 }
 
-export default Courses;
+export default Groups;
