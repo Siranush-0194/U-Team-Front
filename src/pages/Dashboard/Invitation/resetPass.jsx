@@ -11,7 +11,18 @@ const ResetPassword = () => {
 
   useEffect(() => {
     axios.get(`accept/invitation?token=${token}`).then((response) => {
-      setUser(response.data[0])
+      let user = response.data[0];
+
+      try {
+        user.payload = JSON.parse(user.payload);
+
+        setUser({
+          ...user,
+          ...user.payload
+        });
+      } catch (e) {
+        // 
+      }
     }).catch(() => setUser([token]));
   }, [token]);
 

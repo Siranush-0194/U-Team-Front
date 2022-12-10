@@ -37,7 +37,6 @@ const TeacherInvitation = () => {
     }).catch(() => setInstitutes([]));
 
     axios.get("/api/course/get").then((response) => {
-      // console.log(response);
       setCourses(response.data.map(course => ({
         value: course.id,
         label: course.number + "-" + course.degree + "-" + course.type,
@@ -46,28 +45,13 @@ const TeacherInvitation = () => {
     }).catch(() => setCourses([]));
 
     axios.get("/api/group/get-course").then((response) => {
-      console.log(response);
       setGroups(response.data.map(group => ({
         value: group.id,
         label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
         children: []
       })))
     }).catch(() => setCourses([]));
-
-    // axios.get("/api/group/get-course").then((response) => {
-    //   console.log(response);
-    //   setSubGroup(response.data.map( subgroup => ({
-    //     value: subgroup.id,
-    //     label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
-    //     children: []
-    //   })))
-    // }).catch(() => setCourses([]));
-
-
-  }, [])
-
-
-
+  }, []);
 
   const handleChangeInstitute = (value) => {
     setSelectInstitute(value);
@@ -84,8 +68,6 @@ const TeacherInvitation = () => {
       }).catch(() => setDepartments([]));
     }
   };
-
-
 
   const rules = useSelector(function (state) {
     return state.rules;
@@ -122,7 +104,6 @@ const TeacherInvitation = () => {
         <Input />
       </Form.Item>
 
-
       <Form.Item label="Patronymic" name='patronymic'>
         <Input />
       </Form.Item>
@@ -144,34 +125,21 @@ const TeacherInvitation = () => {
       </Form.Item>
 
       <Form.Item label="Course" name='courseId'>
-        <Cascader options={courses} multiple
+        <Cascader options={courses} multiple onChange={(values) => {
+          console.log(values.map(value => value[0]));
+        }}
         />
       </Form.Item>
 
-
       <Form.Item label="Group" name='groupId'>
-        <Cascader options={groups} multiple />
+        <Cascader options={groups} multiple  onChange={(values) => {
+          console.log(values.map(value => value[0]));
+        }} />
       </Form.Item>
 
       <Form.Item label="SubGroup" name='subgroupId'>
         <Cascader options={subgroup} multiple />
       </Form.Item>
-
-
-      {/* <Cascader
-        style={{
-          width: '100%',
-          height:'100%',
-        }}
-        options={courses}
-        onChange={(event) => {
-          console.log(event);
-        }}
-        multiple
-        maxTagCount="responsive"
-        showCheckedStrategy={SHOW_CHILD}
-      
-      /> */}
 
       <Form.Item>
         <Button type="primary" htmlType="submit" className="submit-form-button">

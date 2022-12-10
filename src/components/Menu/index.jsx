@@ -28,7 +28,7 @@ const NavBar = () => {
         return {
             home: () => history.push("/dashboard"),
             institutes: () => history.push("/dashboard/institutes"),
-            invitation: () => history.push("/dashboard/student-invitation"),
+            invitation: () => history.push("/dashboard/invitation"),
             admins: () => history.push("/dashboard/editAdmins"),
 
             logout: async (action) => {

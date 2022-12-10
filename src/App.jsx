@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PublicRoute, PrivateRoute } from "./routes";
 import { useHistory } from 'react-router-dom';
+import useQuery from './hooks/useQuery';
 
 import axios from "./axios";
 
@@ -29,12 +30,15 @@ const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const query = useQuery();
+  const [token] = useState(query.get('token'));
+
   const user = useSelector(function (state) {
     return state?.user;
   });
 
   useEffect(() => {
-    axios.get("/user").then((response) => {
+    !token && axios.get("/user").then((response) => {
       let user = response?.data?.data || {};
 
       dispatch({
@@ -42,6 +46,7 @@ const App = () => {
         payload: user
       });
     }).catch((response) => {
+      console.log(response);
       if (response?.response?.status === 401) {
         dispatch({
           type: 'login',
@@ -57,7 +62,11 @@ const App = () => {
     i18n.changeLanguage(i18n.language === 'am' ? 'en' : 'am');
   };
 
-  return user === null ? <> </> : (
+  return user === null ? <>
+    <PublicRoute path="/accept/invitation">
+      <ResetPassword />
+    </PublicRoute>
+  </> : (
     <>
       {/* START PUBLIC ROUTES */}
       <PublicRoute exact path="/">
@@ -78,10 +87,6 @@ const App = () => {
             <Login />
           </section>
         </div>
-      </PublicRoute>
-
-      <PublicRoute path="/accept/invitation">
-        <ResetPassword />
       </PublicRoute>
       {/* END PUBLIC ROUTES */}
 

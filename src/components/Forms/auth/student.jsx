@@ -137,7 +137,7 @@ const StudentInvitation = () => {
       </Form.Item>
 
       <Form.Item label="Institute" name='instituteId'>
-        <Select defaultValue="..." options={institutes} onChange={handleChangeInstitute} />
+        <Select defaultValue="..." options={institutes} onChange={handleChangeInstitute}   />
       </Form.Item>
 
       <Form.Item label="Department" name='departmentId'>
