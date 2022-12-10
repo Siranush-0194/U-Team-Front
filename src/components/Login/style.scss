@@ -1,10 +1,14 @@
-.Login__{
+.Login__ {
     &form {
         top: 50%;
         left: 50%;
         width: 30vw;
         position: absolute;
         transform: translate(-50%, -50%);
+
+        &.wide {
+            width: 50vw;
+        }
     }
 }
 

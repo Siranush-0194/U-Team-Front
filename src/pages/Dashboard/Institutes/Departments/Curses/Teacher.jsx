@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Table, Modal, Button, Input, Popconfirm } from 'antd';
-
-import axios from "../../../../axios";
+import axios from '../../../../../axios';
 import { Link, Route } from 'react-router-dom';
-import Courses from './Curses';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
-const Departments = () => {
-  const { instituteId } = useParams();
+
+// import "./style.scss";
+
+const DepartmentTeacher = () => {
+  const { instituteId, departmentId } = useParams();
   const [modal, setModal] = useState({ isOpen: false, data: {} });
   const [departments, setDepartments] = useState(null);
+  const [teachers, setTeachers] = useState();
 
   useEffect(() => {
-    axios.get(`/api/institute/get/${instituteId}/departments`).then((response) => {
-      setDepartments(response.data)
-    }).catch(() => setDepartments([]));
+    axios.get(`/api/department/get/${departmentId}/teachers`).then((response) => {
+      setTeachers(response.data)
+    }).catch(() => setTeachers([]));
+
 
 
   }, []);
-  const removeDepartment = (id) => {
-    axios.delete(`/api/department/delete/${id}`).then((response) => {
-      let updateDepartment = [...departments].filter((department) => department.id !== id);
-      setDepartments(updateDepartment);
-    });
-  };
+  // const removeDepartment = (id) => {
+  //     axios.delete(`/api/department/delete/${id}`).then((response) => {
+  //       let updateDepartment = [...departments].filter((department) => department.id !== id);
+  //       setDepartments(updateDepartment);
+  //     });
+  //   };
 
   return (
     <div className='department'>
-      <Modal title={modal?.data?.id ? 'Edit Department name' : 'Add Department name'} open={modal.isOpen} onOk={() => {
+      {/* <Modal title={modal?.data?.id ? 'Edit Department name' : 'Add Department name'} open={modal.isOpen} onOk={() => {
         if (modal.data.id) {
           axios.patch(`/api/department/edit/${modal.data.id}`, modal.data).then(response => {
             if (response.status === 200) {
@@ -52,7 +55,7 @@ const Departments = () => {
             if (response.status === 201) {
               setDepartments(departments.concat(response.data));
 
-              setModal({ isOpen: false, data: {} });
+              setModal({ isOpen: false, data: {}});
             } else {
               console.log(response);
             }
@@ -65,14 +68,15 @@ const Departments = () => {
             data: {
               ...modal.data,
               name: event.target.value,
-
+              
             }
           })
         }} />
-      </Modal>
+      </Modal> */}
       <Route exact path='/dashboard/institutes/:instituteId'>
         <div style={{ display: 'flex', gap: 10 }}>
           <Button type='primary' onClick={() => setModal({ isOpen: true, data: {} })}>Add Department</Button>
+
         </div>
         {!departments
           ? <></>
@@ -97,7 +101,7 @@ const Departments = () => {
                 width: 50,
                 render: (_, row) =>
                   <div style={{ display: 'flex', gap: 10 }}>
-                    <Popconfirm title="Sure to delete?" onConfirm={() => removeDepartment(row.id)}>
+                    <Popconfirm title="Sure to delete?" >
                       <DeleteOutlined />
                     </Popconfirm>
                     <EditOutlined onClick={() => setModal({ isOpen: true, data: row, instituteId })} />
@@ -105,12 +109,8 @@ const Departments = () => {
               }
             ]} />}
       </Route>
-
-      <Route path='/dashboard/institutes/:instituteId/:departmentId'>
-        <Courses />
-      </Route>
     </div>
   );
 }
 
-export default Departments;
+export default DepartmentTeacher;

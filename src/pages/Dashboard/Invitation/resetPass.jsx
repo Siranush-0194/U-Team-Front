@@ -21,7 +21,7 @@ const ResetPassword = () => {
 
     delete values.confirm;
 
-   axios.post('/accept/invitation', values).then((response) => {
+    axios.post('/accept/invitation', values).then((response) => {
       console.log(response);
     })
   }
@@ -77,6 +77,5 @@ const ResetPassword = () => {
     </>
   )
 }
-
 
 export default ResetPassword;

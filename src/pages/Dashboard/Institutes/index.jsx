@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Popconfirm, Input, Modal, Button, PopconfirmProps} from 'antd';
+import { Table, Popconfirm, Input, Modal, Button } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import axios from "../../../axios";
@@ -69,7 +69,7 @@ const Institutes = () => {
       </Modal>
 
       <Route exact path='/dashboard/institutes'>
-        <Button onClick={() => setModal({ isOpen: true, data: {} })}>Add Institute</Button>
+        <Button type='primary' onClick={() => setModal({ isOpen: true, data: {} })}>Add Institute</Button>
         {!institutes
           ? <></>
           : <Table
@@ -109,6 +109,5 @@ const Institutes = () => {
     </div>
   );
 }
-
 
 export default Institutes;

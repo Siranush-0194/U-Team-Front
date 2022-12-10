@@ -1,56 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.scss';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import { PublicRoute, PrivateRoute } from "./routes";
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import { Provider } from "react-redux";
-
-// Init Store
 import store from "./redux/store";
 
-// Public
-import PageNotFound from "./pages/PageNotFound";
-
-// Private
-import Dashboard from "./pages/Dashboard/index";
-import ResetPassword from './pages/Dashboard/Invitation/resetPass';
+import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <Switch>
-          {/* PUBLIC ROUTES */}
-          <PublicRoute exact path="/">
-            <App />
-          </PublicRoute>
-
-          {/* PRIVATE ROUTES */}
-          <PrivateRoute path="/dashboard">
-            <Dashboard />
-          </PrivateRoute>
-
-          <PublicRoute path="/accept/invitation">
-            <ResetPassword/>
-          </PublicRoute>
-
-          <Route path="*">
-            <PageNotFound />
-          </Route>
-        </Switch>
-      </Router>
+        <Router>
+            <Switch>
+                <App />
+            </Switch>
+        </Router>
     </Provider>
-
-  </React.StrictMode>
 );
 
 reportWebVitals();

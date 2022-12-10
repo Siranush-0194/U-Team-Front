@@ -8,8 +8,6 @@ const store = createStore(function (state, action) {
                 user: action.payload
             };
         case 'logout':
-            localStorage.removeItem("user");
-
             return {
                 ...state,
                 user: {}
@@ -36,17 +34,7 @@ const store = createStore(function (state, action) {
             invitation: '/teacher/send-invitation'
         }
     },
-    user: (() => {
-        let user = {};
-
-        try {
-            user = JSON.parse(localStorage.getItem("user") || JSON.stringify({}));
-        } catch (e) {
-            user = {};
-        }
-
-        return user;
-    })()
+    user: null
 })
 
 export default store;

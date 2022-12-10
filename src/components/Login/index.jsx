@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Card } from 'antd';
-import { useHistory } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,12 +9,10 @@ import axios from '../../axios';
 import "./style.scss";
 
 function Login() {
-  const history = useHistory();
-
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  
+
   const [type, setType] = useState("admin");
 
   const [form] = Form.useForm();
@@ -39,10 +36,6 @@ function Login() {
           type: 'login',
           payload: response.data.data
         });
-
-        localStorage.setItem("user", JSON.stringify(response.data.data));
-
-        history.push("dashboard")
       }
     } catch (error) {
       if (error.response && error.response.data && error.response.data.errors) {

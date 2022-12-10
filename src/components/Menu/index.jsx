@@ -13,8 +13,8 @@ function getItem(label, key, icon, children, type) {
 const items = [
     getItem('Home', 'home', <HomeOutlined />),
     getItem('Institutes', 'institutes', <UsergroupAddOutlined />),
-    getItem('Invitation', 'invitation', <SendOutlined/> ),
-    getItem('Admins','admins', <UserOutlined />),
+    getItem('Invitation', 'invitation', <SendOutlined />),
+    getItem('Admins', 'admins', <UserOutlined />),
     getItem('Logout', 'logout', <LogoutOutlined />),
 ];
 
@@ -30,15 +30,13 @@ const NavBar = () => {
             institutes: () => history.push("/dashboard/institutes"),
             invitation: () => history.push("/dashboard/student-invitation"),
             admins: () => history.push("/dashboard/editAdmins"),
-            
-          
 
             logout: async (action) => {
                 try {
                     if (action === 0) return setIsModalOpen(false);
                     else if (action === 1) return setIsModalOpen(true);
 
-                    const response = await axios.post("/logout");
+                    await axios.post("/logout");
 
                     dispatch({ type: "logout" });
 
