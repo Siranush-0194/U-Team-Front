@@ -46,7 +46,7 @@ const App = () => {
         payload: user
       });
     }).catch((response) => {
-      console.log(response);
+      // console.log(response);
       if (response?.response?.status === 401) {
         dispatch({
           type: 'login',

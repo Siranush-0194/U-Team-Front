@@ -9,7 +9,7 @@ const Admins = () => {
   useEffect(() => {
     axios.get("/api/admin/get").then((response) => {
       setAdmins(response.data)
-      console.log(response);
+      // console.log(response);
     }).catch(() => setAdmins([]));
   }, []);
 

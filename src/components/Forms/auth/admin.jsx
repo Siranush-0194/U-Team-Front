@@ -21,7 +21,7 @@ const AdminInvitation = () => {
     values.birthDate = values['birthDate'] ? values['birthDate'].format('YYYY-MM-DD') : undefined;
 
     axios.post(`admin/send-invitation`, values).then((response) => {
-      // form.resetFields();
+      form.resetFields();
     }).catch((error) => {
       if (error.response && error.response.data && error.response.data.errors) {
         let fields = ["firstName", "lastName","patronymic","birthDate","email", ];

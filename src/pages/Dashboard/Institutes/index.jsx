@@ -42,7 +42,7 @@ const Institutes = () => {
 
               setModal({ isOpen: false, data: {} })
             } else {
-              console.log(response);
+              // console.log(response);
             }
           })
         } else {

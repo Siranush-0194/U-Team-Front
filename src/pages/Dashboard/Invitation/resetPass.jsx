@@ -6,6 +6,7 @@ import useQuery from "../../../hooks/useQuery";
 
 const ResetPassword = () => {
   const query = useQuery()
+  const [form] = Form.useForm();
   const [user, setUser] = useState(null);
   const [token] = useState(query.get('token'))
 
@@ -33,7 +34,8 @@ const ResetPassword = () => {
     delete values.confirm;
 
     axios.post('/accept/invitation', values).then((response) => {
-      console.log(response);
+      form.resetFields();
+      // console.log(response);
     })
   }
 

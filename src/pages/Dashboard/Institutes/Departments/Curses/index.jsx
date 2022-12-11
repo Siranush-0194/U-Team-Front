@@ -28,13 +28,23 @@ const Courses = () => {
         {
           title: 'ID',
           dataIndex: 'id',
-          key: 'id',
+          key: 'id'
         },
         {
           title: 'Number',
           dataIndex: 'number',
           key: 'number',
           render: (number, row) => <Link to={`/dashboard/institutes/departments/${departmentId}/${row.id}`}>{number}</Link>
+        },
+        {
+          title:'Degree',
+          dataIndex: 'degree',
+          key: 'degree'
+        },
+        {
+          title: 'Type',
+         dataIndex: 'type',
+          key: 'type',
         },
         {
           title: 'Actions',
@@ -58,7 +68,22 @@ const Courses = () => {
         {
           title: 'First Name',
           dataIndex: 'firstName',
-          key: 'FirstName',
+          key: 'name'
+        },
+        {
+          title: 'Last Name',
+          dataIndex: 'lastName',
+          key: 'lastName',
+        },
+        {
+          title: 'Patronymic',
+          dataIndex: 'patronymic',
+          key: 'patronymic',
+        },
+        {
+          title: 'Position',
+          dataIndex: 'position',
+          key: 'position',
         },
       ]
     }
@@ -91,18 +116,18 @@ const Courses = () => {
 
               setModal({ isOpen: false, data: {} })
             } else {
-              console.log(response);
+              // console.log(response);
             }
           })
         } else {
-          console.log({ ...modal.data, department_id: departmentId, });
+          // console.log({ ...modal.data, department_id: departmentId, });
           axios.post('/api/course/create', { ...modal.data, department_id: departmentId, }).then(response => {
             if (response.status === 201) {
               setTableData(tableData.concat(response.data));
 
               setModal({ isOpen: false, data: {} });
             } else {
-              console.log(response);
+              // console.log(response);
             }
           })
         }

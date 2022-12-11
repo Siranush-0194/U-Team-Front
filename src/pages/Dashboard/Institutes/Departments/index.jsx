@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo} from 'react';
 import { useParams } from 'react-router-dom';
 import { Table, Modal, Button, Input, Popconfirm } from 'antd';
 
@@ -10,19 +10,84 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 const Departments = () => {
   const { instituteId } = useParams();
   const [modal, setModal] = useState({ isOpen: false, data: {} });
-  const [departments, setDepartments] = useState(null);
+  const [tableData, setTableData] = useState(null);
+  const [type, setType] = useState("departments");
+
+  const getTableData = () => {
+    axios.get(`/api/institute/get/${instituteId}/${type}`).then((response) => {
+      setTableData(response.data)
+    }).catch(() => setTableData([]));
+  }
 
   useEffect(() => {
-    axios.get(`/api/institute/get/${instituteId}/departments`).then((response) => {
-      setDepartments(response.data)
-    }).catch(() => setDepartments([]));
+    getTableData()
+  }, [type]);
+
+  const columns = useMemo(() => {
+    const columns = {
+      departments: [
+        {
+          title: 'ID',
+          dataIndex: 'id',
+          key: 'id',
+        },
+        {
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+          render: (name, row) => <Link to={`/dashboard/institutes/${instituteId}/${row.id}`}>{name}</Link>
+        },
+        {
+          title: 'Actions',
+          dataIndex: 'actions',
+          width: 50,
+          render: (_, row) =>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <Popconfirm title="Sure to delete?" onConfirm={() => removeDepartment(row.id)}>
+                <DeleteOutlined />
+              </Popconfirm>
+              <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
+            </div>
+        }
+      ],
+      teachers: [
+        {
+          title: 'ID',
+          dataIndex: 'id',
+          key: 'id',
+        },
+        {
+          title: 'First Name',
+          dataIndex: 'firstName',
+          key: 'name'
+        },
+        {
+          title: 'Last Name',
+          dataIndex: 'lastName',
+          key: 'lastName',
+        },
+        {
+          title: 'Patronymic',
+          dataIndex: 'patronymic',
+          key: 'patronymic',
+        },
+        {
+          title: 'Position',
+          dataIndex: 'position',
+          key: 'position',
+        },
+      ]
+    }
+
+    return columns[type];
+  }, [type])
 
 
-  }, []);
+ 
   const removeDepartment = (id) => {
     axios.delete(`/api/department/delete/${id}`).then((response) => {
-      let updateDepartment = [...departments].filter((department) => department.id !== id);
-      setDepartments(updateDepartment);
+      let updateDepartment = [...tableData].filter((department) => department.id !== id);
+      setTableData(updateDepartment);
     });
   };
 
@@ -32,7 +97,7 @@ const Departments = () => {
         if (modal.data.id) {
           axios.patch(`/api/department/edit/${modal.data.id}`, modal.data).then(response => {
             if (response.status === 200) {
-              let newDepartment = departments.map(element => {
+              let newDepartment = tableData.map(element => {
                 if (element.id === response.data.id) {
                   element = response.data
                 }
@@ -40,21 +105,21 @@ const Departments = () => {
                 return element
               });
 
-              setDepartments(newDepartment);
+              setTableData(newDepartment);
 
               setModal({ isOpen: false, data: {} })
             } else {
-              console.log(response);
+              // console.log(response);
             }
           })
         } else {
-          axios.post(`/api/department/create`, { ...modal.data, institute_id: instituteId, }).then(response => {
+          axios.post(`/api/department/create`, { ...modal.data, institute_id: instituteId }).then(response => {
             if (response.status === 201) {
-              setDepartments(departments.concat(response.data));
+              setTableData(tableData.concat(response.data));
 
               setModal({ isOpen: false, data: {} });
             } else {
-              console.log(response);
+              // console.log(response);
             }
           })
         }
@@ -73,37 +138,15 @@ const Departments = () => {
       <Route exact path='/dashboard/institutes/:instituteId'>
         <div style={{ display: 'flex', gap: 10 }}>
           <Button type='primary' onClick={() => setModal({ isOpen: true, data: {} })}>Add Department</Button>
+        
+          
         </div>
-        {!departments
+        {!tableData
           ? <></>
           : <Table
             rowKey="id"
-            dataSource={departments}
-            columns={[
-              {
-                title: 'ID',
-                dataIndex: 'id',
-                key: 'id',
-              },
-              {
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name',
-                render: (name, row) => <Link to={`/dashboard/institutes/${instituteId}/${row.id}`}>{name}</Link>
-              },
-              {
-                title: 'Actions',
-                dataIndex: 'actions',
-                width: 50,
-                render: (_, row) =>
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    <Popconfirm title="Sure to delete?" onConfirm={() => removeDepartment(row.id)}>
-                      <DeleteOutlined />
-                    </Popconfirm>
-                    <EditOutlined onClick={() => setModal({ isOpen: true, data: row, instituteId })} />
-                  </div>
-              }
-            ]} />}
+            dataSource={tableData}
+              columns={columns} />}           
       </Route>
 
       <Route path='/dashboard/institutes/:instituteId/:departmentId'>
