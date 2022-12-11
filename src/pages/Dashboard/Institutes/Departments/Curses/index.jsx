@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Route, useParams } from 'react-router-dom';
-import { Table, Popconfirm, Modal, Input, Button } from 'antd';
+import { Table, Popconfirm, Modal, Input, Button, Select, Form } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Groups from './Group';
 import axios from "../../../../../axios";
@@ -95,6 +95,7 @@ const Courses = () => {
             }
           })
         } else {
+          console.log({ ...modal.data, department_id: departmentId, });
           axios.post('/api/course/create', { ...modal.data, department_id: departmentId, }).then(response => {
             if (response.status === 201) {
               setTableData(tableData.concat(response.data));
@@ -106,15 +107,43 @@ const Courses = () => {
           })
         }
       }} onCancel={() => setModal({ isOpen: false, data: {} })}>
-        <Input placeholder="Course number" value={modal?.data?.number} onChange={(event) => {
-          setModal({
-            ...modal,
-            data: {
-              ...modal.data,
-              number: event.target.value
-            }
-          })
-        }} />
+        <Form>
+          <Form.Item label="Number" name="number">
+            <Input placeholder="Course number" value={modal?.data?.number} onChange={(event) => {
+              setModal({
+                ...modal,
+                data: {
+                  ...modal.data,
+                  number: event.target.value
+                }
+              })
+            }} />
+          </Form.Item>
+
+          <Form.Item label="Degree" name='degree'>
+            <Select defaultValue="..." onChange={(value) => {
+              setModal({
+                ...modal,
+                data: {
+                  ...modal.data,
+                  degree: value,
+                }
+              })
+            }} options={[{ label: "master", value: "master" }, { label: "bachelor", value: "bachelor" }, { label: "PhD", value: "PhD" }]} />
+          </Form.Item>
+
+          <Form.Item label="Type" name='type'>
+            <Select defaultValue="..." onChange={(value) => {
+              setModal({
+                ...modal,
+                data: {
+                  ...modal.data,
+                  type: value,
+                }
+              })
+            }} options={[{ label: "available", value: "available" }, { label: "remotely", value: "remotely" }]} />
+          </Form.Item>
+        </Form>
       </Modal>
 
       <Route exact path='/dashboard/institutes/:institutesId/:departmentID'>

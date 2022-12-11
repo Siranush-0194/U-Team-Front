@@ -13,8 +13,10 @@ import {
 } from 'antd';
 
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const TeacherInvitation = () => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const history = useHistory();
   const [institutes, setInstitutes] = useState(null);
@@ -23,10 +25,6 @@ const TeacherInvitation = () => {
   const [courses, setCourses] = useState(null);
   const [groups, setGroups] = useState(null);
   const [subgroup, setSubGroup] = useState(null);
-  const [selectDepartments, setSelectDepartments] = useState(null);
-  const [selectGroup, setSelectGroup] = useState(null);
-  const [selectCourse, setSelectCourse] = useState(null);
-  const [type, setType] = useState("admin");
 
   useEffect(() => {
     axios.get("/api/institute/get").then((response) => {
@@ -45,11 +43,26 @@ const TeacherInvitation = () => {
     }).catch(() => setCourses([]));
 
     axios.get("/api/group/get-course").then((response) => {
-      setGroups(response.data.map(group => ({
-        value: group.id,
-        label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
-        children: []
-      })))
+      let groups = [], subgroups = [];
+
+      response.data.forEach(group => {
+        if (!group.parentId) {
+          groups.push({
+            value: group.id,
+            label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
+            children: []
+          })
+        } else {
+          subgroups.push({
+            value: group.id,
+            label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
+            children: []
+          })
+        }
+      });
+
+      setGroups(groups);
+      setSubGroup(subgroups);
     }).catch(() => setCourses([]));
   }, []);
 
@@ -73,15 +86,33 @@ const TeacherInvitation = () => {
     return state.rules;
   });
 
-  const rule = useMemo(() => {
-    return rules[type];
-  }, [type, rules]);
+  const onFinish = async (values) => {
+    values.birthDate = !values['birthDate'] ? undefined : values['birthDate'].format('YYYY-MM-DD');
+    
+    ["courseId", "groupId", "subgroupId"].forEach(key => {
+      values[key] = values[key].map(element => element[0]);
+    })
 
-  const onFinish = async () => {
-    const values = await form.validateFields();
-    values.birthDate = !values['birthDate'] ? "" : values['birthDate'].format('YYYY-MM-DD');
 
-    axios.post(`teacher/send-invitation`, values).then((response) => { });
+    console.log(values);
+    axios.post(`teacher/send-invitation`, values).then((response) => {
+      console.log(response);
+    }).catch(error => {
+      if (error.response && error.response.data && error.response.data.errors) {
+        let fields = ["firstName", "lastName", "departmentId", "email","position", "instituteId", "patronymic"];
+
+        fields.forEach(field => {
+          if (error.response.data.errors[field]) {
+            form.setFields([
+              {
+                name: field,
+                errors: [t(error.response.data.errors[field][0])]
+              }
+            ]);
+          }
+        });
+      }
+    })
   }
 
   return (
@@ -116,6 +147,10 @@ const TeacherInvitation = () => {
         <Input />
       </Form.Item>
 
+      <Form.Item label="Position" name='position'>
+        <Input />
+      </Form.Item>
+
       <Form.Item label="Institute" name='instituteId'>
         <Select defaultValue="..." options={institutes} onChange={handleChangeInstitute} />
       </Form.Item>
@@ -125,16 +160,11 @@ const TeacherInvitation = () => {
       </Form.Item>
 
       <Form.Item label="Course" name='courseId'>
-        <Cascader options={courses} multiple onChange={(values) => {
-          console.log(values.map(value => value[0]));
-        }}
-        />
+        <Cascader options={courses} multiple />
       </Form.Item>
 
       <Form.Item label="Group" name='groupId'>
-        <Cascader options={groups} multiple  onChange={(values) => {
-          console.log(values.map(value => value[0]));
-        }} />
+        <Cascader options={groups} multiple/>
       </Form.Item>
 
       <Form.Item label="SubGroup" name='subgroupId'>
