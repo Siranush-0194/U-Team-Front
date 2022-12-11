@@ -8,6 +8,7 @@ import {
   Select,
   DatePicker,
 } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const StudentInvitation = () => {
   const [form] = Form.useForm();
@@ -21,6 +22,7 @@ const StudentInvitation = () => {
   const [selectGroup, setSelectGroup] = useState(null);
   const [selectCourse, setSelectCourse] = useState(null);
   const [type, setType] = useState("admin");
+  const { t } = useTranslation()
 
   useEffect(() => {
     axios.get("/api/institute/get").then((response) => {
@@ -101,7 +103,23 @@ const StudentInvitation = () => {
     const values = await form.validateFields();
     values.birthDate = !values['birthDate'] ? "" : values['birthDate'].format('YYYY-MM-DD');
 
-    axios.post(`student/send-invitation`, values).then((response) => { });
+    axios.post(`student/send-invitation`, values).then((response) => { form.resetFields();
+    }).catch((error) => {
+      if (error.response && error.response.data && error.response.data.errors) {
+        let fields = ["firstName", "lastName","patronymic","birthDate","email", "courseId", "departmentId","groupId","instituteId","subgroupId"];
+
+        fields.forEach(field => {console.log(error.response.data.errors);
+          if (error.response.data.errors[field]) {
+            form.setFields([
+              {
+                name: field,
+                errors: [t(error.response.data.errors[field][0])]
+              }
+            ]);
+          }
+        });
+      }
+    }); 
   }
 
   return (

@@ -96,12 +96,12 @@ const TeacherInvitation = () => {
 
     // console.log(values);
     axios.post(`teacher/send-invitation`, values).then((response) => {
-      // console.log(response);
-    }).catch(error => {
+      form.resetFields();
+    }).catch((error) => {
       if (error.response && error.response.data && error.response.data.errors) {
-        let fields = ["firstName", "lastName", "departmentId", "email","position", "instituteId", "patronymic"];
+        let fields = ["firstName", "lastName","patronymic","birthDate","email", ];
 
-        fields.forEach(field => {
+        fields.forEach(field => {console.log(error.response.data.errors);
           if (error.response.data.errors[field]) {
             form.setFields([
               {
@@ -112,7 +112,7 @@ const TeacherInvitation = () => {
           }
         });
       }
-    })
+    });
   }
 
   return (

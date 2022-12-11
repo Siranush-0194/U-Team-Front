@@ -4,11 +4,16 @@ import { Input, Form, Button, Card } from "antd";
 import axios from "../../../axios";
 import useQuery from "../../../hooks/useQuery";
 
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+
 const ResetPassword = () => {
   const query = useQuery()
   const [form] = Form.useForm();
   const [user, setUser] = useState(null);
   const [token] = useState(query.get('token'))
+  const {t} = useTranslation
+  const history = useHistory();
 
   useEffect(() => {
     axios.get(`accept/invitation?token=${token}`).then((response) => {
@@ -35,7 +40,6 @@ const ResetPassword = () => {
 
     axios.post('/accept/invitation', values).then((response) => {
       form.resetFields();
-      // console.log(response);
     })
   }
 

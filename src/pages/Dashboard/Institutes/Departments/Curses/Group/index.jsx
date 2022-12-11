@@ -142,13 +142,13 @@ const columns = useMemo(() => {
             }
           })
         } else {
-          axios.post('/api/group/create', { ...modal.data, course_id: courseId, parent_id:parentId}).then(response => {
+          axios.post(`/api/group/create`, { ...modal.data, course_id:courseId, parent_id:parentId}).then(response => {
             if (response.status === 201) {
               setTableData(tableData.concat(response.data));
 
               setModal({ isOpen: false, data: {} });
             } else {
-              console.log(response);
+              // console.log(response);
             }
           })
         }
