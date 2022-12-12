@@ -13,6 +13,10 @@ const Groups = () => {
   const [tableData, setTableData] = useState(null);
   const [type, setType] = useState("groups");
   const [students, setStudents] = useState();
+  // const [expandable, setExpandable] = useState(defaultExpandable);
+  // const handleExpandChange = (enable) => {
+  //   setExpandable(enable ? defaultExpandable : undefined);
+  // };
 
   const getTableData = () => {
     axios.get(`/api/course/get/${courseId}/${type}`).then((response) => {
@@ -24,7 +28,9 @@ const Groups = () => {
       getTableData()
     }, [type]);
 
-  
+    // const defaultExpandable = {
+    //   expandedRowRender: (record) => <p>{record.'ok'}</p>,
+    // };  
   
 const columns = useMemo(() => {
     const columns = {

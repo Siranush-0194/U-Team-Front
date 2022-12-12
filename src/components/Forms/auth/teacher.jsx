@@ -86,20 +86,19 @@ const TeacherInvitation = () => {
     return state.rules;
   });
 
-  const onFinish = async (values) => {
-    values.birthDate = !values['birthDate'] ? undefined : values['birthDate'].format('YYYY-MM-DD');
-    
+  const onFinish = async () => {
+    const values = await form.validateFields();
+    values.birthDate = !values['birthDate'] ? undefined : values['birthDate'].format('YYYY-MM-DD');    
     ["courseId", "groupId", "subgroupId"].forEach(key => {
       values[key] = values[key].map(element => element[0]);
     })
 
 
-    // console.log(values);
     axios.post(`teacher/send-invitation`, values).then((response) => {
-      form.resetFields();
+      form.resetFields();     
     }).catch((error) => {
       if (error.response && error.response.data && error.response.data.errors) {
-        let fields = ["firstName", "lastName","patronymic","birthDate","email", ];
+        let fields = ["firstName", "lastName","patronymic","birthDate","position","email","courseId","departmentId","parentId","groupId", "instituteId"];
 
         fields.forEach(field => {console.log(error.response.data.errors);
           if (error.response.data.errors[field]) {

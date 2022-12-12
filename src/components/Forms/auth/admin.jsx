@@ -8,12 +8,23 @@ import {
   Input,
   Button,
   DatePicker,
+  message
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 const AdminInvitation = () => {
   const [form] = Form.useForm();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'This is a prompt message for success, and it will disappear in 10 seconds',
+      duration: 10,
+    });
+  };
 
   const onFinish = async () => {
     const values = await form.validateFields();
@@ -39,6 +50,7 @@ const AdminInvitation = () => {
       }
     });
   }
+  
 
   return (
     <Form
@@ -73,7 +85,8 @@ const AdminInvitation = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="subZmit" className="submit-form-button">
+        {contextHolder}
+        <Button type="primary" htmlType="subZmit" className="submit-form-button" onClick={success}>
           Submit
         </Button>
       </Form.Item>

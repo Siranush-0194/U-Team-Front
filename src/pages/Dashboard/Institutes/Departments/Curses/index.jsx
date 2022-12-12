@@ -7,7 +7,7 @@ import axios from "../../../../../axios";
 import { Link } from 'react-router-dom';
 
 const Courses = () => {
-  const { departmentId } = useParams();
+  const { departmentId, parentId   } = useParams();
   const [tableData, setTableData] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, data: {} });
   const [type, setType] = useState("courses");
@@ -121,10 +121,9 @@ const Courses = () => {
           })
         } else {
           // console.log({ ...modal.data, department_id: departmentId, });
-          axios.post('/api/course/create', { ...modal.data, department_id: departmentId, }).then(response => {
+          axios.post('/api/course/create', { ...modal.data, department_id: departmentId,parent_id: parentId }).then(response => {
             if (response.status === 201) {
               setTableData(tableData.concat(response.data));
-
               setModal({ isOpen: false, data: {} });
             } else {
               // console.log(response);

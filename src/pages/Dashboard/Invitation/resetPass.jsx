@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input, Form, Button, Card } from "antd";
+import { Input, Form, Button, Card, message} from "antd";
 
 import axios from "../../../axios";
 import useQuery from "../../../hooks/useQuery";
@@ -14,6 +14,16 @@ const ResetPassword = () => {
   const [token] = useState(query.get('token'))
   const {t} = useTranslation
   const history = useHistory();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: 'message',
+      value: 'message',
+      duration: 10,
+    });
+  }
+  
 
   useEffect(() => {
     axios.get(`accept/invitation?token=${token}`).then((response) => {
@@ -40,7 +50,9 @@ const ResetPassword = () => {
 
     axios.post('/accept/invitation', values).then((response) => {
       form.resetFields();
-    })
+    
+    }
+    )
   }
 
   return (
@@ -85,7 +97,8 @@ const ResetPassword = () => {
           </Form.Item>
 
           <Form.Item >
-            <Button type="primary" htmlType="submit">
+          {contextHolder}
+            <Button type="primary" htmlType="submit" onClick={success}>
               Register
             </Button>
           </Form.Item>
