@@ -1,6 +1,6 @@
 import React, { useEffect, useState,useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, Popconfirm, Input, Modal, Button, Form } from 'antd';
+import { Table, Popconfirm, Input, Modal, Button, Form, Select } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import axios from '../../../../../../axios';
@@ -8,7 +8,7 @@ import { Link, Route } from 'react-router-dom';
 
 
 const Groups = () => {
-  const { courseId, parentId } = useParams();
+  const { courseId, groupId, parentId } = useParams();
   const [modal, setModal] = useState({ isOpen: false, data: {} });
   const [tableData, setTableData] = useState(null);
   const [type, setType] = useState("groups");
@@ -20,7 +20,24 @@ const Groups = () => {
 
   const getTableData = () => {
     axios.get(`/api/course/get/${courseId}/${type}`).then((response) => {
-      setTableData(response.data)
+      let groups = [];
+      response.data.forEach(element => {
+          if (!element.parentId) {
+            groups.push({
+              ...element,
+              children: []
+            })
+          }
+
+          if (element.parentId) {
+            groups.forEach(g => {
+              if (g.id === element.parentId) {
+                g.children.push(element)
+              }
+            })
+          }
+      });
+      setTableData(groups)
     }).catch(() => setTableData([]));
   }
 
@@ -32,6 +49,10 @@ const Groups = () => {
     //   expandedRowRender: (record) => <p>{record.'ok'}</p>,
     // };  
   
+
+    
+
+
 const columns = useMemo(() => {
     const columns = {
       groups: [
@@ -85,6 +106,18 @@ const columns = useMemo(() => {
           dataIndex: 'position',
           key: 'position',
         },
+        {
+          title: 'Actions',
+          dataIndex: 'actions',
+          width: 50,
+          render: (_, row) =>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <Popconfirm title="Sure to delete?" onConfirm={() => removeGroup(row.id)}>
+                <DeleteOutlined />
+              </Popconfirm>
+              <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
+            </div>
+        }
       ],
         students: [
           {
@@ -111,7 +144,19 @@ const columns = useMemo(() => {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
-          }
+          },
+          {
+          title: 'Actions',
+          dataIndex: 'actions',
+          width: 50,
+          render: (_, row) =>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <Popconfirm title="Sure to delete?" onConfirm={() => removeGroup(row.id)}>
+                <DeleteOutlined />
+              </Popconfirm>
+              <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
+            </div>
+        }
         ]
       
     }
@@ -125,6 +170,13 @@ const columns = useMemo(() => {
       setTableData(updateGroup);
     });
   };
+
+  // const removeSubGroup = (id) => {
+  //   axios.delete(`/api/group/delete/${id}`).then((response) => {
+  //     let updateGroup = [...tableData].filter((subgroup) => subgroup.id !== id);
+  //     setTableData(updateGroup);
+  //   });
+  // };
 
   return (
     <div className='group'>
@@ -148,10 +200,9 @@ const columns = useMemo(() => {
             }
           })
         } else {
-          axios.post(`/api/group/create`, { ...modal.data, course_id:courseId, parent_id:parentId}).then(response => {
+          axios.post(`/api/group/create`, { ...modal.data, course_id:courseId, group_id:groupId}).then(response => {
             if (response.status === 201) {
               setTableData(tableData.concat(response.data));
-
               setModal({ isOpen: false, data: {} });
             } else {
               // console.log(response);
@@ -171,6 +222,21 @@ const columns = useMemo(() => {
           })
         }} />
        </Form.Item>
+
+       <Form.Item label="number" name='number'>
+        <Select defaultValue="..." onChange={(value) => {
+          setModal({
+            ...modal,
+            data: {
+              ...modal.data,
+              parent_id: value,
+            }
+          })
+        }} options={tableData?.map(data => ({
+          label: data.number,
+          value: data.id
+        }))} />
+      </Form.Item>
       </Modal>
 
       <Route exact path='/dashboard/institutes/:institutesId/:departmentID/:courseID'>
@@ -183,12 +249,17 @@ const columns = useMemo(() => {
       {!tableData
         ? <></>
         : <Table
+        expandable={{
+          expandedRowRender: (record) => <Table
+            rowKey="id"
+            dataSource={record.children}
+            columns={columns} />,
+            rowExpandable: (record) => record.children?.length
+          }}
           rowKey="id"
           dataSource={tableData}
           columns={columns} />}
           </Route>
-         
-        
     </div>    
   );
       }   
