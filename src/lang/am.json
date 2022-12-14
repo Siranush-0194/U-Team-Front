@@ -12,6 +12,21 @@
         "Forgot password": "Մոռացել եմ գաղտնաբառը",
         "Log in": "Մուտք",
         "The email field is required.": "Էլեկտրոնային փոստի դաշտը պարտադիր է",
-        "The password field is required.": "Գաղտնաբառի դաշտը պարտադիր է"
+        "The password field is required.": "Գաղտնաբառի դաշտը պարտադիր է",
+        "Institute":"Համալսարաններ",
+        "Position": "Պաշտոն",
+        "Department":"Ամբիոն",
+        "Course": "Կուրս",
+        "Group":"Գրուպ",
+        "SubGroup":"Ենթագրուպ",
+        "Admins":"Ադմիններ",
+        "Invitation":"Հրավեր",
+        "FirstName":"Անուն",
+        "LastName":"Ազգանուն",
+        "Patronymic":"Հայրանուն",
+        "DatePicker":"Ծննդյան ամսաթիվ",
+        "Email":"email",
+        "Submit":"Հաստատել"
+
     }
 }

@@ -1,6 +1,6 @@
 
 
-import React from 'react';
+import React,{useState} from 'react';
 import axios from '../../../axios';
 
 import {
@@ -15,28 +15,28 @@ import { useTranslation } from 'react-i18next';
 const AdminInvitation = () => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
+  const [messages,setMessages] = useState();
   const [messageApi, contextHolder] = message.useMessage();
 
   
   const success = () => {
-    messageApi.open({
+   
+      messageApi.open({
       type: 'success',
-      content: 'This is a prompt message for success, and it will disappear in 10 seconds',
+      content: 'Invite sent',
       duration: 10,
     });
   };
 
   const onFinish = async () => {
     const values = await form.validateFields();
-
     values.birthDate = values['birthDate'] ? values['birthDate'].format('YYYY-MM-DD') : undefined;
 
-    axios.post(`admin/send-invitation`, values).then((response) => {
+    axios.post(`admin/send-invitation`, values).then((Jsonresponse) => {
       form.resetFields();
     }).catch((error) => {
       if (error.response && error.response.data && error.response.data.errors) {
         let fields = ["firstName", "lastName","patronymic","birthDate","email", ];
-
         fields.forEach(field => {console.log(error.response.data.errors);
           if (error.response.data.errors[field]) {
             form.setFields([
@@ -64,30 +64,30 @@ const AdminInvitation = () => {
       layout="horizontal"
       onFinish={onFinish}
     >
-      <Form.Item label="FirstName" name='firstName' >
+      <Form.Item label= {t("FirstName")} name='firstName' >
         <Input />
       </Form.Item>
 
-      <Form.Item label="LastName" name='lastName'>
+      <Form.Item label={t("LastName")} name='lastName'>
         <Input />
       </Form.Item>
 
-      <Form.Item label="Patronymic" name='patronymic'>
+      <Form.Item label={t("Patronymic")} name='patronymic'>
         <Input />
       </Form.Item>
 
-      <Form.Item label="DatePicker" name='birthDate'>
+      <Form.Item label={t("DatePicker")} name='birthDate'>
         <DatePicker />
       </Form.Item>
 
-      <Form.Item label="Email" name='email'>
+      <Form.Item label={t("Email")} name='email'>
         <Input />
       </Form.Item>
 
       <Form.Item>
         {contextHolder}
         <Button type="primary" htmlType="subZmit" className="submit-form-button" onClick={success}>
-          Submit
+          {t('Submit')}
         </Button>
       </Form.Item>
     </Form>

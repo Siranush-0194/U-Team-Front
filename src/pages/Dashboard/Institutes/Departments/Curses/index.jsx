@@ -57,6 +57,12 @@ const Courses = () => {
               </Popconfirm>
               <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
             </div>
+        },
+        {
+          title: 'Show',
+          dataIndex: 'show',
+          width: 50,
+          render: (show, row) => <Link to={`/dashboard/institutes/departments/${departmentId}/${row.id}`}>{<Button type='primary'>Show Group</Button>}</Link>
         }
       ],
       teachers: [

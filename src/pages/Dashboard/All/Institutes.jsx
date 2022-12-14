@@ -3,12 +3,11 @@ import { Table, Popconfirm, Input, Modal, Button } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import axios from "../../../axios";
-import { Link, Route } from 'react-router-dom';
+import {  Route } from 'react-router-dom';
 
-import Departments from './Departments';
-import ButtonGroup from 'antd/es/button/button-group';
 
-const Institutes = () => {
+
+const AllInstitutes = () => {
   const [institutes, setInstitutes] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, data: {} });
 
@@ -69,15 +68,14 @@ const Institutes = () => {
         }} />
       </Modal>
 
-      <Route exact path='/dashboard/institutes'>
+      <Route exact path='/dashboard/allinstitutes'>
         <Button type='primary' onClick={() => setModal({ isOpen: true, data: {} })}>Add Institute</Button>
         {!institutes
           ? <></>
           : <Table
             dataSource={institutes}
-            rowKey="id"           
+            rowKey="id"
             columns={[
-              
               {
                 title: 'ID',
                 dataIndex: 'id',
@@ -88,8 +86,6 @@ const Institutes = () => {
                 title: 'Name',
                 dataIndex: 'name',
                 key: 'name',
-                render: (name, row) => <Link to={`/dashboard/institutes/${row.id}`}>{name}</Link>,
-                
               },
               {
                 title: 'Actions',
@@ -100,23 +96,15 @@ const Institutes = () => {
                     <Popconfirm title="Sure to delete?" onConfirm={() => removeInstitute(row.id)}>
                       <DeleteOutlined />
                     </Popconfirm>
-                    <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />                     
+                    <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
                   </div>
-              },
-              {
-                title: 'Show',
-                dataIndex: 'show',
-                width: 50,
-                render: (show, row) => <Link  to={`/dashboard/institutes/${row.id}`}>{<Button type='primary'>Show Departments</Button>}</Link>
               }
             ]}
           />}
       </Route>
-      <Route path='/dashboard/institutes/:instituteId'>
-        <Departments />
-      </Route>
+     
     </div>
   );
 }
 
-export default Institutes;
+export default AllInstitutes;

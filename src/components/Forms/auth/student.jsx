@@ -7,6 +7,7 @@ import {
   Button,
   Select,
   DatePicker,
+  message
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -19,10 +20,21 @@ const StudentInvitation = () => {
   const [group, setGroup] = useState({});
   const [subgroup, setSubGroup] = useState(null);
   const [selectDepartments, setSelectDepartments] = useState(null);
-  const [selectGroup, setSelectGroup] = useState(null);
   const [selectCourse, setSelectCourse] = useState(null);
   const [type, setType] = useState("admin");
   const { t } = useTranslation()
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  
+  const success = () => {
+   
+      messageApi.open({
+      type: 'success',
+      content: 'Invite sent',
+      duration: 10,
+    });
+  };
 
   useEffect(() => {
     axios.get("/api/institute/get").then((response) => {
@@ -134,48 +146,49 @@ const StudentInvitation = () => {
       layout="horizontal"
       onFinish={onFinish}
     >
-      <Form.Item label="FirstName" name='firstName' >
+      <Form.Item label={t("FirstName")} name='firstName' >
         <Input />
       </Form.Item>
 
-      <Form.Item label="LastName" name='lastName'>
+      <Form.Item label={t("LastName")} name='lastName'>
         <Input />
       </Form.Item>
 
-      <Form.Item label="Patronymic" name='patronymic'>
+      <Form.Item label={t("Patronymic")} name='patronymic'>
         <Input />
       </Form.Item>
 
-      <Form.Item label="DatePicker" name='birthDate'>
+      <Form.Item label={t("DatePicker")} name='birthDate'>
         <DatePicker />
       </Form.Item>
 
-      <Form.Item label="Email" name='email'>
+      <Form.Item label={t("Email")} name='email'>
         <Input />
       </Form.Item>
 
-      <Form.Item label="Institute" name='instituteId'>
+      <Form.Item label={t("Institute")} name='instituteId'>
         <Select defaultValue="..." options={institutes} onChange={handleChangeInstitute}   />
       </Form.Item>
 
-      <Form.Item label="Department" name='departmentId'>
+      <Form.Item label={t("Department")} name='departmentId'>
         <Select defaultValue="..." options={departments[selectInstitute]} onChange={handleChangeDepartments} />
       </Form.Item>
 
-      <Form.Item label="Course" name='courseId'>
+      <Form.Item label={t("Course")} name='courseId'>
         <Select defaultValue="..." options={course[selectDepartments]} onChange={handleChangeCourse} />
       </Form.Item>
 
-      <Form.Item label="Group" name='groupId'>
+      <Form.Item label={t("Group")} name='groupId'>
         <Select defaultValue="..." options={group[selectCourse]?.parents} onChange={handleSubGroup} />
       </Form.Item>
 
-      <Form.Item label="SubGroup" name='subgroupId'>
+      <Form.Item label={t("SubGroup")} name='subgroupId'>
         <Select defaultValue="..." options={subgroup} />
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="submit-form-button">
+        {contextHolder}
+        <Button type="primary" htmlType="submit" className="submit-form-button" onClick={success}>
           Submit
         </Button>
       </Form.Item>

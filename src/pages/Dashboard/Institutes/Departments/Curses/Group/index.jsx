@@ -4,7 +4,7 @@ import { Table, Popconfirm, Input, Modal, Button, Form, Select } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import axios from '../../../../../../axios';
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 
 const Groups = () => {
@@ -12,7 +12,7 @@ const Groups = () => {
   const [modal, setModal] = useState({ isOpen: false, data: {} });
   const [tableData, setTableData] = useState(null);
   const [type, setType] = useState("groups");
-  const [students, setStudents] = useState();
+ 
   // const [expandable, setExpandable] = useState(defaultExpandable);
   // const handleExpandChange = (enable) => {
   //   setExpandable(enable ? defaultExpandable : undefined);
@@ -45,15 +45,11 @@ const Groups = () => {
       getTableData()
     }, [type]);
 
-    // const defaultExpandable = {
-    //   expandedRowRender: (record) => <p>{record.'ok'}</p>,
-    // };  
-  
 
     
 
 
-const columns = useMemo(() => {
+const Columns = useMemo(() => {
     const columns = {
       groups: [
         {
@@ -165,18 +161,13 @@ const columns = useMemo(() => {
   }, [type])
 
   const removeGroup = (id) => {
+
     axios.delete(`/api/group/delete/${id}`).then((response) => {
       let updateGroup = [...tableData].filter((group) => group.id !== id);
       setTableData(updateGroup);
     });
   };
 
-  // const removeSubGroup = (id) => {
-  //   axios.delete(`/api/group/delete/${id}`).then((response) => {
-  //     let updateGroup = [...tableData].filter((subgroup) => subgroup.id !== id);
-  //     setTableData(updateGroup);
-  //   });
-  // };
 
   return (
     <div className='group'>
@@ -210,8 +201,8 @@ const columns = useMemo(() => {
           })
         }
       }} onCancel={() => setModal({ isOpen: false, data: {} })}>
-         <Form.Item label="Number" name="number"> 
-        <Input placeholder="Group number" value={modal?.data?.name} onChange={(event) => {
+         <Form.Item label="Group" name="number"> 
+        <Input  placeholder="Group number" value={modal?.data?.name} onChange={(event) => {
           setModal({
             ...modal,
             data: {
@@ -223,8 +214,8 @@ const columns = useMemo(() => {
         }} />
        </Form.Item>
 
-       <Form.Item label="number" name='number'>
-        <Select defaultValue="..." onChange={(value) => {
+       <Form.Item label="ParentGroup" name='number'>
+        <Select placeholder="group"  defaultValue="..." onChange={(value) => {
           setModal({
             ...modal,
             data: {
@@ -253,12 +244,12 @@ const columns = useMemo(() => {
           expandedRowRender: (record) => <Table
             rowKey="id"
             dataSource={record.children}
-            columns={columns} />,
-            rowExpandable: (record) => record.children?.length
+            columns={Columns} />,
+            rowExpandable: (record) => record.children
           }}
           rowKey="id"
           dataSource={tableData}
-          columns={columns} />}
+          columns={Columns} />}
           </Route>
     </div>    
   );

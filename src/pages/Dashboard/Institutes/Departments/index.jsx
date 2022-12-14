@@ -48,6 +48,12 @@ const Departments = () => {
               </Popconfirm>
               <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
             </div>
+        },
+        {
+          title: 'Show',
+          dataIndex: 'show',
+          width: 50,
+          render: (show, row) => <Link to={`/dashboard/institutes/${instituteId}/${row.id}`}>{<Button type='primary'>Show Courses</Button>}</Link>
         }
       ],
       teachers: [
