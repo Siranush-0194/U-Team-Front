@@ -10,6 +10,31 @@
             width: 50vw;
         }
     }
+  
+}
+
+.logo {
+    height: 5%;
+    width: 5%;
+    padding: 4%;
+    right: 100%;
+    top: 20%;
+    margin-left:43%;
+}
+
+.login-form-button{
+    width: 100%;
+    border-radius: 15px;
+}
+.form-button{
+    border-radius: 15px;
+
+}
+.email-input{
+    border-radius: 15px;
+}
+.password-input{
+    border-radius: 15px;
 }
 
 .ant-form-item-control-input-content {

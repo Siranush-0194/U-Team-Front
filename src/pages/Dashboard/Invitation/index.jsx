@@ -39,7 +39,7 @@ const Invitation = () => {
                     return <Button type="primary" ghost={type !== item} className="form-button" onClick={() => setType(item)}>{t(item)}</Button>;
                 })}
             >
-                <Layout />
+                <Layout  />
             </Card>
         </>
     )

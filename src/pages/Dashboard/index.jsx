@@ -14,11 +14,16 @@ import Departments from './All/departments';
 import Courses from './All/courses';
 import Groups from './All/groups';
 
+
 // Components
 import Menu from '../../components/Menu';
 
 const Dashboard = () => {
+
   return (
+    <> 
+  
+
     <div className='dashboard'>
 
       <aside>
@@ -27,7 +32,9 @@ const Dashboard = () => {
 
       <section style={{ width: '100%' }}>
         <Route exact path='/dashboard'>
-          Home
+          <div className='welcome'> 
+          Welocome to Admin dashboard
+          </div>
         </Route>
 
         <Route path="/dashboard/institutes">
@@ -66,7 +73,7 @@ const Dashboard = () => {
           <Groups />
         </Route>
       </section>
-    </div>
+    </div></>
   );
 }
 

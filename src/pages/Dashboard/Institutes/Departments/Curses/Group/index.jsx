@@ -1,6 +1,6 @@
 import React, { useEffect, useState,useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, Popconfirm, Input, Modal, Button, Form, Select } from 'antd';
+import { Table, Popconfirm, Input, Modal, Button, Form, Select,Checkbox } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import axios from '../../../../../../axios';
@@ -201,7 +201,7 @@ const Columns = useMemo(() => {
           })
         }
       }} onCancel={() => setModal({ isOpen: false, data: {} })}>
-         <Form.Item label="Group" name="number"> 
+         <Form.Item  label="Number" name="number">          
         <Input  placeholder="Group number" value={modal?.data?.name} onChange={(event) => {
           setModal({
             ...modal,

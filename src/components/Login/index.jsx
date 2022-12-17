@@ -56,6 +56,9 @@ function Login() {
   };
 
   return (
+    <> 
+    <img src="../images/Uteam.jpeg" className="logo" alt="logo" width={100} height={100} />
+    
     <Card
       title={t(rule.title)}
       className='Login__form'
@@ -63,6 +66,7 @@ function Login() {
         return <Button type="primary" ghost={type !== item} className="form-button" onClick={() => setType(item)}>{t(item)}</Button>;
       })}
     >
+
       <Form
         form={form}
         name="normal_login"
@@ -70,16 +74,17 @@ function Login() {
         initialValues={{ remember: false }}
         onFinish={onFinish}
       >
+
         <Form.Item name="email"
           rules={[{ required: true, message: t("The email field is required.") }]}
         >
-          <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
+          <Input className='email-input' prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
         </Form.Item>
         <Form.Item
           name="password"
           rules={[{ required: true, message: t("The password field is required.") }]}
         >
-          <Input
+          <Input className='password-input'
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             placeholder="Password"
@@ -102,6 +107,7 @@ function Login() {
         </Form.Item>
       </Form>
     </Card>
+    </>
   );
 };
 

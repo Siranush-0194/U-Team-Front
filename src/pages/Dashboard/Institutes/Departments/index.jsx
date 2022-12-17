@@ -35,7 +35,7 @@ const Departments = () => {
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
-          render: (name, row) => <Link to={`/dashboard/institutes/${instituteId}/${row.id}`}>{name}</Link>
+          render: (name, row) => <Link to={`/dashboard/institutes/departmen${instituteId}/${row.id}`}>{name}</Link>
         },
         {
           title: 'Actions',

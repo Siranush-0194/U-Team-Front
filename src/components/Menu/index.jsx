@@ -36,7 +36,7 @@ const NavBar = () => {
     const { i18n } = useTranslation();
     const menu = useMemo(() => {
         return {
-
+            
             home: () => history.push("/dashboard"),
             institutes: () => history.push("/dashboard/institutes"),
             invitation: () => history.push("/dashboard/invitation"),
@@ -76,7 +76,7 @@ const NavBar = () => {
         <>
        
             <Space direction="vertical">
-                <AntSwitch checkedChildren="Eng" unCheckedChildren="հայ" defaultChecked onChange={changeLanguage} />
+                <AntSwitch className='switcher' checkedChildren="Eng" unCheckedChildren="հայ" defaultChecked onChange={changeLanguage} />
             </Space>
             <Modal open={isModalOpen} onOk={() => menu.logout(2)} onCancel={() => menu.logout(0)}>
                 <p>Do you want to logout?</p>

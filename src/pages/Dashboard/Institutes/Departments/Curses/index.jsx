@@ -16,7 +16,7 @@ const Courses = () => {
     axios.get(`/api/department/get/${departmentId}/${type}`).then((response) => {
       setTableData(response.data)
     }).catch(() => setTableData([]));
-  }
+    }
 
   useEffect(() => {
     getTableData()

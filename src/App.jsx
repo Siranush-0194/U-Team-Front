@@ -72,14 +72,8 @@ const App = () => {
       <PublicRoute exact path="/">
         <div className="App">
           <header>
-            <div>Logo</div>
-
-            <nav>
-              Menu
-            </nav>
-
             <Space direction="vertical">
-              <AntSwitch checkedChildren="Eng" unCheckedChildren="հայ" defaultChecked onChange={changeLanguage} />
+              <AntSwitch className='switcher' checkedChildren="Eng" unCheckedChildren="հայ" defaultChecked onChange={changeLanguage} />
             </Space>
           </header>
 

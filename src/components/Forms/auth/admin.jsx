@@ -35,6 +35,7 @@ const AdminInvitation = () => {
     axios.post(`admin/send-invitation`, values).then((Jsonresponse) => {
       form.resetFields();
     }).catch((error) => {
+      console.log(error);
       if (error.response && error.response.data && error.response.data.errors) {
         let fields = ["firstName", "lastName","patronymic","birthDate","email", ];
         fields.forEach(field => {console.log(error.response.data.errors);
