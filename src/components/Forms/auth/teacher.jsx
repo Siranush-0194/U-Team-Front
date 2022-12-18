@@ -102,17 +102,18 @@ const TeacherInvitation = () => {
     const values = await form.validateFields();
     values.birthDate = !values['birthDate'] ? undefined : values['birthDate'].format('YYYY-MM-DD');    
     ["courseId", "groupId", "subgroupId"].forEach(key => {
-      values[key] = values[key].map(element => element[0]);
-    })
+      values[key] = values[key].map(element => element[0]);    })
 
 
     axios.post(`teacher/send-invitation`, values).then((response) => {
-      form.resetFields();     
+      if (response?.status === 200) {
+        success(response?.data.message);
+        form.resetFields();
+      }
     }).catch((error) => {
       if (error.response && error.response.data && error.response.data.errors) {
         let fields = ["firstName", "lastName","patronymic","birthDate","position","email","courseId","departmentId","parentId","groupId", "instituteId"];
-
-        fields.forEach(field => {console.log(error.response.data.errors);
+        fields.forEach(field => {;
           if (error.response.data.errors[field]) {
             form.setFields([
               {
@@ -183,9 +184,9 @@ const TeacherInvitation = () => {
       </Form.Item>
 
       <Form.Item>
-        {contextHolder}
-        <Button type="primary" htmlType="submit" className="submit-form-button" onClick={success}>
-         {t('Submit')} 
+      {contextHolder}
+        <Button type="primary" htmlType="subZmit" className="submit-form-button">
+          {t('Submit')}
         </Button>
       </Form.Item>
     </Form>

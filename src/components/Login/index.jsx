@@ -1,16 +1,16 @@
 import React, { useMemo, useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Card } from 'antd';
+import { Button, Checkbox, Form, Input, Card,message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-
 import axios from '../../axios';
-
 import "./style.scss";
+
+
 
 function Login() {
   const dispatch = useDispatch();
-
+  const [messageApi, contextHolder] = message.useMessage();
   const { t } = useTranslation();
 
   const [type, setType] = useState("admin");
@@ -20,6 +20,13 @@ function Login() {
   const rules = useSelector(function (state) {
     return state.rules;
   });
+//   const error = (message) => {
+//     messageApi.open({
+//     type: 'error',
+//     content: message,
+//     duration: 10,
+//   });
+// };
 
   const rule = useMemo(() => {
     return rules[type];
@@ -29,7 +36,14 @@ function Login() {
     try {
       delete values.remember;
 
-      const response = await axios.post(rule.submit, values);
+      const response = await axios.post(rule.submit, values)
+      // .then((response) => {
+      //   if (response?.status === 401) {
+      //     error(response?.data.message);
+      //     // form.resetFields();
+      //   }
+      // })  
+     
 
       if (response && response.data && response.data.data) {
         dispatch({
@@ -37,10 +51,9 @@ function Login() {
           payload: response.data.data
         });
       }
-    } catch (error) {
+    } catch (error) {     
       if (error.response && error.response.data && error.response.data.errors) {
         let fields = ["email", "password"];
-
         fields.forEach(field => {
           if (error.response.data.errors[field]) {
             form.setFields([
@@ -101,6 +114,8 @@ function Login() {
         </Form.Item>
 
         <Form.Item>
+
+        {/* {contextHolder} */}
           <Button type="primary" htmlType="submit" className="login-form-button">
             {t("Log in")}
           </Button>

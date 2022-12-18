@@ -27,14 +27,13 @@ const StudentInvitation = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   
-  const success = () => {
-   
-      messageApi.open({
-      type: 'success',
-      content: 'Invite sent',
-      duration: 10,
-    });
-  };
+  const success = (message) => {
+    messageApi.open({
+    type: 'success',
+    content: message,
+    duration: 10,
+  });
+};
 
   useEffect(() => {
     axios.get("/api/institute/get").then((response) => {
@@ -115,12 +114,17 @@ const StudentInvitation = () => {
     const values = await form.validateFields();
     values.birthDate = !values['birthDate'] ? "" : values['birthDate'].format('YYYY-MM-DD');
 
-    axios.post(`student/send-invitation`, values).then((response) => { form.resetFields();
+    axios.post(`student/send-invitation`, values).then((response) => {
+      if (response?.status === 200) {
+        success(response?.data.message);
+        form.resetFields();
+      }
     }).catch((error) => {
+      
       if (error.response && error.response.data && error.response.data.errors) {
-        let fields = ["firstName", "lastName","patronymic","birthDate","email", "courseId", "departmentId","groupId","instituteId","subgroupId"];
+        let fields = ["firstName", "lastName","patronymic","birthDate","email","group","courseId", "departmentId","groupId","instituteId","subgroupId"];
 
-        fields.forEach(field => {console.log(error.response.data.errors);
+        fields.forEach(field => {;
           if (error.response.data.errors[field]) {
             form.setFields([
               {
@@ -188,8 +192,8 @@ const StudentInvitation = () => {
 
       <Form.Item>
         {contextHolder}
-        <Button type="primary" htmlType="submit" className="submit-form-button" onClick={success}>
-          Submit
+        <Button type="primary" htmlType="subZmit" className="submit-form-button">
+          {t('Submit')}
         </Button>
       </Form.Item>
     </Form>

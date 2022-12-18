@@ -19,11 +19,10 @@ const AdminInvitation = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   
-  const success = () => {
-   
+  const success = (message) => {
       messageApi.open({
       type: 'success',
-      content: 'Invite sent',
+      content: message,
       duration: 10,
     });
   };
@@ -32,13 +31,16 @@ const AdminInvitation = () => {
     const values = await form.validateFields();
     values.birthDate = values['birthDate'] ? values['birthDate'].format('YYYY-MM-DD') : undefined;
 
-    axios.post(`admin/send-invitation`, values).then((Jsonresponse) => {
-      form.resetFields();
+    axios.post(`admin/send-invitation`, values).then((response) => {
+      if (response?.status === 200) {
+        success(response?.data.message);
+        form.resetFields();
+      }
     }).catch((error) => {
-      console.log(error);
+      // console.log(error);
       if (error.response && error.response.data && error.response.data.errors) {
         let fields = ["firstName", "lastName","patronymic","birthDate","email", ];
-        fields.forEach(field => {console.log(error.response.data.errors);
+        fields.forEach(field => {;
           if (error.response.data.errors[field]) {
             form.setFields([
               {
@@ -87,7 +89,7 @@ const AdminInvitation = () => {
 
       <Form.Item>
         {contextHolder}
-        <Button type="primary" htmlType="subZmit" className="submit-form-button" onClick={success}>
+        <Button type="primary" htmlType="subZmit" className="submit-form-button">
           {t('Submit')}
         </Button>
       </Form.Item>

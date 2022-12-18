@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm, Input, Modal, Button, Form, Select  } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-
 import axios from "../../../axios";
 import {Route, useParams } from 'react-router-dom';
 
