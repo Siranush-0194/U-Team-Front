@@ -45,17 +45,7 @@ const AllInstitutes = () => {
               // console.log(response);
             }
           })
-        } else {
-          axios.post(`/api/institute/create`, modal.data).then(response => {
-            if (response.status === 201) {
-              setInstitutes(institutes.concat(response.data));
-
-              setModal({ isOpen: false, data: {} });
-            } else {
-              console.log(response);
-            }
-          })
-        }
+        } 
       }} onCancel={() => setModal({ isOpen: false, data: {} })}>
         <Input placeholder="Institute name" value={modal?.data?.name} onChange={(event) => {
           setModal({
@@ -69,7 +59,7 @@ const AllInstitutes = () => {
       </Modal>
 
       <Route exact path='/dashboard/allinstitutes'>
-        <Button type='primary' onClick={() => setModal({ isOpen: true, data: {} })}>Add Institute</Button>
+       
         {!institutes
           ? <></>
           : <Table

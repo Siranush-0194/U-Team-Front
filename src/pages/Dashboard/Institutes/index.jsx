@@ -73,11 +73,11 @@ const Institutes = () => {
         <Button type='primary' onClick={() => setModal({ isOpen: true, data: {} })}>Add Institute</Button>
         {!institutes
           ? <></>
+          
           : <Table
             dataSource={institutes}
             rowKey="id"           
-            columns={[
-              
+            columns={[              
               {
                 title: 'ID',
                 dataIndex: 'id',
