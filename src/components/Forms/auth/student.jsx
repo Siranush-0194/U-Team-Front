@@ -114,7 +114,7 @@ const StudentInvitation = () => {
     const values = await form.validateFields();
     values.birthDate = !values['birthDate'] ? "" : values['birthDate'].format('YYYY-MM-DD');
 
-    axios.post(`student/send-invitation`, values).then((response) => {
+    axios.post(rule.invitation, values).then((response) => {
       if (response?.status === 200) {
         success(response?.data.message);
         form.resetFields();

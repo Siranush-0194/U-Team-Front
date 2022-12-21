@@ -1,8 +1,7 @@
 
 
-import React,{useState} from 'react';
+import React,{useState,useMemo} from 'react';
 import axios from '../../../axios';
-
 import {
   Form,
   Input,
@@ -11,14 +10,22 @@ import {
   message
 } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 const AdminInvitation = () => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const [messages,setMessages] = useState();
   const [messageApi, contextHolder] = message.useMessage();
+  const [type, setType] = useState("admin");
 
-  
+  const rules = useSelector(function (state) {
+    return state.rules;
+  });
+  const rule = useMemo(() => {
+    return rules[type];
+  }, [type, rules]);
+
   const success = (message) => {
       messageApi.open({
       type: 'success',
@@ -31,7 +38,7 @@ const AdminInvitation = () => {
     const values = await form.validateFields();
     values.birthDate = values['birthDate'] ? values['birthDate'].format('YYYY-MM-DD') : undefined;
 
-    axios.post(`admin/send-invitation`, values).then((response) => {
+    axios.post(rule.invitation, values).then((response) => {
       if (response?.status === 200) {
         success(response?.data.message);
         form.resetFields();

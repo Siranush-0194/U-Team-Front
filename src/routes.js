@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 function PublicRoute({ children, ...rest }) {
     const user = useSelector(function (state) {
-        return state?.user?.id || 0;
+        return state?.user?.id || 0;    
     });
 
     return <Route
@@ -31,7 +31,6 @@ function PrivateRoute({ children, ...rest }) {
     const user = useSelector(function (state) {
         return state?.user?.id || 0;
     });
-
     return (
         <Route
             {...rest}

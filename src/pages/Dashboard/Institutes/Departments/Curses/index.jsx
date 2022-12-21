@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState,useCallback } from 'react';
 import { Route, useParams } from 'react-router-dom';
 import { Table, Popconfirm, Modal, Input, Button, Select, Form } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -12,15 +12,15 @@ const Courses = () => {
   const [modal, setModal] = useState({ isOpen: false, data: {} });
   const [type, setType] = useState("courses");
 
-  const getTableData = () => {
+  const handleGetCourses=useCallback( () => {
     axios.get(`/api/department/get/${departmentId}/${type}`).then((response) => {
       setTableData(response.data)
     }).catch(() => setTableData([]));
-    }
+    },[type])
 
   useEffect(() => {
-    getTableData()
-  }, [type]);
+    handleGetCourses()
+  }, [handleGetCourses]);
 
   const columns = useMemo(() => {
     const columns = {
@@ -99,8 +99,7 @@ const Courses = () => {
 
   const removeCourse = (id) => {
     axios.delete(`/api/course/delete/${id}`).then((response) => {
-      let updateCourse = [...tableData].filter((course) => course.id !== id);
-      setTableData(updateCourse);
+      setTableData(prev => prev.filter((item) => item.id !== id));
     });
   };
 

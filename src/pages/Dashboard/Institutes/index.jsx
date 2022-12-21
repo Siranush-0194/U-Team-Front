@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Popconfirm, Input, Modal, Button } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-
 import axios from "../../../axios";
 import { Link, Route } from 'react-router-dom';
-
 import Departments from './Departments';
-import ButtonGroup from 'antd/es/button/button-group';
+
 
 const Institutes = () => {
   const [institutes, setInstitutes] = useState(null);
@@ -15,6 +13,7 @@ const Institutes = () => {
   useEffect(() => {
     axios.get("/api/institute/get").then((response) => {
       setInstitutes(response.data)
+      // console.log(institutes);
     }).catch(() => setInstitutes([]));
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useMemo } from 'react';
+import React, { useEffect, useState,useMemo,useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Table, Popconfirm, Input, Modal, Button, Form, Select,Checkbox } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -6,6 +6,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from '../../../../../../axios';
 import { Route } from 'react-router-dom';
 import { render } from '@testing-library/react';
+
 
 
 const Groups = () => {
@@ -19,7 +20,7 @@ const Groups = () => {
   //   setExpandable(enable ? defaultExpandable : undefined);
   // };
 
-  const getTableData = () => {
+  const getTableData = useCallback(() => {
     axios.get(`/api/course/get/${courseId}/${type}`).then((response) => {
       let groups = [];
       response.data.forEach(element => {
@@ -40,11 +41,11 @@ const Groups = () => {
       });
       setTableData(groups)
     }).catch(() => setTableData([]));
-  }
+  },[type]);
 
     useEffect(() => {
       getTableData()
-    }, [type]);
+    }, [getTableData]);
 
 
     
@@ -162,11 +163,9 @@ const Columns = useMemo(() => {
   }, [type])
 
   const removeGroup = (id) => {
-
     axios.delete(`/api/group/delete/${id}`).then((response) => {
-      let updateGroup = [...tableData].filter((group) => group.id !== id);
-      setTableData(updateGroup);
-    });
+      setTableData(prev => prev.filter((item) =>  item.id !== id));
+    })  
   };
 
 
@@ -192,12 +191,13 @@ const Columns = useMemo(() => {
             }
           })
         } else {
+       
           axios.post(`/api/group/create`, { ...modal.data, course_id:courseId, group_id:groupId}).then(response => {
             if (response.status === 201) {
               setTableData(tableData.concat(response.data));
               setModal({ isOpen: false, data: {} });
             } else {
-              // console.log(response);
+              
             }
           })
         }

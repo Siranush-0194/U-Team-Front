@@ -12,19 +12,21 @@ function Login() {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
   const { t } = useTranslation();
+
   const [type, setType] = useState("admin");
+
   const [form] = Form.useForm();
+
   const rules = useSelector(function (state) {
     return state.rules;
   });
 
-
   const error = (message) => {
     messageApi.open({
-      type: 'error',
-      content: message,
-    });
-  }
+    type: 'error',
+    content: message,
+  });
+};
 
   const rule = useMemo(() => {
     return rules[type];
@@ -34,45 +36,23 @@ function Login() {
     try {
       delete values.remember;
 
-      const response = await axios.post(rule.submit, values)
-      .then((response) => {
-        if (response?.status === 401) {
-          error(response?.data.message);
-          form.resetFields();
-        }
-      })  
-     
-
+      const response = await axios.post(rule.submit, values)         
       if (response && response.data && response.data.data) {
         dispatch({
           type: 'login',
           payload: response.data.data
         });
-      }
+      } 
     } catch (error) {     
-      // console.log(error.response.data.errors);
-      //   if(error.response.data){
-      //     let fields = ["email", "password"];
-      //     fields.forEach(field => {
-      //       if(error.response.data[field]){
-      //         form.setFields([
-      //           {
-      //             name:field,
-      //             errors:(error.response.data[field])
-      //           }
-      //         ])
-      //       }
-      //     })
-      //   }
-      console.log(error.response.errors);
-      if (error.response && error.response.data && error.response.data.errors) {
+      if (error.response && error.response.data && error.response.data.errors ) {
         let fields = ["email", "password"];
         fields.forEach(field => {
-          if (error.response.data.errors[field]) {
+         
+          if (error.response.data.errors[field] ) {
             form.setFields([
               {
                 name: field,
-                errors: [t(error.response.data.errors[field])]
+                errors: [t(error.response.data.errors[field][0])]
               }
             ]);
           }

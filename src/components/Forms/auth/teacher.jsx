@@ -16,6 +16,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+
 const TeacherInvitation = () => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
@@ -25,10 +26,13 @@ const TeacherInvitation = () => {
   const [courses, setCourses] = useState(null);
   const [groups, setGroups] = useState(null);
   const [subgroup, setSubGroup] = useState(null);
-  
+  const [type, setType] = useState("admin");
   const [messageApi, contextHolder] = message.useMessage();
 
+
   
+
+
   const success = () => {
    
       messageApi.open({
@@ -98,6 +102,10 @@ const TeacherInvitation = () => {
     return state.rules;
   });
 
+  const rule = useMemo(() => {
+    return rules[type];
+  }, [type, rules]);
+  
   const onFinish = async () => {
     const values = await form.validateFields();
     values.birthDate = !values['birthDate'] ? undefined : values['birthDate'].format('YYYY-MM-DD');    
@@ -105,7 +113,7 @@ const TeacherInvitation = () => {
       values[key] = values[key].map(element => element[0]);    })
 
 
-    axios.post(`teacher/send-invitation`, values).then((response) => {
+    axios.post(rule.invitation, values).then((response) => {
       if (response?.status === 200) {
         success(response?.data.message);
         form.resetFields();

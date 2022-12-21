@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 // Components
 import { useMemo } from "react";
 
-const Invitation = () => {
+const RolesDashboard = () => {
     const { t } = useTranslation();
 
     const [type, setType] = useState("admin");
@@ -44,4 +44,4 @@ const Invitation = () => {
     )
 }
 
-export default Invitation;
+export default RolesDashboard;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo} from 'react';
+import React, { useEffect, useState, useCallback, useMemo} from 'react';
 import { useParams } from 'react-router-dom';
 import { Table, Modal, Button, Input, Popconfirm } from 'antd';
 
@@ -13,15 +13,15 @@ const Departments = () => {
   const [tableData, setTableData] = useState(null);
   const [type, setType] = useState("departments");
 
-  const getTableData = () => {
+  const handleGetInstitute = useCallback(() => {
     axios.get(`/api/institute/get/${instituteId}/${type}`).then((response) => {
       setTableData(response.data)
     }).catch(() => setTableData([]));
-  }
+  }, [type]);
 
   useEffect(() => {
-    getTableData()
-  }, [type]);
+    handleGetInstitute()
+  }, [handleGetInstitute]);
 
   const columns = useMemo(() => {
     const columns = {
@@ -92,9 +92,9 @@ const Departments = () => {
  
   const removeDepartment = (id) => {
     axios.delete(`/api/department/delete/${id}`).then((response) => {
-      let updateDepartment = [...tableData].filter((department) => department.id !== id);
-      setTableData(updateDepartment);
-    });
+      setTableData(prev => prev.filter((item) =>  item.id !== id));
+    })
+  
   };
 
   return (
