@@ -196,11 +196,12 @@ const Columns = useMemo(() => {
             if (response.status === 201) {
               setTableData(tableData.concat(response.data));
               setModal({ isOpen: false, data: {} });
+              window.location.reload();
             } else {
               
             }
           })
-        }
+        } 
       }} onCancel={() => setModal({ isOpen: false, data: {} })}>
          <Form.Item  label="Number" name="number">          
         <Input  placeholder="Group number" value={modal?.data?.name} onChange={(event) => {
