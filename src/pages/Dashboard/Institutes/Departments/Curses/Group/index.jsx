@@ -1,264 +1,335 @@
-import React, { useEffect, useState,useMemo,useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import { Table, Popconfirm, Input, Modal, Button, Form, Select,Checkbox } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import {
+  Table,
+  Popconfirm,
+  Input,
+  Modal,
+  Button,
+  Form,
+  Select,
+  Checkbox,
+} from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-import axios from '../../../../../../axios';
-import { Route } from 'react-router-dom';
-import { render } from '@testing-library/react';
-
-
+import axios from "../../../../../../axios";
+import { Route } from "react-router-dom";
+import { render } from "@testing-library/react";
 
 const Groups = () => {
   const { courseId, groupId, parentId } = useParams();
-  const [modal, setModal] = useState({ isOpen: false, data: {} });
+  const [modal, setModal] = useState(false);
   const [tableData, setTableData] = useState(null);
   const [type, setType] = useState("groups");
- 
+  const [form] = Form.useForm();
+
   // const [expandable, setExpandable] = useState(defaultExpandable);
   // const handleExpandChange = (enable) => {
   //   setExpandable(enable ? defaultExpandable : undefined);
   // };
 
   const getTableData = useCallback(() => {
-    axios.get(`/api/course/get/${courseId}/${type}`).then((response) => {
-      let groups = [];
-      response.data.forEach(element => {
+    axios
+      .get(`/api/course/get/${courseId}/${type}`)
+      .then((response) => {
+        let groups = [];
+        response.data.forEach((element) => {
           if (!element.parentId) {
             groups.push({
               ...element,
-              children: []
-            })
+              children: [],
+            });
           }
 
           if (element.parentId) {
-            groups.forEach(g => {
+            groups.forEach((g) => {
               if (g.id === element.parentId) {
-                g.children.push(element)
+                g.children.push(element);
               }
-            })
+            });
           }
-      });
-      setTableData(groups)
-    }).catch(() => setTableData([]));
-  },[type]);
+        });
+        console.log(groups);
+        setTableData(groups);
+      })
+      .catch(() => setTableData([]));
+  }, [type]);
 
-    useEffect(() => {
-      getTableData()
-    }, [getTableData]);
+  useEffect(() => {
+    getTableData();
+  }, [getTableData]);
 
-
-    
-
-
-const Columns = useMemo(() => {
+  const Columns = useMemo(() => {
     const columns = {
       groups: [
         {
-          title: 'ID',
-          dataIndex: 'id',
-          key: 'id'
+          title: "ID",
+          dataIndex: "id",
+          key: "id",
         },
         {
-          title: 'Number',
-          dataIndex: 'number',
-          key: 'number',
-        
+          title: "Number",
+          dataIndex: "number",
+          key: "number",
         },
         {
-          title: 'Actions',
-          dataIndex: 'actions',
+          title: "Actions",
+          dataIndex: "actions",
           width: 50,
-          render: (_, row) =>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <Popconfirm title="Sure to delete?" onConfirm={() => removeGroup(row.id)}>
+          render: (_, row) => (
+            <div style={{ display: "flex", gap: 10 }}>
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => removeGroup(row.id, row.parentId)}
+              >
                 <DeleteOutlined />
               </Popconfirm>
-              <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
+              <EditOutlined
+                onClick={() => {
+                  setModal(true);
+                  form.setFieldsValue(row);
+                }}
+              />
             </div>
-        }
+          ),
+        },
       ],
       teachers: [
         {
-          title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
+          title: "ID",
+          dataIndex: "id",
+          key: "id",
         },
         {
-          title: 'First Name',
-          dataIndex: 'firstName',
-          key: 'name'
+          title: "First Name",
+          dataIndex: "firstName",
+          key: "name",
         },
         {
-          title: 'Last Name',
-          dataIndex: 'lastName',
-          key: 'lastName',
+          title: "Last Name",
+          dataIndex: "lastName",
+          key: "lastName",
         },
         {
-          title: 'Patronymic',
-          dataIndex: 'patronymic',
-          key: 'patronymic',
+          title: "Patronymic",
+          dataIndex: "patronymic",
+          key: "patronymic",
         },
         {
-          title: 'Position',
-          dataIndex: 'position',
-          key: 'position',
+          title: "Position",
+          dataIndex: "position",
+          key: "position",
         },
         {
-          title: 'Actions',
-          dataIndex: 'actions',
+          title: "Actions",
+          dataIndex: "actions",
           width: 50,
-          render: (_, row) =>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <Popconfirm title="Sure to delete?" onConfirm={() => removeGroup(row.id)}>
+          render: (_, row) => (
+            <div style={{ display: "flex", gap: 10 }}>
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => removeGroup(row.id, row.parentId)}
+              >
                 <DeleteOutlined />
               </Popconfirm>
-              <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
+              <EditOutlined
+                onClick={() => {
+                  setModal(true);
+                  form.setFieldsValue(row);
+                }}
+              />
             </div>
-        }
+          ),
+        },
       ],
-        students: [
-          {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
-          },
-          {
-            title: 'First Name',
-            dataIndex: 'firstName',
-            key: 'name'
-          },
-          {
-            title: 'Last Name',
-            dataIndex: 'lastName',
-            key: 'lastName',
-          },
-          {
-            title: 'Patronymic',
-            dataIndex: 'patronymic',
-            key: 'patronymic',
-          },
-          {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-          },
-          {
-          title: 'Actions',
-          dataIndex: 'actions',
+      students: [
+        {
+          title: "ID",
+          dataIndex: "id",
+          key: "id",
+        },
+        {
+          title: "First Name",
+          dataIndex: "firstName",
+          key: "name",
+        },
+        {
+          title: "Last Name",
+          dataIndex: "lastName",
+          key: "lastName",
+        },
+        {
+          title: "Patronymic",
+          dataIndex: "patronymic",
+          key: "patronymic",
+        },
+        {
+          title: "Email",
+          dataIndex: "email",
+          key: "email",
+        },
+        {
+          title: "Actions",
+          dataIndex: "actions",
           width: 50,
-          render: (_, row) =>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <Popconfirm title="Sure to delete?" onConfirm={() => removeGroup(row.id)}>
+          render: (_, row) => (
+            <div style={{ display: "flex", gap: 10 }}>
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => removeGroup(row.id, row.parentId)}
+              >
                 <DeleteOutlined />
               </Popconfirm>
-              <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />
+              <EditOutlined
+                onClick={() => {
+                  setModal(true);
+                  form.setFieldsValue(row);
+                }}
+              />
             </div>
-        }
-        ]
-      
-    }
+          ),
+        },
+      ],
+    };
 
     return columns[type];
-  }, [type])
+  }, [type]);
 
-  const removeGroup = (id) => {
+  const removeGroup = (id, parentId) => {
     axios.delete(`/api/group/delete/${id}`).then((response) => {
-      setTableData(prev => prev.filter((item) =>  item.id !== id));
-    })  
+      if (parentId) {
+          tableData.forEach(element => {
+            if (element.id === parentId) {
+              element.children = element.children.filter(item => item.id !== id);
+            }
+          });
+
+          setTableData(tableData)
+      } else {
+        setTableData((prev) => prev.filter((item) => item.id !== id));
+      }
+    });
   };
 
-
   return (
-    <div className='group'>
-      <Modal title={modal?.data?.id ? 'Edit group number' : 'Add group number'} open={modal.isOpen} onOk={() => {
-        if (modal.data.id) {
-          axios.patch(`/api/group/edit/${modal.data.id}`, modal.data, { parent_id: parentId }).then(response => {
-            if (response.status === 200) {
-              let newGroup = tableData.map(element => {
-                if (element.id === response.data.id) {
-                  element = response.data
+    <div className="group">
+      <Modal
+        title={false ? "Edit group number" : "Add group number"}
+        open={modal}
+        onOk={() => {
+          if (form.getFieldValue("id")) {
+            axios
+              .patch(
+                `/api/group/edit/${form.getFieldValue("id")}`,
+                form.getFieldsValue(),
+                {
+                  parent_id: parentId,
                 }
+              )
+              .then((response) => {
+                if (response.status === 200) {
+                  let newGroup = tableData.map((element) => {
+                    if (element.id === response.data.id) {
+                      element = {
+                        ...response.data,
+                        children: element.children,
+                      };
+                    }
 
-                return element
+                    return element;
+                  });
+
+                  setTableData(newGroup);
+
+                  setModal(false);
+                }
               });
+          } else {
+            axios
+              .post(`/api/group/create`, {
+                ...form.getFieldsValue(),
+                parent_id: form.getFieldValue("parentId"),
+                course_id: courseId,
+                group_id: groupId,
+              })
+              .then((response) => {
+                if (response.status === 201) {
+                  let asParent = true;
+                  tableData.forEach((element) => {
+                    if (element.id === response.data.parentId) {
+                      element.children.push(response.data);
+                      asParent = false;
+                    }
+                  });
 
-              setTableData(newGroup);
+                  if (asParent) {
+                    tableData.push({
+                      ...response.data,
+                      children: [],
+                    });
+                  }
+                  setTableData(tableData);
+                  form.resetFields();
 
-              setModal({ isOpen: false, data: {} })
-            } else {
-              // console.log(response);
-            }
-          })
-        } else {
-       
-          axios.post(`/api/group/create`, { ...modal.data, course_id:courseId, group_id:groupId}).then(response => {
-            if (response.status === 201) {
-              setTableData(tableData.concat(response.data));
-              setModal({ isOpen: false, data: {} });
-              window.location.reload();
-            } else {
-              
-            }
-          })
-        } 
-      }} onCancel={() => setModal({ isOpen: false, data: {} })}>
-         <Form.Item  label="Number" name="number">          
-        <Input  placeholder="Group number" value={modal?.data?.name} onChange={(event) => {
-          setModal({
-            ...modal,
-            data: {
-              ...modal.data,
-              number: event.target.value,
+                  setModal(false);
+                }
+              });
+          }
+        }}
+        onCancel={() => {
+          form.resetFields();
+          setModal(false);
+        }}
+      >
+        <Form form={form}>
+          <Form.Item label="Number" name="number">
+            <Input placeholder="Group number" />
+          </Form.Item>
 
-            }
-          })
-        }} />
-       </Form.Item>
-
-       <Form.Item label="ParentGroup" name='number'>
-        <Select placeholder="group"  defaultValue="..." onChange={(value) => {
-          setModal({
-            ...modal,
-            data: {
-              ...modal.data,
-              parent_id: value,
-            }
-          })
-        }} options={tableData?.map(data => ({
-          label: data.number,
-          value: data.id
-        }))} />
-      </Form.Item>
+          <Form.Item label="ParentGroup" name="parentId">
+            <Select
+              placeholder="group"
+              options={tableData?.map((data) => ({
+                label: data.number,
+                value: data.id,
+              }))}
+            />
+          </Form.Item>
+        </Form>
       </Modal>
 
-      <Route exact path='/dashboard/institutes/:institutesId/:departmentID/:courseID'>
-      <div style={{ display: 'flex', gap: 10 }}>
-      <Button type='primary' onClick={() => setModal({ isOpen: true, data: {} })}>Add Group</Button>
-          <Button type='primary' onClick={() => setType("groups")}> Groups</Button>
-          <Button type='primary' onClick={() => setType("teachers")}> Teachers</Button>
-          <Button type='primary' onClick={() => setType("students")}> Students</Button>
-      </div>
-      {!tableData
-        ? <></>
-        : <Table
-        expandable={{
-          expandedRowRender: (record) => <Table
-            rowKey="id"
-            dataSource={record.children}
-            columns={Columns} />,
-            rowExpandable: (record) => record.children
-          }}
-          rowKey="id"
-          dataSource={tableData}
-          columns={Columns} />}
-          </Route>
-    </div>    
+      <Route
+        exact
+        path="/dashboard/institutes/:institutesId/:departmentID/:courseID"
+      >
+        <div style={{ display: "flex", gap: 10 }}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setModal(true);
+              form.resetFields();
+            }}
+          >
+            Add Group
+          </Button>
+          <Button type="primary" onClick={() => setType("groups")}>
+            Groups
+          </Button>
+          <Button type="primary" onClick={() => setType("teachers")}>
+            Teachers
+          </Button>
+          <Button type="primary" onClick={() => setType("students")}>
+            Students
+          </Button>
+        </div>
+        {!tableData ? (
+          <></>
+        ) : (
+          <Table rowKey="id" dataSource={tableData} columns={Columns} />
+        )}
+      </Route>
+    </div>
   );
-      }   
-
-
+};
 
 export default Groups;
-
-
