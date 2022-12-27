@@ -8,6 +8,9 @@ import "./style.scss";
 
 
 
+
+
+
 function Login() {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
@@ -16,6 +19,22 @@ function Login() {
   const [type, setType] = useState("admin");
 
   const [form] = Form.useForm();
+
+//   const Layout = useMemo(() => {
+//     let dashboard = {
+//         admin: require('../../pages/Dashboard/index').default
+//     }
+
+//     if (!dashboard[type]) {
+//         const layout = require(`../Forums/${type}`)?.default;
+//         if (layout) {
+//             dashboard[type] = layout;
+//         }
+//     }
+//     return dashboard[type];
+// }, [type]);
+
+
 
   const rules = useSelector(function (state) {
     return state.rules;
@@ -35,11 +54,10 @@ function Login() {
   const onFinish = async (values) => {
     try {
       delete values.remember;
-
-      const response = await axios.post(rule.submit, values)         
+      const response = await axios.post(rule.submit, values)    
       if (response && response.data && response.data.data) {
         dispatch({
-          type: 'login',
+          type: 'login',       
           payload: response.data.data
         });
       } 
@@ -59,6 +77,7 @@ function Login() {
         });
       }
     }
+   
   };
 
   return (
@@ -70,8 +89,8 @@ function Login() {
       className='Login__form'
       actions={['admin', 'student', 'teacher'].map(item => {
         return <Button type="primary" ghost={type !== item} className="form-button" onClick={() => setType(item)}>{t(item)}</Button>;
-      })}
-    >
+      })}    
+    >      
 
       <Form
         form={form}
@@ -112,10 +131,11 @@ function Login() {
           <Button type="primary" htmlType="submit" className="login-form-button">
             {t("Log in")}
           </Button>
-        </Form.Item>
-      </Form>
+        </Form.Item>      
+      </Form>      
     </Card>
     </>
+
   );
 };
 

@@ -4,26 +4,26 @@ import { useTranslation } from "react-i18next";
 // Components
 import { useMemo } from "react";
 
+
 const RolesDashboard = () => {
     const { t } = useTranslation();
 
     const [type, setType] = useState("admin");
  
-    const [form] = Form.useForm();
+    // const [form] = Form.useForm();
 
     const Layout = useMemo(() => {
-        let forms = {
-            admin: require('../../../components/Forms/auth/admin').default
+        let dashboard = {
+            admin: require('./Dashboard/index').default
         }
 
-        if (!forms[type]) {
-            const layout = require(`../../../components/Forms/auth/${type}`)?.default;
+        if (!dashboard[type]) {
+            const layout = require(`../components/Forums/${type}`)?.default;
             if (layout) {
-                forms[type] = layout;
+                dashboard[type] = layout;
             }
         }
-
-        return forms[type];
+        return dashboard[type];
     }, [type]);
 
     const onFinish = () => {

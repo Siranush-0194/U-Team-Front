@@ -22,7 +22,6 @@ const Invitation = () => {
                 forms[type] = layout;
             }
         }
-
         return forms[type];
     }, [type]);
 

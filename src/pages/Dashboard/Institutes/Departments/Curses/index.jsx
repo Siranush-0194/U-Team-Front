@@ -105,7 +105,9 @@ const Courses = () => {
 
   return (
     <div className='course'>
-      <Modal title={modal?.data?.id ? 'Edit Course number' : 'Add Course number'} open={modal.isOpen} onOk={() => {
+      <Modal title={modal?.data?.id ? 'Edit Course number' : 'Add Course number'}
+       open={modal.isOpen} 
+       onOk={() => {
         if (modal.data.id) {
           axios.patch(`/api/course/edit/${modal.data.id}`, modal.data).then(response => {
             if (response.status === 200) {

@@ -21,7 +21,7 @@ const items = [
     getItem('Institutes', 'allInstitutes', <BankOutlined />),
     getItem('Departments', 'departments', <BankOutlined />),
     getItem('Courses', 'courses', <BankOutlined />),
-    getItem('Groups', 'groups', <BankOutlined />),
+    // getItem('Groups', 'groups', <BankOutlined />),
     getItem('Logout','logout',<LogoutOutlined />)
 ];
 
