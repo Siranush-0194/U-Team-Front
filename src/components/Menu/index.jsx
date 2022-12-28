@@ -7,6 +7,8 @@ import { Switch as AntSwitch, Space } from 'antd';
 import axios from '../../axios';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
+import './App.scss';
+
 function getItem(label, key, icon, children, type) {
     return { key, icon, children, label, type };
 }
@@ -74,7 +76,7 @@ const NavBar = () => {
 
     return (
         <>
-       
+         <img src="../../images/Uteam.jpeg" className="logo" alt="logo"/>
             <Space direction="vertical">
                 <AntSwitch className='switcher' checkedChildren="Eng" unCheckedChildren="հայ" defaultChecked onChange={changeLanguage} />
             </Space>

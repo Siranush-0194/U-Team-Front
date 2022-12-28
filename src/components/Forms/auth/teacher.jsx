@@ -113,7 +113,7 @@ const TeacherInvitation = () => {
       values[key] = values[key].map(element => element[0]);    })
 
 
-    axios.post(rule.invitation, values).then((response) => {
+    axios.post('/student/send-invitation', values).then((response) => {
       if (response?.status === 200) {
         success(response?.data.message);
         form.resetFields();

@@ -72,6 +72,7 @@ const App = () => {
       <PublicRoute exact path="/">
         <div className="App">
           <header>
+          {/* <img src="../images/Uteam.jpeg" className="logo" alt="logo" width={100} height={100} /> */}
             <Space direction="vertical">
               <AntSwitch className='switcher' checkedChildren="Eng" unCheckedChildren="հայ" defaultChecked onChange={changeLanguage} />
             </Space>

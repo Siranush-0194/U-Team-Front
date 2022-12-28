@@ -20,6 +20,19 @@ header {
     align-items: center;
     justify-content: space-between;
 }
-// .switcher{
-//     margin-left: 1350px;
-// }
+.logo{
+    height: 13%;
+    width: 5%;
+    // padding: 4%;
+    // right: 100%;
+    // top: 20%;
+    // margin-left:43%;
+}
+.switcher{
+    margin-block: 40%;
+    float: left;
+    position: relative;
+    display: inline;
+    // margin-left: 2900%;
+    scroll-margin-inline-end: 500%;
+}

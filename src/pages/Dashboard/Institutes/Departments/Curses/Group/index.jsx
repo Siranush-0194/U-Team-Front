@@ -8,7 +8,6 @@ import {
   Button,
   Form,
   Select,
-  
   Checkbox,
 } from "antd";
 
@@ -139,7 +138,7 @@ const Groups = () => {
               <EditOutlined
                 onClick={() => {
                   setModal(true);
-                  form.setFieldsValue(row);             
+                  form.setFieldsValue(row);
                 }}
               />
             </div>
@@ -188,7 +187,6 @@ const Groups = () => {
                 onClick={() => {
                   setModal(true);
                   form.setFieldsValue(row);
-        
                 }}
               />
             </div>
@@ -200,30 +198,33 @@ const Groups = () => {
     return columns[type];
   }, [type]);
 
-  const removeGroup = useCallback((id, parentId) => {
-    axios.delete(`/api/group/delete/${id}`).then((response) => {
-      if (parentId) {
-        setTableData((prev) => {
-          prev.map(element => {
-            if (element.id === parentId) {
-              element.children = element.children.filter((item )=> item.id !== id);
-            }
-          })
+  const removeGroup = useCallback(
+    (id, parentId) => {
+      axios.delete(`/api/group/delete/${id}`).then((response) => {
+        if (parentId) {
+          setTableData((prev) => {
+            prev.map((element) => {
+              if (element.id === parentId) {
+                element.children = element.children.filter(
+                  (item) => item.id !== id
+                );
+              }
+            });
 
-          return prev
-        })
-      } else {
-        setTableData((prev) => prev.filter((item) => item.id !== id));
-      }
+            return prev;
+          });
+        } else {
+          setTableData((prev) => prev.filter((item) => item.id !== id));
+        }
 
-      setKey(key + 1)
-    });
-  },[type]);
+        setKey(key + 1);
+      });
+    },
+    [type]
+  );
   useEffect(() => {
     getTableData();
   }, [getTableData]);
- 
-
 
   return (
     <div className="group">
@@ -235,39 +236,49 @@ const Groups = () => {
             axios
               .patch(
                 `/api/group/edit/${form.getFieldValue("id")}`,
-                form.getFieldsValue(),             
-                      
+
+                form.getFieldsValue(),
+
                 {
                   parent_id: parentId,
-                  
-                 
                 }
-
               )
               .then((response) => {
-                if (response.status === 200) {                  
+                if (response.status === 200) {
                   let newGroup = tableData.map((element) => {
                     if (element.id === response.data.id) {
-                      
                       element = {
-  
                         ...response.data,
                         children: element.children,
                       };
                     }
+                    // }else{
+                    //   (element.children.id === response.data.id)
+                    // }
+                    console.log(element.children);
                     return element;
                   });
                   setTableData(newGroup);
                   // setModal({ isOpen: false, data: {} })
                   setModal(false);
+                  let newSubGroup = tableData.map((element) => {
+                    if (element.id === response.data.id) {
+                      element = {
+                        ...response.data,
+                        children: element.children,
+                      };
+                    }
+                    // }else{
+                    //   (element.children.id === response.data.id)
+                    // }
+                    // console.log(element.children);
+                    return element;
+                })
+              }
 
-                }
-
-                setKey(key + 1)
-
+                setKey(key + 1);
               });
           } else {
-            
             axios
               .post(`/api/group/create`, {
                 ...modal.data,
@@ -275,40 +286,34 @@ const Groups = () => {
                 parent_id: form.getFieldValue("parentId"),
                 course_id: courseId,
                 group_id: groupId,
-                
               })
               .then((response) => {
-                if (response.status === 201) {                
+                if (response.status === 201) {
                   let asParent = true;
                   console.log(tableData);
                   tableData.forEach((element) => {
                     if (element.id === response.data.parentId) {
                       element.children.push(response.data);
-                        
+
                       asParent = false;
-                      
                     }
                   });
 
                   if (asParent) {
-                    tableData.push({                     
+                    tableData.push({
                       ...response.data,
                       children: [],
-                    
-                      
                     });
                   }
-                  setTableData(tableData);                  
+                  setTableData(tableData);
                   form.resetFields();
                   setModal(false);
-             
-                  setKey(key + 1)
+
+                  setKey(key + 1);
                 }
               });
-              
           }
         }}
-        
         onCancel={() => {
           form.resetFields();
           setModal(false);
@@ -356,13 +361,15 @@ const Groups = () => {
           </Button>
         </div>
         {!tableData ? (
-          
           <></>
         ) : (
-          <Table rowKey="id"
-           dataSource={tableData} 
-           columns={Columns} 
-            loading={loading} key={key}/>
+          <Table
+            rowKey="id"
+            dataSource={tableData}
+            columns={Columns}
+            loading={loading}
+            key={key}
+          />
         )}
       </Route>
     </div>
