@@ -259,6 +259,7 @@ const Groups = () => {
                     return element;
                   });
                   setTableData(newGroup);
+                  setTableData(getTableData);
                   // setModal({ isOpen: false, data: {} })
                   setModal(false);
                   let newSubGroup = tableData.map((element) => {
