@@ -1,16 +1,15 @@
 .dashboard {
-    display: flex;
+  display: flex;
 
-    aside {
-        height: 100vh;
+  aside {
+    height: 100vh;
 
-        .navigation {
-            height: 100vh;
-        }
+    .navigation {
+      height: 100vh;
     }
+  }
 
-    section {
-        padding: 15px;
-    }
-  
+  section {
+    padding: 15px;
+  }
 }

@@ -12,6 +12,11 @@ const store = createStore(function (state, action) {
                 ...state,
                 user: {}
             }
+        case 'changeRule': 
+            return {
+                ...state,
+                rule: action.payload
+            }
         default:
             return state;
     }

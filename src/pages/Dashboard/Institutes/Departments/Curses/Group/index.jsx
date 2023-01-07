@@ -10,6 +10,7 @@ import {
   Select,
   Checkbox,
 } from "antd";
+import { Radio, Tabs } from "antd";
 
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
@@ -25,11 +26,6 @@ const Groups = () => {
   const [type, setType] = useState("groups");
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-
-  // const [expandable, setExpandable] = useState(defaultExpandable);
-  // const handleExpandChange = (enable) => {
-  //   setExpandable(enable ? defaultExpandable : undefined);
-  // };
 
   const getTableData = useCallback(() => {
     axios
@@ -52,7 +48,6 @@ const Groups = () => {
             });
           }
         });
-        // console.log(groups);
         setTableData(groups);
       })
       .catch(() => setTableData([]));
@@ -210,7 +205,6 @@ const Groups = () => {
                 );
               }
             });
-
             return prev;
           });
         } else {
@@ -238,7 +232,6 @@ const Groups = () => {
                 `/api/group/edit/${form.getFieldValue("id")}`,
 
                 form.getFieldsValue(),
-
                 {
                   parent_id: parentId,
                 }
@@ -274,8 +267,8 @@ const Groups = () => {
                     // }
                     // console.log(element.children);
                     return element;
-                })
-              }
+                  });
+                }
 
                 setKey(key + 1);
               });
@@ -342,6 +335,8 @@ const Groups = () => {
         path="/dashboard/institutes/:institutesId/:departmentID/:courseID"
       >
         <div style={{ display: "flex", gap: 10 }}>
+          {/* <Radio.Button value="top">Groups</Radio.Button> */}
+
           <Button
             type="primary"
             onClick={() => {
