@@ -5,7 +5,8 @@ const store = createStore(function (state, action) {
         case "login":
             return {
                 ...state,
-                user: action.payload
+                user: action.payload,
+                rule: action.payload.role || state.rule
             };
         case 'logout':
             return {

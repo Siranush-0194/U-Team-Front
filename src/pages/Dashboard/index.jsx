@@ -9,6 +9,8 @@ import Menu from "../../components/Menu";
 // Rule Routes
 const AdminRoutes = lazy(() => import("./routes/admin"));
 const StudentRoutes = lazy(() => import("./routes/student"));
+const TeacherRoutes = lazy(() => import ('./routes/teacher')) ;
+
 
 const Dashboard = () => {
   const rule = useSelector(function (state) {
@@ -22,6 +24,9 @@ const Dashboard = () => {
       },
       student: function () {
         return <StudentRoutes />;
+      },
+      teacher: function () {
+        return <TeacherRoutes/>
       }
     };
 

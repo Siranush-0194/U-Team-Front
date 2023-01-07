@@ -54,7 +54,11 @@ const NavBar = () => {
       student: [
         getItem("Home", "home", <HomeOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
+        getItem("Account", "accounts", <UserOutlined />)
       ],
+      teacher: [
+        getItem("Logout", "logout", <LogoutOutlined />),
+      ]
     };
 
     return itemsData[rule];
@@ -91,6 +95,12 @@ const NavBar = () => {
       },
       student: {
         home: () => history.push("/dashboard"),
+        accounts: () => history.push("/dashboard/account"),
+        logout: () => history.push("/"),
+      },
+      teacher: {
+        home: () => history.push("/dashboard"),
+        logout: () => history.push("/"),
       },
     };
 
