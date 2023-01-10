@@ -7,7 +7,7 @@ import axios from "../../../axios";
 import { Route, useParams } from "react-router-dom";
 import "./style.scss";
 
-const StudentAccount = () => {
+const TeacherAccount = () => {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState();
   const [form] = Form.useForm();
@@ -20,12 +20,12 @@ const StudentAccount = () => {
     axios
       .get("/user")
       .then((response) => {
-        console.log(response.data.data.groups[0].number)
+        console.log(response)
 
         setUser(response.data);
         axios
           .get(
-            `/api/department/get/${response?.data?.data?.course.departmentId}`
+            `/api/department/get/${response?.data?.data?.departmentId}`
           )
           .then((response) => {
             setDepartment(response.data);
@@ -114,7 +114,9 @@ const StudentAccount = () => {
           >
             {/* <Form.Item > {user.data.firstName + '' + user.data.lastName}</Form.Item> */}
 
-            <Form.Item style={{ fontWeight: "bold" }}>
+            
+
+             <Form.Item style={{ fontWeight: "bold" }}>
               {user?.data?.firstName +
                 "   " +
                 user?.data?.lastName +
@@ -122,12 +124,18 @@ const StudentAccount = () => {
                 user?.data?.patronymic}
             </Form.Item>
 
-            <Form.Item label="Institute" >
+            <Form.Item style={{ fontWeight: "bold" }} label="Position">
+              {user?.data?.position}
+            </Form.Item>
+
+            
+
+             <Form.Item label="Institute" >
               {institute?.name}
             </Form.Item>
-            <Form.Item  label="Department ">{department?.name}</Form.Item>
+            <Form.Item  label="Department ">{department?.name}</Form.Item> 
 
-            <Form.Item label="Course">
+            {/* <Form.Item label="Course">
               {user?.data?.course.number +
                 "  " +
                 user?.data?.course.degree +
@@ -137,11 +145,11 @@ const StudentAccount = () => {
 
             <Form.Item label='Group'>
             {user?.data?.groups[0].number}
-          </Form.Item>
+          </Form.Item>  
 
-            {/* <Form.Item label='Subgroup'>
+            <Form.Item label='Subgroup'>
             {user?.data?.course.number}
-          </Form.Item> */}
+          </Form.Item>  */}
 
             <Form.Item label="Mail:">{user?.data?.email}</Form.Item>
           </Form>
@@ -151,4 +159,4 @@ const StudentAccount = () => {
   );
 };
 
-export default StudentAccount;
+export default TeacherAccount;

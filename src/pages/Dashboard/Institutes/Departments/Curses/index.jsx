@@ -31,6 +31,7 @@ const Courses = () => {
   const onClose = () => {
     setOpen(false);
   };
+  console.log(departmentId);
 
   const handleGetCourses = useCallback(() => {
     axios

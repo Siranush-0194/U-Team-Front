@@ -97,10 +97,38 @@ const NavBar = () => {
         home: () => history.push("/dashboard"),
         accounts: () => history.push("/dashboard/account"),
         logout: () => history.push("/"),
+        logout: async (action) => {
+          try {
+            if (action === 0) return setIsModalOpen(false);
+            else if (action === 1) return setIsModalOpen(true);
+
+            await axios.post("/logout");
+
+            dispatch({ type: "logout" });
+
+            history.push("/");
+          } catch (error) {
+            //
+          }
+        },
       },
       teacher: {
         home: () => history.push("/dashboard"),
         logout: () => history.push("/"),
+        logout: async (action) => {
+          try {
+            if (action === 0) return setIsModalOpen(false);
+            else if (action === 1) return setIsModalOpen(true);
+
+            await axios.post("/logout");
+
+            dispatch({ type: "logout" });
+
+            history.push("/");
+          } catch (error) {
+            //
+          }
+        },
       },
     };
 

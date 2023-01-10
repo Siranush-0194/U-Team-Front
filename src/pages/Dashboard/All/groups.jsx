@@ -10,7 +10,7 @@ import { Link, Route, useParams } from 'react-router-dom';
 const Groups = () => {
   const [groups, setGroups] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, data: {} });
-  const { courseId, groupId, parentId } = useParams();
+  const {courseId, groupId, parentId } = useParams();
   const [tableData, setTableData] = useState(null);
   const [type, setType] = useState("groups");
 
@@ -33,6 +33,7 @@ const Groups = () => {
       <Modal title={modal?.data?.id ? 'Edit group number' : 'Add group number'} open={modal.isOpen} onOk={() => {
         if (modal.data.id) {
           axios.patch(`/api/group/edit/${modal.data.id}`, modal.data, { parent_id: parentId }).then(response => {
+           
             if (response.status === 200) {
               let newGroup = tableData.map(element => {
                 if (element.id === response.data.id) {
