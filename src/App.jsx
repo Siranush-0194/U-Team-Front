@@ -57,9 +57,9 @@ const App = () => {
     });
   }, []);
 
-  const changeLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'am' ? 'en' : 'am');
-  };
+  // const changeLanguage = () => {
+  //   i18n.changeLanguage(i18n.language === 'am' ? 'en' : 'am');
+  // };
 
   return user === null ? <>
     <PublicRoute path="/accept/invitation">
@@ -72,9 +72,9 @@ const App = () => {
         <div className="App">
           <header>
           {/* <img src="../images/Uteam.jpeg" className="logo" alt="logo" width={100} height={100} /> */}
-            <Space direction="vertical">
+            {/* <Space direction="vertical">
               <AntSwitch className='switcher' checkedChildren="Eng" unCheckedChildren="հայ" defaultChecked onChange={changeLanguage} />
-            </Space>
+            </Space> */}
           </header>
 
           <section>

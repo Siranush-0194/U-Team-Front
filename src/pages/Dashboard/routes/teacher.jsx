@@ -1,6 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import TeacherAccount from '../Accounts/TeacherAcc';
+import AccountsDashboard from '../Accounts/Dashboard/accountsDashboard';
 
 // Pages
 
@@ -13,6 +14,10 @@ const TeacherRoutes = () => {
 
         <Route patch="/dashboard/account">
         <TeacherAccount/>
+        </Route>
+
+        <Route patch="/dashboard/account">
+        <AccountsDashboard/>
         </Route>
       </>
   );

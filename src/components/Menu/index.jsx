@@ -144,7 +144,7 @@ const NavBar = () => {
   return (
     <>
       {/* <img src="../../images/Uteam.jpeg" className="logo" alt="logo"/> */}
-      <Space direction="vertical">
+      {/* <Space direction="vertical">
         <AntSwitch
           className="switcher"
           checkedChildren="Eng"
@@ -152,7 +152,7 @@ const NavBar = () => {
           defaultChecked
           onChange={changeLanguage}
         />
-      </Space>
+      </Space> */}
       <Modal
         open={isModalOpen}
         onOk={() => menu.logout(2)}
@@ -164,7 +164,7 @@ const NavBar = () => {
       <Menu
         className="navigation"
         onClick={onClick}
-        style={{ width: 256 }}
+        // style={{ width: 256 }}
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
         mode="inline"

@@ -70,17 +70,16 @@ const StudentAccount = () => {
   return (
     <>
       <div className="account">
-        <Avatar size={64} icon={<UserOutlined onClick={showDrawer} />} />
+        <Avatar className="avatar"  size={64} icon={<UserOutlined onClick={showDrawer} />} />
       </div>
 
-      <Drawer
+      <Drawer 
         form={form}
         title={"Information"}
-        placement="right"
         onClose={onClose}
         open={open}
       >
-        <Card style={{ backgroundColor: "#aaaaaa" }} className="avatar">
+        <Card style={{ backgroundColor: "#aaaaaa" }}>
           <Avatar          
             size={200}
             icon={
@@ -102,7 +101,7 @@ const StudentAccount = () => {
             }
           />
           <Form
-            className="info"
+            // className="info"
             form={form}
             labelCol={{
               span: 8,

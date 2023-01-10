@@ -101,7 +101,7 @@ const TeacherAccount = () => {
               ))
             }
           />
-          <Form
+          <Form className="info"
             className="info"
             form={form}
             labelCol={{
