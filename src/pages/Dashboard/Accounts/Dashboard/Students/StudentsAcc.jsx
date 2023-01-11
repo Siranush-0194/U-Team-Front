@@ -3,9 +3,10 @@ import { Button, Drawer, Table, Card, Form, Avatar, Upload } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
 import ImgCrop from "antd-img-crop";
-import axios from "../../../axios";
 import { Route, useParams } from "react-router-dom";
-import "./style.scss";
+import "../../style.scss";
+import axios from '../../../../../axios';
+
 
 const StudentAccount = () => {
   const [open, setOpen] = useState(false);
@@ -20,7 +21,7 @@ const StudentAccount = () => {
     axios
       .get("/user")
       .then((response) => {
-        console.log(response.data.data.groups[0].number)
+        // console.log(response)
 
         setUser(response.data);
         axios
@@ -32,7 +33,7 @@ const StudentAccount = () => {
             axios
             .get(`/api/institute/get/${response?.data?.instituteId}`)
             .then((response) => {
-              console.log(response.data.name);
+              // console.log(response.data.name);
               setInstitute(response.data);
             }).catch(() => setInstitute([]))
           })         

@@ -120,3 +120,38 @@ height: 60px;
 left: -20%;
 top: 5%;
 }
+.events {
+    // margin: 0;
+    // padding: 0;
+    list-style: none;
+  }
+//   .events .ant-badge-status {
+//     width: 100%;
+//     // overflow:visible;
+//     // font-size: 4px;
+//     // white-space: nowrap;
+//     // text-overflow: ellipsis;
+//   }
+//   .notes-month {
+//     // font-size: px;
+//     // text-align: center;
+//   }
+//   .notes-month section {
+//     // font-size: 14px;
+//   }
+
+  .calendar{
+    position: absolute; 
+   left: 70%;
+   top: 15%;
+//    height:5%;
+   width:25%;
+//    padding:0;
+  }
+
+  .list{
+    position: absolute;
+    left: 15%;
+    right: 8.33%;
+    top: 15%;
+  }

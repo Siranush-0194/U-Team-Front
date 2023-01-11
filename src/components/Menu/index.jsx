@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Menu, Modal } from "antd";
+import { Menu, Modal, Card} from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -10,12 +10,16 @@ import {
   SendOutlined,
   UserOutlined,
   EditOutlined,
+  TeamOutlined,
+  CarryOutOutlined  
+  
 } from "@ant-design/icons";
-import { Switch as AntSwitch, Space } from "antd";
+import { Switch as AntSwitch, Space, Icon  } from "antd";
 import axios from "../../axios";
 import { useTranslation } from "react-i18next";
 import "../../i18n";
 import "./App.scss";
+
 
 function getItem(label, key, icon, children, type) {
   return { key, icon, children, label, type };
@@ -52,16 +56,24 @@ const NavBar = () => {
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
       student: [
-        getItem("Home", "home", <HomeOutlined />),
+        getItem("Home", "home", <HomeOutlined />),          
+        getItem("Account", "accounts", <UserOutlined />),
+        getItem("Teachers", "teachers",<TeamOutlined />),
+        getItem("Students", "students", <TeamOutlined />),  
+        getItem("Notes", "notes", <CarryOutOutlined />),
+
         getItem("Logout", "logout", <LogoutOutlined />),
-        getItem("Account", "accounts", <UserOutlined />)
       ],
       teacher: [
+        getItem("Account", "accounts", <UserOutlined />),
+        getItem("Teachers", "teachers", <TeamOutlined />),
+        getItem("Students", "students", <TeamOutlined />), 
+        getItem("Notes", "notes", <CarryOutOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
       ]
     };
 
-    return itemsData[rule];
+    return  itemsData[rule]; 
   }, [rule]);
   const menu = useMemo(() => {
     const menuData = {
@@ -95,8 +107,11 @@ const NavBar = () => {
       },
       student: {
         home: () => history.push("/dashboard"),
+        teachers: () => history.push("/dashboard/teachers"),
+        students: () => history.push("/dashboard/students"),
         accounts: () => history.push("/dashboard/account"),
         logout: () => history.push("/"),
+        notes: () => history.push("/dashboard/notes"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);
@@ -115,6 +130,10 @@ const NavBar = () => {
       teacher: {
         home: () => history.push("/dashboard"),
         logout: () => history.push("/"),
+        teachers: () => history.push("/dashboard/teachers"),
+        students: () => history.push("/dashboard/students"),
+        accounts: () => history.push("/dashboard/account"),
+        notes: () => history.push("/dashboard/notes"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);
@@ -153,6 +172,8 @@ const NavBar = () => {
           onChange={changeLanguage}
         />
       </Space> */}
+        {/* <Card style={{ backgroundColor: "#aaaaaa" }}> */}
+
       <Modal
         open={isModalOpen}
         onOk={() => menu.logout(2)}
@@ -160,8 +181,8 @@ const NavBar = () => {
       >
         <p>Do you want to logout?</p>
       </Modal>
-
       <Menu
+      
         className="navigation"
         onClick={onClick}
         // style={{ width: 256 }}
@@ -169,7 +190,8 @@ const NavBar = () => {
         defaultOpenKeys={["sub1"]}
         mode="inline"
         items={items}
-      />
+             />
+              {/* </Card> */}
     </>
   );
 };
