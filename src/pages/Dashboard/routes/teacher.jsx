@@ -10,13 +10,14 @@ const TeacherRoutes = () => {
       <>
         <Route exact path="/dashboard">
           <div className="welcome">Welocome to Techer dashboard</div>
+          <AccountsDashboard/>
         </Route>
 
         {/* <Route patch="/dashboard/account">
         <TeacherAccount/>
-        </Route>
+        </Route> */}
 
-        <Route patch="/dashboard/account">
+        {/* <Route path="/dashboard">
         <AccountsDashboard/>
         </Route> */}
       </>

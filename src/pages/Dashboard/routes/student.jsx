@@ -30,15 +30,21 @@ const StudentRoutes = () => {
 
         <Route path="/dashboard/teachers">
           <Lecturer/>
+        <AccountsDashboard/>
+
          </Route>
          
 
         <Route path="/dashboard/students">
           <Friends/>
+        <AccountsDashboard/>
+
          </Route> 
 
          <Route path="/dashboard/notes">
           <Notes/>
+        <AccountsDashboard/>
+
          </Route>  
 
 

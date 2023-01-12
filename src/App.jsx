@@ -24,7 +24,7 @@ import Login from "./components/Login";
 // Private
 import Dashboard from "./pages/Dashboard/index";
 import ResetPassword from './pages/Dashboard/Invitation/resetPass';
-import AccountsDashboard from './pages/Dashboard/Accounts/Dashboard/accountsDashboard';
+// import AccountsDashboard from './pages/Dashboard/Accounts/Dashboard/accountsDashboard';
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -88,7 +88,6 @@ const App = () => {
       {/* PRIVATE ROUTES */}
       <PrivateRoute path="/dashboard">
         <Dashboard />
-        <AccountsDashboard/>
       </PrivateRoute>
       {/* END PRIVATE ROUTES */}
     </>
