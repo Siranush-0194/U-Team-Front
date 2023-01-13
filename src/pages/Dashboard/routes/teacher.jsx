@@ -13,13 +13,19 @@ const TeacherRoutes = () => {
           <AccountsDashboard/>
         </Route>
 
-        {/* <Route patch="/dashboard/account">
+        <Route patch="/dashboard/account">
         <TeacherAccount/>
-        </Route> */}
-
-        {/* <Route path="/dashboard">
         <AccountsDashboard/>
-        </Route> */}
+        </Route>
+
+        <Route path="/dashboard/local">        
+          <AccountsDashboard/>
+         </Route>  
+
+         <Route path="/dashboard/global">        
+        <AccountsDashboard/>
+       </Route> 
+
       </>
   );
 };

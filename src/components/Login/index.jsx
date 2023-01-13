@@ -32,10 +32,10 @@ function Login() {
     try {
       delete values.remember;
       const response = await axios.post(rules[rule].submit, values);
-      if (response && response.data && response.data.data) {
+      if (response && response.data && response.data) {
         dispatch({
           type: "login",
-          payload: response.data.data,
+          payload: response.data,
         });
       }
     } catch (error) {

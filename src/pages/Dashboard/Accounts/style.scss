@@ -8,6 +8,7 @@
 
 .css-dev-only-do-not-override-15jgfu7 .ant-upload-wrapper .ant-upload-list {
     line-height: 9.571429;
+    // border-radius: 50%;
 }
 
 .css-dev-only-do-not-override-1ct6cg.ant-card .ant-card-body {
@@ -84,6 +85,7 @@
     right: 0;
     top: 50px;
     left: -96px;
+    width: 20%;
 }
 
 .notification {
@@ -155,3 +157,35 @@ top: 5%;
     right: 8.33%;
     top: 15%;
   }
+
+
+ .uploads{
+width: 75%;
+height: 75%;
+left: 20%;
+top: 25.5%;
+gap: 40%;
+ }
+
+ .page-info{
+    position: absolute;
+    // width: 50%;
+    // height: 60px;
+    right: 80%;
+    left: 15.5%;
+    top: 15.5%;
+ }
+ .account-info{
+    position: absolute;
+width: 50%;
+height: 80%;
+left: 25.5%;
+top: 15.5%;
+ }
+
+ @media only screen and  (min-width: 400px) {
+    .account .uploads .list .info .avatar .messenger .question .notification
+    .ant-menu .search  .head .switcher .logo .avatar .info  {
+        display: flex;
+    }
+}

@@ -11,7 +11,9 @@ import {
   UserOutlined,
   EditOutlined,
   TeamOutlined,
-  CarryOutOutlined  
+  CarryOutOutlined,
+  HddOutlined, 
+  DatabaseOutlined 
   
 } from "@ant-design/icons";
 import { Switch as AntSwitch, Space, Icon  } from "antd";
@@ -61,15 +63,21 @@ const NavBar = () => {
         getItem("Teachers", "teachers",<TeamOutlined />),
         getItem("Students", "students", <TeamOutlined />),  
         getItem("Notes", "notes", <CarryOutOutlined />),
-
+        getItem("Local Storage", "localStorage",<HddOutlined />),
+        getItem("Gloabal Storage", "globalStorage",<DatabaseOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
+      
+
       ],
       teacher: [
         getItem("Account", "accounts", <UserOutlined />),
         getItem("Teachers", "teachers", <TeamOutlined />),
         getItem("Students", "students", <TeamOutlined />), 
         getItem("Notes", "notes", <CarryOutOutlined />),
+        getItem("Local Storage", "localStorage",<HddOutlined />),
+        getItem("Gloabal Storage", "globalStorage", <DatabaseOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
+      
       ]
     };
 
@@ -112,6 +120,8 @@ const NavBar = () => {
         accounts: () => history.push("/dashboard/account"),
         logout: () => history.push("/"),
         notes: () => history.push("/dashboard/notes"),
+        localStorage: () => history.push("/dashboard/local"),
+        globalStorage: () => history.push("/dashboard/global"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);
@@ -134,6 +144,8 @@ const NavBar = () => {
         students: () => history.push("/dashboard/students"),
         accounts: () => history.push("/dashboard/account"),
         notes: () => history.push("/dashboard/notes"),
+        localStorage: () => history.push("/dashboard/local"),
+        globalStorage: () => history.push("/dashboard/global"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);

@@ -40,7 +40,7 @@ const App = () => {
 
   useEffect(() => {
     !token && axios.get("/user").then((response) => {
-      let user = response?.data?.data || {};
+      let user = response?.data || {};
 
       dispatch({
         type: 'login',
