@@ -2,12 +2,13 @@ import React from "react";
 import { Route } from "react-router-dom";
 
 import AccountsDashboard from '../Accounts/Dashboard/accountsDashboard';
-import StudentAccount from '../Accounts/Dashboard/Students/StudentsAcc';
+// import StudentAccount from '../Accounts/Dashboard/Students/StudentsAcc';
 import Friends from '../Accounts/Dashboard/Students/Friends';
 import Lecturer from '../Accounts/Dashboard/Students/Lecturer';
 import Notes from '../Accounts/Dashboard/Notes/Notes';
 import GlobalStorage from '../Accounts/Dashboard/Storage/GlobalStorage';
-import Account from '../Accounts/Account';
+import Account from '../Accounts/Information/Account';
+
 
 
 

@@ -1,7 +1,8 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import AccountsDashboard from '../Accounts/Dashboard/accountsDashboard';
-import TeacherAccount from '../Accounts/Dashboard/Teacher/TeacherAcc';
+// import TeacherAccount from '../Accounts/Dashboard/Teacher/TeacherAcc';
+import Account from '../Accounts/Information/Account';
 
 // Pages
 
@@ -14,7 +15,7 @@ const TeacherRoutes = () => {
         </Route>
 
         <Route patch="/dashboard/account">
-        <TeacherAccount/>
+        <Account/>
         <AccountsDashboard/>
         </Route>
 

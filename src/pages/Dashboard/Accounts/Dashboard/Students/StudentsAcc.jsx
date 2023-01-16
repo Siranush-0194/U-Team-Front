@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useCallback } from "react";
-import { Button, Drawer, Table, Card, Form, Avatar, Upload } from "antd";
+import { Button,  Table, Card, Form } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
 import ImgCrop from "antd-img-crop";
@@ -8,20 +8,18 @@ import "../../style.scss";
 import axios from "../../../../../axios";
 
 const StudentAccount = () => {
-  const [open, setOpen] = useState(false);
+
   const [user, setUser] = useState();
   const [form] = Form.useForm();
   const { departmentId, instituteId } = useParams();
   const [department, setDepartment] = useState();
-  const [fileList, setFileList] = useState([]);
-  const [avatar, setAvatar] = useState();
+
   const [institute, setInstitute] = useState();
 
   useEffect(() => {
     axios
       .get("/user")
       .then((response) => {
-// console.log(response);
         setUser(response.data);
         axios
           .get(
@@ -29,22 +27,11 @@ const StudentAccount = () => {
           )
           .then((response) => {
             setDepartment(response.data);
-
             axios
               .get(`/api/institute/get/${response?.data?.instituteId}`)
               .then((response) => {
                 // console.log(response.data.name);
-                setInstitute(response.data);
-
-                axios
-                  .post("/api/avatar/store")
-                  .then((response) => {
-                    if (response.status === 201) {
-                      setAvatar(response);
-                    }
-                    // console.log(response);
-                  })
-                  .catch(() => setAvatar([]));
+                setInstitute(response.data);           
               })
               .catch(() => setInstitute([]));
           })
@@ -54,34 +41,34 @@ const StudentAccount = () => {
   }, []);
 
   
-  const onChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
-  const onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  };
+  // const onChange = ({ fileList: newFileList }) => {
+  //   setFileList(newFileList);
+  // };
+  // const onPreview = async (file) => {
+  //   let src = file.url;
+  //   if (!src) {
+  //     src = await new Promise((resolve) => {
+  //       const reader = new FileReader();
+  //       reader.readAsDataURL(file.originFileObj);
+  //       reader.onload = () => resolve(reader.result);
+  //     });
+  //   }
+  //   const image = new Image();
+  //   image.src = src;
+  //   const imgWindow = window.open(src);
+  //   imgWindow?.document.write(image.outerHTML);
+  // };
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+  // const showDrawer = () => {
+  //   setOpen(true);
+  // };
+  // const onClose = () => {
+  //   setOpen(false);
+  // };
 
   return (
     <>
-      <div className="account">
+      {/* <div className="account">
         <Avatar
           className="avatar"
           size={64}
@@ -134,8 +121,8 @@ const StudentAccount = () => {
                 </ImgCrop>
               ))
             }
-          />
-          <Form
+          /> */}
+          {/* <Form
             // className="info"
             form={form}
             labelCol={{
@@ -145,7 +132,7 @@ const StudentAccount = () => {
               span: 14,
             }}
             layout="horizontal"
-          >
+          > */}
             {/* <Form.Item > {user.data.firstName + '' + user.data.lastName}</Form.Item> */}
 
             <Form.Item style={{ fontWeight: "bold" }}>
@@ -174,9 +161,9 @@ const StudentAccount = () => {
           </Form.Item> */}
 
             <Form.Item label="Mail:">{user?.email}</Form.Item>
-          </Form>
-        </Card>
-      </Drawer>
+          {/* </Form> */}
+        {/* </Card> */}
+       {/* </Drawer> */}
     </>
   );
 };

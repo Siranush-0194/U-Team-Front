@@ -1,5 +1,5 @@
 import { React, useState, useEffect, useCallback } from "react";
-import { Button, Drawer, Table, Card, Form, Avatar, Upload } from "antd";
+import { Button, Table, Card,Form  } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
 import ImgCrop from "antd-img-crop";
@@ -8,24 +8,22 @@ import "../../style.scss";
 import axios from '../../../../../axios';
 
 const TeacherAccount = () => {
-  const [open, setOpen] = useState(false);
   const [user, setUser] = useState();
   const [form] = Form.useForm();
   const { departmentId,instituteId} = useParams();
   const [department, setDepartment] = useState();
-  const [fileList, setFileList] = useState([]);
   const [institute, setInstitute] = useState();
 
   useEffect(() => {
     axios
       .get("/user")
       .then((response) => {
-        // console.log(response)
+        console.log(response)
 
         setUser(response.data);
         axios
           .get(
-            `/api/department/get/${response?.data?.data?.departmentId}`
+            `/api/department/get/${response?.data?.departmentId}`
           )
           .then((response) => {
             setDepartment(response.data);
@@ -42,66 +40,14 @@ const TeacherAccount = () => {
   }, []);
 
 
-  const onChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
-  const onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  };
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+ 
 
   return (
     <>
-      <div className="account">
-        <Avatar size={64} icon={<UserOutlined onClick={showDrawer} />} />
-      </div>
+     
 
-      <Drawer
-        form={form}
-        title={"Information"}
-        placement="right"
-        onClose={onClose}
-        open={open}
-      >
-        <Card style={{ backgroundColor: "#aaaaaa" }} className="avatar">
-          <Avatar          
-            size={200}
-            icon={
-              ((<UserOutlined />),
-              (
-                <ImgCrop rotate  >
-                  
-                  <Upload
-                   shape="round"
-                    listType="picture-card"
-                    fileList={fileList}
-                    onChange={onChange}
-                    onPreview={onPreview}
-                  >
-                    {fileList.length < 1 && "+ Upload"}
-                  </Upload>
-                </ImgCrop>
-              ))
-            }
-          />
-          <Form className="info"
+    
+          {/* <Form className="info"
             className="info"
             form={form}
             labelCol={{
@@ -111,21 +57,21 @@ const TeacherAccount = () => {
               span: 14,
             }}
             layout="horizontal"
-          >
+          > */}
             {/* <Form.Item > {user.data.firstName + '' + user.data.lastName}</Form.Item> */}
 
             
 
              <Form.Item style={{ fontWeight: "bold" }}>
-              {user?.data?.firstName +
+              {user?.firstName +
                 "   " +
-                user?.data?.lastName +
+                user?.lastName +
                 " " +
-                user?.data?.patronymic}
+                user?.patronymic}
             </Form.Item>
 
             <Form.Item style={{ fontWeight: "bold" }} label="Position">
-              {user?.data?.position}
+              {user?.position}
             </Form.Item>
 
             
@@ -151,10 +97,10 @@ const TeacherAccount = () => {
             {user?.data?.course.number}
           </Form.Item>  */}
 
-            <Form.Item label="Mail:">{user?.data?.email}</Form.Item>
-          </Form>
-        </Card>
-      </Drawer>
+            <Form.Item label="Mail:">{user?.email}</Form.Item>
+          {/* </Form> */}
+        {/* </Card> */}
+    
     </>
   );
 };

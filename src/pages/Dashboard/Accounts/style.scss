@@ -112,8 +112,8 @@ top: 35%;
 position: absolute;
 width: 60px;
 height: 60px;
-left: 91%;
-top: 15%;
+left: 91.5%;
+top: 10%;
 }
 .info{
     position: absolute;
@@ -183,9 +183,3 @@ left: 25.5%;
 top: 15.5%;
  }
 
- @media only screen and  (min-width: 400px) {
-    .account .uploads .list .info .avatar .messenger .question .notification
-    .ant-menu .search  .head .switcher .logo .avatar .info  {
-        display: flex;
-    }
-}
