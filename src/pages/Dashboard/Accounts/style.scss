@@ -1,185 +1,50 @@
 .account {
-    text-align: center;
-    margin: 0 auto;
-    text-align: left;
-    margin: 0 auto;
-    text-align: center
+  text-align: center;
+  margin: 0 auto;
+  text-align: left;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .css-dev-only-do-not-override-15jgfu7 .ant-upload-wrapper .ant-upload-list {
-    line-height: 9.571429;
-    // border-radius: 50%;
-}
-
-.css-dev-only-do-not-override-1ct6cg.ant-card .ant-card-body {
-    padding: 13px;
+  line-height: 9.571429;
 }
 
 .info {
-    margin-left: 620px;
-    display: table-cell
+  margin-left: 620px;
+  display: table-cell;
 }
 
-.avatar {
-    width: 320px;
-    float: left;
-    display: table-cell
+.header-container {
+    width: 100vw;
+
+    .ant-card-body {
+        gap: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .app-logo {
+            width: 150px;
+        }
+
+        .search-container {
+            width: 100%;
+            gap: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .search-container-actions {
+                width: 100px;
+                display: flex;
+                gap: 5px;
+                flex-direction: column;
+
+                button {
+                    width: 100%;
+                }
+            }
+        }
+    }
 }
-
-.logo {
-    height: 50%;
-    width: 2%;
-    padding: 4%;
-    position: absolute;
-    left: -46%;
-    right: 95.98%;
-    top: -50%;
-    bottom: 95%;
-
-    // position: absolute;
-    // left: 1.56%;
-    // right: 95.98%;
-    // top: 0.79%;
-    // bottom: 97.62%;
-
-    background: url();
-}
-
-.switcher {
-    position: absolute;
-    left: 1760px;
-    top: -700px;
-}
-
-.head {
-    box-sizing: border-box;
-    position: absolute;
-    width: 1848px;
-    height: 100px;
-    left: 0px;
-    top: 0px;
-
-    background: #F4F4F4;
-    border-bottom: 1px solid #0058DC;
-}
-
-.search {
-    box-sizing: border-box;
-
-    position: absolute;
-    width: 1112px;
-    // height: 59.99px;
-    left: 349px;
-    top: 30px;
-
-    background: #FFFFFF;
-    border: 1px solid #D6D6D6;
-    border-radius: 10px;
-}
-
-// .css-dev-only-do-not-override-t98trl
-.ant-menu {
-    padding: 90px;
-    display: block;
-    position: fixed;
-    right: 0;
-    top: 50px;
-    left: -96px;
-    width: 20%;
-}
-
-.notification {
-    position: absolute;
-    left: 86%;
-    right: 15%;
-    top: 35%;
-
-}
-.question{
-    position: absolute;
-    left: 80%;
-    right: 15%;
-    top: 32%;
-} 
-
-.messenger{
-position: absolute;
-left: 87.5%;
-right: 8.33%;
-top: 35%;
-}
-.avatar{
-position: absolute;
-width: 60px;
-height: 60px;
-left: 91.5%;
-top: 10%;
-}
-.info{
-    position: absolute;
-width: 60px;
-height: 60px;
-left: -20%;
-top: 5%;
-}
-.events {
-    // margin: 0;
-    // padding: 0;
-    list-style: none;
-  }
-//   .events .ant-badge-status {
-//     width: 100%;
-//     // overflow:visible;
-//     // font-size: 4px;
-//     // white-space: nowrap;
-//     // text-overflow: ellipsis;
-//   }
-//   .notes-month {
-//     // font-size: px;
-//     // text-align: center;
-//   }
-//   .notes-month section {
-//     // font-size: 14px;
-//   }
-
-  .calendar{
-    position: absolute; 
-   left: 70%;
-   top: 15%;
-//    height:5%;
-   width:25%;
-//    padding:0;
-  }
-
-  .list{
-    position: absolute;
-    left: 15%;
-    right: 8.33%;
-    top: 15%;
-  }
-
-
- .uploads{
-width: 75%;
-height: 75%;
-left: 20%;
-top: 25.5%;
-gap: 40%;
- }
-
- .page-info{
-    position: absolute;
-    // width: 50%;
-    // height: 60px;
-    right: 80%;
-    left: 15.5%;
-    top: 15.5%;
- }
- .account-info{
-    position: absolute;
-width: 50%;
-height: 80%;
-left: 25.5%;
-top: 15.5%;
- }
-

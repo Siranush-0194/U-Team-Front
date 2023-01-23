@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { PublicRoute, PrivateRoute } from "./routes";
-import { useHistory } from 'react-router-dom';
-import useQuery from './hooks/useQuery';
+import { useHistory } from "react-router-dom";
+import useQuery from "./hooks/useQuery";
 
 import axios from "./axios";
 
-// Init Store
-import { Switch as AntSwitch, Space } from 'antd';
-
-import './App.scss';
-
-// i18n languages
-import './i18n';
-import { useTranslation } from 'react-i18next';
+import "./App.scss";
+import "./i18n";
+import { useTranslation } from "react-i18next";
 
 // Components
 import Login from "./components/Login";
@@ -23,8 +18,8 @@ import Login from "./components/Login";
 
 // Private
 import Dashboard from "./pages/Dashboard/index";
-import ResetPassword from './pages/Dashboard/Invitation/resetPass';
-// import AccountsDashboard from './pages/Dashboard/Accounts/Dashboard/accountsDashboard';
+import ResetPassword from "./pages/Dashboard/Invitation/resetPass";
+import AccountHeader from './pages/Dashboard/Accounts/Dashboard/accountsHeader';
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -32,50 +27,49 @@ const App = () => {
   const history = useHistory();
 
   const query = useQuery();
-  const [token] = useState(query.get('token'));
+  const [token] = useState(query.get("token"));
 
   const user = useSelector(function (state) {
     return state?.user;
   });
 
   useEffect(() => {
-    !token && axios.get("/user").then((response) => {
-      let user = response?.data || {};
+    !token &&
+      axios
+        .get("/user")
+        .then((response) => {
+          let user = response?.data || {};
 
-      dispatch({
-        type: 'login',
-        payload: user
-      });
-    }).catch((response) => {
-      if (response?.response?.status === 401) {
-        dispatch({
-          type: 'login',
-          payload: {}
+          dispatch({
+            type: "login",
+            payload: user,
+          });
+        })
+        .catch((response) => {
+          if (response?.response?.status === 401) {
+            dispatch({
+              type: "login",
+              payload: {},
+            });
+
+            history.push("/");
+          }
         });
-
-        history.push("/");
-      }
-    });
   }, []);
 
-  // const changeLanguage = () => {
-  //   i18n.changeLanguage(i18n.language === 'am' ? 'en' : 'am');
-  // };
-
-  return user === null ? <>
-    <PublicRoute path="/accept/invitation">
-      <ResetPassword />
-    </PublicRoute>
-  </> : (
+  return user === null ? (
+    <>
+      <PublicRoute path="/accept/invitation">
+        <ResetPassword />
+      </PublicRoute>
+    </>
+  ) : (
     <>
       {/* START PUBLIC ROUTES */}
       <PublicRoute exact path="/">
         <div className="App">
           <header>
-          {/* <img src="../images/Uteam.jpeg" className="logo" alt="logo" width={100} height={100} /> */}
-            {/* <Space direction="vertical">
-              <AntSwitch className='switcher' checkedChildren="Eng" unCheckedChildren="հայ" defaultChecked onChange={changeLanguage} />
-            </Space> */}
+            ok
           </header>
 
           <section>
@@ -87,11 +81,13 @@ const App = () => {
 
       {/* PRIVATE ROUTES */}
       <PrivateRoute path="/dashboard">
+        <AccountHeader />
+
         <Dashboard />
       </PrivateRoute>
       {/* END PRIVATE ROUTES */}
     </>
   );
-}
+};
 
 export default App;

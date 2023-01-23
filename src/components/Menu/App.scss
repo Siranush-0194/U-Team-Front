@@ -15,26 +15,9 @@ code {
 
 
 header {
-    width: 80%;
+    width: 100%;
     display: flex;
     margin: 0 auto;
-    padding: 10px 0;
     align-items: center;
     justify-content: space-between;
-}
-.logo{
-    height: 13%;
-    width: 5%;
-    // padding: 4%;
-    // right: 100%;
-    // top: 20%;
-    // margin-left:43%;
-}
-.switcher{
-    margin-block: 40%;
-    float: left;
-    position: relative;
-    display: inline;
-    // margin-left: 2900%;
-    scroll-margin-inline-end: 500%;
 }

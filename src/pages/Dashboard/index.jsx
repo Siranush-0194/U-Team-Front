@@ -9,10 +9,10 @@ import Menu from "../../components/Menu";
 // Rule Routes
 const AdminRoutes = lazy(() => import("./routes/admin"));
 const StudentRoutes = lazy(() => import("./routes/student"));
-const TeacherRoutes = lazy(() => import ('./routes/teacher')) ;
-
+const TeacherRoutes = lazy(() => import("./routes/teacher"));
 
 const Dashboard = () => {
+
   const rule = useSelector(function (state) {
     return state.rule;
   });
@@ -26,23 +26,21 @@ const Dashboard = () => {
         return <StudentRoutes />;
       },
       teacher: function () {
-        return <TeacherRoutes/>
-      }
+        return <TeacherRoutes />;
+      },
     };
 
     return routes[rule]();
   }, [rule]);
 
   return (
-    <div className="dashboard">
-      <aside>
+      <div className="dashboard">
         <Menu />
-      </aside>
 
-      <section style={{ width: "100%" }}>
-        <Suspense>{RouteRules}</Suspense>
-      </section>
-    </div>
+        <section style={{ width: "100%", padding: 10 }}>
+          <Suspense>{RouteRules}</Suspense>
+        </section>
+      </div>
   );
 };
 

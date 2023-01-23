@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from "react";
-import { Menu, Modal, Card} from "antd";
+import { Menu, Modal, Layout } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
-  UsergroupAddOutlined,
   BankOutlined,
   LogoutOutlined,
   HomeOutlined,
@@ -12,16 +11,15 @@ import {
   EditOutlined,
   TeamOutlined,
   CarryOutOutlined,
-  HddOutlined, 
-  DatabaseOutlined 
-  
+  HddOutlined,
+  DatabaseOutlined,
+  QuestionOutlined,
+  BarsOutlined,
 } from "@ant-design/icons";
-import { Switch as AntSwitch, Space, Icon  } from "antd";
 import axios from "../../axios";
 import { useTranslation } from "react-i18next";
 import "../../i18n";
 import "./App.scss";
-
 
 function getItem(label, key, icon, children, type) {
   return { key, icon, children, label, type };
@@ -31,9 +29,7 @@ const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const changeLanguage = () => {
-    i18n.changeLanguage(i18n.language === "am" ? "en" : "am");
-  };
+  const { Sider } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { i18n } = useTranslation();
   const rules = useSelector(function (state) {
@@ -58,30 +54,31 @@ const NavBar = () => {
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
       student: [
-        getItem("Home", "home", <HomeOutlined />),          
+        getItem("Home", "home", <HomeOutlined />),
         getItem("Account", "accounts", <UserOutlined />),
-        getItem("Teachers", "teachers",<TeamOutlined />),
-        getItem("Students", "students", <TeamOutlined />),  
+        getItem("Teachers", "teachers", <TeamOutlined />),
+        getItem("Students", "students", <TeamOutlined />),
         getItem("Notes", "notes", <CarryOutOutlined />),
-        getItem("Local Storage", "localStorage",<HddOutlined />),
-        getItem("Gloabal Storage", "globalStorage",<DatabaseOutlined />),
+        getItem("Local Storage", "localStorage", <HddOutlined />),
+        getItem("Gloabal Storage", "globalStorage", <DatabaseOutlined />),
+        getItem("Questions", "questions", <QuestionOutlined />),
+        getItem("Posts", "posts", <BarsOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
-      
-
       ],
       teacher: [
         getItem("Account", "accounts", <UserOutlined />),
         getItem("Teachers", "teachers", <TeamOutlined />),
-        getItem("Students", "students", <TeamOutlined />), 
+        getItem("Students", "students", <TeamOutlined />),
         getItem("Notes", "notes", <CarryOutOutlined />),
-        getItem("Local Storage", "localStorage",<HddOutlined />),
+        getItem("Local Storage", "localStorage", <HddOutlined />),
         getItem("Gloabal Storage", "globalStorage", <DatabaseOutlined />),
+        getItem("Questions", "questions", <QuestionOutlined />),
+        getItem("Posts", "posts", <BarsOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
-      
-      ]
+      ],
     };
 
-    return  itemsData[rule]; 
+    return itemsData[rule];
   }, [rule]);
   const menu = useMemo(() => {
     const menuData = {
@@ -122,6 +119,8 @@ const NavBar = () => {
         notes: () => history.push("/dashboard/notes"),
         localStorage: () => history.push("/dashboard/local"),
         globalStorage: () => history.push("/dashboard/global"),
+        questions: () => history.push("/dashboard/questions"),
+        posts: () => history.push("/dashboard/posts"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);
@@ -146,6 +145,8 @@ const NavBar = () => {
         notes: () => history.push("/dashboard/notes"),
         localStorage: () => history.push("/dashboard/local"),
         globalStorage: () => history.push("/dashboard/global"),
+        questions: () => history.push("/dashboard/questions"),
+        posts: () => history.push("/dashboard/posts"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);
@@ -173,19 +174,7 @@ const NavBar = () => {
   };
 
   return (
-    <>
-      {/* <img src="../../images/Uteam.jpeg" className="logo" alt="logo"/> */}
-      {/* <Space direction="vertical">
-        <AntSwitch
-          className="switcher"
-          checkedChildren="Eng"
-          unCheckedChildren="հայ"
-          defaultChecked
-          onChange={changeLanguage}
-        />
-      </Space> */}
-        {/* <Card style={{ backgroundColor: "#aaaaaa" }}> */}
-
+    <Sider>
       <Modal
         open={isModalOpen}
         onOk={() => menu.logout(2)}
@@ -193,18 +182,16 @@ const NavBar = () => {
       >
         <p>Do you want to logout?</p>
       </Modal>
+
       <Menu
-      
         className="navigation"
         onClick={onClick}
-        // style={{ width: 256 }}
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
         mode="inline"
         items={items}
-             />
-              {/* </Card> */}
-    </>
+      />
+    </Sider>
   );
 };
 

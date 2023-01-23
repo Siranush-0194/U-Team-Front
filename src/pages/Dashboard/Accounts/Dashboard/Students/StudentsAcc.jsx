@@ -41,99 +41,11 @@ const StudentAccount = () => {
   }, []);
 
   
-  // const onChange = ({ fileList: newFileList }) => {
-  //   setFileList(newFileList);
-  // };
-  // const onPreview = async (file) => {
-  //   let src = file.url;
-  //   if (!src) {
-  //     src = await new Promise((resolve) => {
-  //       const reader = new FileReader();
-  //       reader.readAsDataURL(file.originFileObj);
-  //       reader.onload = () => resolve(reader.result);
-  //     });
-  //   }
-  //   const image = new Image();
-  //   image.src = src;
-  //   const imgWindow = window.open(src);
-  //   imgWindow?.document.write(image.outerHTML);
-  // };
-
-  // const showDrawer = () => {
-  //   setOpen(true);
-  // };
-  // const onClose = () => {
-  //   setOpen(false);
-  // };
+ 
 
   return (
     <>
-      {/* <div className="account">
-        <Avatar
-          className="avatar"
-          size={64}
-          icon={<UserOutlined onClick={showDrawer} />}
-        />
-      </div>
-
-      <Drawer form={form} title={"Information"} onClose={onClose} open={open}>
-        <Card style={{ backgroundColor: "#aaaaaa" }}>
-          <Avatar
-            size={200}
-            icon={
-              ((<UserOutlined />),
-              (
-                
-                <ImgCrop rotate>
-                  <Upload
-                    action={(file) => {
-                      // const formData = new FormData();
-
-                      // console.log();
-                      // Object.entries(file).forEach(([key, element]) => {
-                      //   // formData.append("avatar", );
-                      //   console.log(key, element);
-                      // });
-
-                      axios
-                        .post("/api/avatar/store", {
-                          avatar: file
-                        }, {
-                          "Content-Type": "multipart/form-data"
-                        })
-                        .then((response) => {
-                          if (response.status === 201) {
-                            setAvatar(response);
-                          }
-                          // console.log(response);
-                        })
-                        .catch(() => setAvatar([]));
-                    }}
-                    shape="round"
-                    name="avatar"
-                    listType="picture-card"
-                    fileList={fileList}
-                    onChange={onChange}
-                    onPreview={onPreview}
-                  >
-                    {fileList.length < 1 && "+ Upload"}
-                  </Upload>
-                </ImgCrop>
-              ))
-            }
-          /> */}
-          {/* <Form
-            // className="info"
-            form={form}
-            labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 14,
-            }}
-            layout="horizontal"
-          > */}
-            {/* <Form.Item > {user.data.firstName + '' + user.data.lastName}</Form.Item> */}
+   
 
             <Form.Item style={{ fontWeight: "bold" }}>
               {user?.firstName +

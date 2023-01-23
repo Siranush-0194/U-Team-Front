@@ -1,33 +1,30 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import AccountsDashboard from '../Accounts/Dashboard/accountsDashboard';
-// import TeacherAccount from '../Accounts/Dashboard/Teacher/TeacherAcc';
-import Account from '../Accounts/Information/Account';
+// Components
+import Account from "../Accounts/Information/Account";
+import Questions from "../Accounts/Dashboard/Questions/questions";
 
 // Pages
 
 const TeacherRoutes = () => {
   return (
-      <>
-        <Route exact path="/dashboard">
-          <div className="welcome">Welocome to Techer dashboard</div>
-          <AccountsDashboard/>
-        </Route>
+    <>
+      <Route exact path="/dashboard">
+        <div className="welcome">Welocome to Techer dashboard</div>
+      </Route>
 
-        <Route patch="/dashboard/account">
-        <Account/>
-        <AccountsDashboard/>
-        </Route>
+      <Route path="/dashboard/account">
+        <Account />
+      </Route>
 
-        <Route path="/dashboard/local">        
-          <AccountsDashboard/>
-         </Route>  
+      <Route path="/dashboard/local">{/*  */}</Route>
 
-         <Route path="/dashboard/global">        
-        <AccountsDashboard/>
-       </Route> 
+      <Route path="/dashboard/global">{/*  */}</Route>
 
-      </>
+      <Route path="/dashboard/questions">
+        <Questions />
+      </Route>
+    </>
   );
 };
 
