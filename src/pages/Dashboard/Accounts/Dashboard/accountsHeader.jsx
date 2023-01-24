@@ -169,8 +169,10 @@ const AccountHeader = () => {
                     <ImgCrop>
                       <Upload
                         action={(avatar) => {
+                         
                           const formData = new FormData();
-                          formData.append("avatar", avatar);
+                          console.log(avatar.name);
+                          formData.append('name', avatar.name);
                           axios({
                             method: "post",
                             url: "/api/avatar/store",
@@ -180,7 +182,7 @@ const AccountHeader = () => {
                             },
                           })
                             .then((response) => setAvatar(response.data))
-                            .catch(() => setAvatar([]));
+                            .catch((error) => setAvatar([]));
                         }}
                         shape="round"
                         name="avatar"

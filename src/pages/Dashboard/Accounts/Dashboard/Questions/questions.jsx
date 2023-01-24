@@ -1,12 +1,14 @@
-import { React, useState } from "react";
-import { FloatButton, Form, Card, Modal, Button, Input } from "antd";
-import axios, { axios_01 } from "../../../../../axios";
-import { useDispatch, useSelector } from "react-redux";
+import { React, useState, useEffect, Upload } from "react";
+import {  Form, Card, Modal, Button, Input, List, Avatar } from "antd";
+import { axios_01 } from "../../../../../axios";
+import {  useSelector } from "react-redux";
+import { EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const Questions = () => {
   const [modal, setModal] = useState({ isOpen: false, data: {} });
-  const [question, setQuestion] = useState();
-  const dispatch = useDispatch();
+  const [question, setQuestion] = useState('');
+
 
   const toggleModal = () => setModal({ ...modal, isOpen: !modal.isOpen });
 
@@ -14,15 +16,28 @@ const Questions = () => {
     return state?.user;
   });
 
+  useEffect(() => {
+    axios_01.get(`/api/question`, modal?.data?.id).then((response) => {
+      setQuestion(response.data.questions)
+    }).catch(() => setQuestion([]));
+  }, []);
+
+  // const handleUpload =  () => 
+  //   const formData = new FormData();
+  //   formData.append('file', file);
+    
   const submit = () => {
     console.log(1);
     if (modal.data.title) {
-      axios_01
-        .post(`/api/question`, { ...modal.data, courseId: user.course.id })
+      axios_01      
+        .post(`/api/question`, { ...modal.data, courseId: user.course.id },{
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then((response) => {
           if (response.status === 201) {
             setQuestion(question.concat(response.data));
-
             setModal({ isOpen: false, data: {} });
           } else {
             console.log(response);
@@ -35,11 +50,13 @@ const Questions = () => {
   };
 
   return (
-    <Card>
+    <Card style={{height:"100%"}}>
       <Form>
         <Button type="primary" onClick={toggleModal}>
           + Question
         </Button>
+
+        
 
         <Modal
           title="Add Question"
@@ -47,6 +64,7 @@ const Questions = () => {
           onOk={submit}
           onCancel={toggleModal}
         >
+ 
           <Input
             style={{ gap: 10 }}
             placeholder="Question Title"
@@ -76,6 +94,42 @@ const Questions = () => {
           />
         </Modal>
       </Form>
+      <div
+      id="scrollableDiv"
+      style={{
+        height: 400,
+        overflow: 'auto',
+        padding: '0 16px',
+        border: '1px solid rgba(140, 140, 140, 0.35)',
+      }}
+    >
+      
+      
+      <Card  >
+      {!question ? (
+        <> </>
+      ) : (
+        <List style={{height:"100%"}}
+          className="demo-loadmore-list"
+          itemLayout="vertical"
+          dataSource={question}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar />}                
+                title={ user.firstName}
+                description={item.title}               
+              />
+              {item.content}
+              {<EditOutlined/>}
+              {<DeleteOutlined/>}              
+            </List.Item>
+          )}
+        />
+      )}
+    </Card>
+ 
+    </div>
     </Card>
   );
 };
