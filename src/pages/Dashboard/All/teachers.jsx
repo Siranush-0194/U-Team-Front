@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Popconfirm} from 'antd';
+import { Table, Popconfirm, Button, Form, Select } from 'antd';
 import { DeleteOutlined} from '@ant-design/icons';
 
 import axios from "../../../axios";
@@ -26,6 +26,10 @@ const Teacher = () => {
   return (
     <div className='institutes'>
       <Route exact path='/dashboard/teachers'>
+      <Form.Item label= "Institute" name='instituteId'>
+        <Select defaultValue="..."    />
+      </Form.Item>
+
         {!teachers
           ? <></>
           : <Table
