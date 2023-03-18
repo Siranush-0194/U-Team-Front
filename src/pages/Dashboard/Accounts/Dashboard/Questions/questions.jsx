@@ -172,7 +172,6 @@ const Questions = () => {
       <div
         id="scrollableDiv"
         style={{
-          height: 400,
           overflow: "auto",
           padding: "0 16px",
           border: "1px solid rgba(140, 140, 140, 0.35)",
@@ -183,10 +182,7 @@ const Questions = () => {
             <> </>
           ) : (
             <List
-            style={{
-              height: 650,
-              width: 500
-          }}
+              style={{ height: "100%" }}
               className="demo-loadmore-list"
               itemLayout="vertical"
               dataSource={question}
@@ -194,11 +190,10 @@ const Questions = () => {
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar />}
-                    title={item?.user?.firstName}
-                    description={item?.title}
+                    title={user.firstName}
+                    description={item.title}
                   />
-                  {item?.content}                 
-                  {<img src={item.media} alt="" />}
+                  {item.content}
                 </List.Item>
               )}
             />
