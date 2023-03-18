@@ -7,13 +7,16 @@ import Notes from "../Accounts/Dashboard/Notes/Notes";
 import GlobalStorage from "../Accounts/Dashboard/Storage/GlobalStorage";
 import Account from "../Accounts/Information/Account";
 import Questions from "../Accounts/Dashboard/Questions/questions";
+import StudentForum from '../Accounts/Dashboard/Students/Forum';
+import Post from '../Accounts/Dashboard/Posts/posts';
+import LocalStorage from '../Accounts/Dashboard/Storage/LocalStorage';
 
 // Pages
 const StudentRoutes = () => {
   return (
     <>
       <Route exact path="/dashboard">
-        <div className="welcome">Welocome to Student dashboard</div>
+       <StudentForum/>
       </Route>
 
       <Route path="/dashboard/account">
@@ -33,7 +36,7 @@ const StudentRoutes = () => {
       </Route>
 
       <Route path="/dashboard/local">
-        {/* TODO */}
+        <LocalStorage/>
       </Route>
 
       <Route path="/dashboard/global">
@@ -44,7 +47,9 @@ const StudentRoutes = () => {
         <Questions />
       </Route>
 
-      <Route path="/dashboard/posts">{/* TODO */}</Route>
+      <Route path="/dashboard/posts">
+      <Post/>  
+      </Route>
     </>
   );
 };
