@@ -7,7 +7,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 
 const Questions = () => {
   const [modal, setModal] = useState({ isOpen: false, data: {} });
-  const [question, setQuestion] = useState('');
+  const [question, setQuestion] = useState([]);
 
 
   const toggleModal = () => setModal({ ...modal, isOpen: !modal.isOpen });
@@ -17,7 +17,7 @@ const Questions = () => {
   });
 
   useEffect(() => {
-    axios_01.get(`/api/question`, modal?.data?.id).then((response) => {
+    axios_01.get(`/api/question?courseId=${user.course.id}`).then((response) => {
       setQuestion(response.data.questions)
     }).catch(() => setQuestion([]));
   }, []);
@@ -37,7 +37,8 @@ const Questions = () => {
         })
         .then((response) => {
           if (response.status === 201) {
-            setQuestion(question.concat(response.data));
+            question.unshift(response.data);
+            setQuestion(question);
             setModal({ isOpen: false, data: {} });
           } else {
             console.log(response);
@@ -121,8 +122,8 @@ const Questions = () => {
                 description={item.title}               
               />
               {item.content}
-              {<EditOutlined/>}
-              {<DeleteOutlined/>}              
+              {/* {<EditOutlined/>}
+              {<DeleteOutlined/>}               */}
             </List.Item>
           )}
         />
