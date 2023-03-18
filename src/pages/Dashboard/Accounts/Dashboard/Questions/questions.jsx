@@ -183,7 +183,10 @@ const Questions = () => {
             <> </>
           ) : (
             <List
-              style={{ height: "100%" }}
+            style={{
+              height: 650,
+              width: 500
+          }}
               className="demo-loadmore-list"
               itemLayout="vertical"
               dataSource={question}
@@ -191,10 +194,11 @@ const Questions = () => {
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar />}
-                    title={user.firstName}
-                    description={item.title}
+                    title={item?.user?.firstName}
+                    description={item?.title}
                   />
-                  {item.content}
+                  {item?.content}                 
+                  {<img src={item.media} alt="" />}
                 </List.Item>
               )}
             />
