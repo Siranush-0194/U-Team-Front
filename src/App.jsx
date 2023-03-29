@@ -19,7 +19,7 @@ import Login from "./components/Login";
 // Private
 import Dashboard from "./pages/Dashboard/index";
 import ResetPassword from "./pages/Dashboard/Invitation/resetPass";
-import AccountHeader from './pages/Dashboard/Accounts/Dashboard/accountsHeader';
+import AccountHeader from "./pages/Dashboard/Accounts/Dashboard/accountsHeader";
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -68,10 +68,6 @@ const App = () => {
       {/* START PUBLIC ROUTES */}
       <PublicRoute exact path="/">
         <div className="App">
-          <header>
-            ok
-          </header>
-
           <section>
             <Login />
           </section>

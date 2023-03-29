@@ -10,6 +10,7 @@ import Questions from "../Accounts/Dashboard/Questions/questions";
 import StudentForum from '../Accounts/Dashboard/Students/Forum';
 import Post from '../Accounts/Dashboard/Posts/posts';
 import LocalStorage from '../Accounts/Dashboard/Storage/LocalStorage';
+import Tags from '../Accounts/Dashboard/Tags/Tags';
 
 // Pages
 const StudentRoutes = () => {
@@ -49,6 +50,10 @@ const StudentRoutes = () => {
 
       <Route path="/dashboard/posts">
       <Post/>  
+      </Route>
+      
+      <Route path="/dashboard/questions">
+        <Tags/>
       </Route>
     </>
   );

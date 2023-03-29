@@ -1,48 +1,71 @@
-import  { React, useState,useEffect } from 'react';
+import { React, useState, useCallback, useEffect } from "react";
 import { axios_01 } from "../../../../../axios";
-import {  useSelector } from "react-redux";
-import { Card,List } from 'antd';
-
+import { useSelector } from "react-redux";
+import { Card, List, Typography } from "antd";
+import CommentForm from "../Comments/Comments";
+import useRandomMerge from '../../../../../hooks/useRandomMerge';
 
 const StudentForum = () => {
-    const [modal, setModal] = useState({ isOpen: false, data: {} });
-  const [question, setQuestion] = useState('');
-  const toggleModal = () => setModal({ ...modal, isOpen: !modal.isOpen });
+  const [data, setData] = useState([]);
+  
+  const randomMerge = useRandomMerge();
   const user = useSelector(function (state) {
     return state?.user;
   });
-    useEffect(() => {
-        axios_01.get(`/api/question?courseId=${user.course.id}`).then((response) => {
-          console.log(response.data.questions);
-          setQuestion(response.data.questions)
-        }).catch(() => setQuestion([]));
-      }, []);
-    return (
-        <Card  >
-        {!question ? (
-          <> </>
-        ) : (
-          <List style={{height:"100%"}}
-            className="demo-loadmore-list"
-            itemLayout="vertical"
-            dataSource={question}
-            renderItem={(item) => (
-              <List.Item>
-                <List.Item.Meta
-                //   avatar={<Avatar />}                
-                  title={ item.userId}
-                  description={item.title}               
-                />
-                {item.content}
-                {/* {<EditOutlined/>} */}
-                {/* {<DeleteOutlined/>}               */}
-              </List.Item>
-            )}
-          />
-        )}
-      </Card>
-    )
-}
 
+  const getData = useCallback(() => {
+    const getQuestions = new Promise((resolve, reject) => {
+      axios_01
+        .get(`/api/question?courseId=${user.course.id}`)
+        .then((response) => resolve(response.data.questions))
+        .catch(() => resolve([]));
+    });
+
+    const getPosts = new Promise((resolve, reject) => {
+      axios_01
+        .get(`/api/post?courseId=${user.course.id}`)
+        .then((response) => resolve(response.data.posts))
+        .catch(() => resolve([]));
+    });
+
+    return Promise.all([getQuestions, getPosts]).then((data) => {
+      return Promise.resolve(randomMerge(data[0], data[1]));
+    });
+  }, [user.course.id, randomMerge]);
+
+  useEffect(() => {
+    getData().then(data => setData(data))
+  }, []);
+
+  return (
+    <Card>
+      {data &&
+        <List
+          className="demo-loadmore-list"
+          itemLayout="vertical"
+          dataSource={data}
+          renderItem={(item) => (
+            <List.Item>
+              <Card>
+                <List.Item.Meta
+                  title={item.user.firstName}
+                  description={item.title}
+                />
+                
+                <Typography>
+                  <Typography.Text strong>{item.content}</Typography.Text>
+                </Typography>
+                
+                <img src={item.media} alt="logo" style={{ width: 300, height: 300, objectFit: 'cover' }} />
+
+                {item.commentsUrl ? <CommentForm question={item} /> : null}
+              </Card>
+            </List.Item>
+          )}
+        />
+      }
+    </Card>
+  );
+};
 
 export default StudentForum;

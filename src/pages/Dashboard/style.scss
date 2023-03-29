@@ -1,5 +1,7 @@
 .dashboard {
   display: flex;
+  background-color: #F4F4F4;
+  border-color: red;
 
   aside {
     height: 100vh;
@@ -9,3 +11,7 @@
     }
   }
 }
+.ant-menu{
+  background-color:#F4F4F4;  
+}
+

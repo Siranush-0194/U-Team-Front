@@ -15,6 +15,7 @@ import {
   DatabaseOutlined,
   QuestionOutlined,
   BarsOutlined,
+  TagsOutlined
 } from "@ant-design/icons";
 import axios from "../../axios";
 import { useTranslation } from "react-i18next";
@@ -63,6 +64,7 @@ const NavBar = () => {
         getItem("Gloabal Storage", "globalStorage", <DatabaseOutlined />),
         getItem("Questions", "questions", <QuestionOutlined />),
         getItem("Posts", "posts", <BarsOutlined />),
+        getItem("Tags", "tags", <TagsOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
       teacher: [
@@ -121,6 +123,7 @@ const NavBar = () => {
         globalStorage: () => history.push("/dashboard/global"),
         questions: () => history.push("/dashboard/questions"),
         posts: () => history.push("/dashboard/posts"),
+        tags: () => history.push("/dashboard/tags"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);

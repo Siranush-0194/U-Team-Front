@@ -1,5 +1,14 @@
 import { React, useState, useEffect } from "react";
-import { Form, Card, Modal, Button, Input, List, Avatar } from "antd";
+import {
+  Form,
+  Card,
+  Modal,
+  Button,
+  Input,
+  List,
+  Avatar,
+  Pagination,
+} from "antd";
 import { axios_01 } from "../../../../../axios";
 import { useSelector } from "react-redux";
 import { Upload, message } from "antd";
@@ -19,11 +28,10 @@ const Questions = () => {
   const [question, setQuestion] = useState([]);
   const [file, setFile] = useState(null);
 
-  
   const user = useSelector(function (state) {
     return state?.user;
   });
-  
+
   useEffect(() => {
     axios_01
       .get(`/api/question?courseId=${user.course.id}`)
@@ -36,7 +44,7 @@ const Questions = () => {
   const toggleModal = () => {
     setModal({ ...modal, isOpen: !modal.isOpen });
     setFile(null);
-  }
+  };
 
   const submit = () => {
     if (modal.data.title) {
@@ -48,15 +56,11 @@ const Questions = () => {
       formData.append("courseId", user.course.id);
 
       axios_01
-        .post(
-          `/api/question`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
+        .post(`/api/question`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           if (response.status === 201) {
             question.unshift(response.data);
@@ -83,7 +87,7 @@ const Questions = () => {
 
     setFile({
       ...file,
-      file: data.file
+      file: data.file,
     });
   };
 
@@ -162,7 +166,11 @@ const Questions = () => {
             maxCount={1}
           >
             {file ? (
-              <img src={file?.file?.preview} alt="media" style={{ width: "100%" }} />
+              <img
+                src={file?.file?.preview}
+                alt="media"
+                style={{ width: "100%" }}
+              />
             ) : file?.fileList?.length >= 1 ? null : (
               "+ Upload"
             )}
@@ -182,7 +190,10 @@ const Questions = () => {
             <> </>
           ) : (
             <List
-              style={{ height: "100%" }}
+              style={{
+                height: 650,
+                width: 500,
+              }}
               className="demo-loadmore-list"
               itemLayout="vertical"
               dataSource={question}
@@ -190,16 +201,18 @@ const Questions = () => {
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar />}
-                    title={user.firstName}
+                    title={item.user.firstName}
                     description={item.title}
                   />
                   {item.content}
+                  {<img src={item.media} alt="" />}
                 </List.Item>
               )}
             />
           )}
         </Card>
       </div>
+      <Pagination defaultCurrent={6} total={500} />
     </Card>
   );
 };
