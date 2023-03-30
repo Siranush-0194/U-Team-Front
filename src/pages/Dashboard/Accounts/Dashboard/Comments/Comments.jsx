@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { axios_01 } from "../../../../../axios";
-import { Input, Button, Collapse, List, Upload, message } from "antd";
+import { Input, Button, Collapse, List, Upload, Image, message } from "antd";
+import useGetBase64 from "../../../../../hooks/useGetBase64";
+
+import "./index.scss";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
-
-const getBase64 = (data) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.readAsDataURL(data);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-};
 
 function CommentForm({ question, onClick }) {
   const [comment, setComment] = useState("");
@@ -24,17 +17,22 @@ function CommentForm({ question, onClick }) {
   const [active, setActive] = useState([]);
   const [file, setFile] = useState(null);
 
+  const getBase64 = useGetBase64();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!comment?.length) return;
+    if (!comment?.length) {
+      message.error("Please type comment");
+
+      return;
+    }
 
     const formData = new FormData();
 
     formData.append("content", comment);
     formData.append("questionId", question.id);
-    console.log(comments.media);
-    formData.append("media", comments.media)
+    file && formData.append("media", file.file.originFileObj);
 
     axios_01
       .post(`/api/comment`, formData, {
@@ -45,63 +43,51 @@ function CommentForm({ question, onClick }) {
       .then((response) => {
         if (response.data.id) {
           setComment("");
-          console.log(response.data);
+          setFile(null);
+
+          setComments({
+            ...comments,
+            data: [response.data].concat(comments.data),
+          });
         }
       });
   };
 
-  const getComments = useCallback(() => {
-    if (!comments.next) return;
+  const getComments = useCallback((commentsData) => {
+    if (!commentsData.next) return;
 
-    axios_01.get(comments.next).then((data) => {
+    axios_01.get(commentsData.next).then((data) => {
       setComments({
         next: data.data.nextUrl,
-        data: comments.data.concat(data.data.comments),
+        data: commentsData.data.concat(data.data.comments),
       });
     });
-  }, [comments]);
-
+  }, []);
 
   useEffect(() => {
     if (active.length) {
-      getComments();
+      getComments(comments);
     }
-  }, [getComments, active.length]);
+
+    return () => {
+      setComments({
+        data: [],
+        next: question.commentsUrl,
+      });
+    };
+  }, [active.length]);
 
   const handleUpload = async (data) => setFile(data.file);
   const handlePreview = ({ fileList }) => setFile({ ...file, fileList });
   const handleChange = async (data) => {
     if (!data.file.url && !data.file.preview) {
-      data.file.preview = await getBase64(data.file.originFileObj);
+      data.file.preview = await getBase64.init(data.file.originFileObj);
     }
 
     setFile({
       ...file,
       file: data.file,
     });
-  };
-
-  const beforeUpload = (file) => {
-    const isJpgOrPng = [
-      "image/jpeg",
-      "image/jpg",
-      "image/gif",
-      "video/mp4",
-      "video/ogg",
-      "image/png",
-    ].includes(file.type);
-
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-
-    const isLt9M = file.size / 1024 / 1024 < 9;
-
-    if (!isLt9M) {
-      message.error("Image must smaller than 9MB!");
-    }
-
-    return isJpgOrPng && isLt9M;
   };
 
   return (
@@ -119,7 +105,17 @@ function CommentForm({ question, onClick }) {
               <List.Item
                 key={item.id}
                 actions={[]}
-                extra={<img width={100} alt="logo" src={item.media} />}
+                extra={
+                  item.media.split("comment")[1] ? (
+                    <Image
+                      width={100}
+                      height={100}
+                      style={{ objectFit: "cover" }}
+                      alt="logo"
+                      src={item.media}
+                    />
+                  ) : null
+                }
               >
                 <List.Item.Meta
                   // avatar={<Avatar src={item.user} />}
@@ -130,42 +126,57 @@ function CommentForm({ question, onClick }) {
               </List.Item>
             )}
           />
+
+          {comments.next ? (
+            <Button
+              style={{ marginTop: 10 }}
+              type="primary"
+              onClick={() => getComments(comments)}
+            >
+              Load More
+            </Button>
+          ) : null}
         </Panel>
       </Collapse>
 
-      <TextArea
-        showCount
-        maxLength={100}
-        style={{ marginTop: 10, height: 120, resize: "none" }}
-        onChange={(e) => setComment(e.target.value)}
-        placeholder="disable resize"
-      />
-      <Upload
-        style={{ marginTop: 10 }}
-        name="media"
-        listType="picture-card"
-        className="media-uploader"
-        beforeUpload={beforeUpload}
-        customRequest={handleUpload}
-        onChange={handleChange}
-        onPreview={handlePreview}
-        fileList={file?.fileList || []}
-        maxCount={1}
-      >
-        {file ? (
-          <img
-            src={file?.file?.preview}
-            alt="media"
-            style={{ width: "100%" }}
-          />
-        ) : file?.fileList?.length >= 1 ? null : (
-          "+ Upload"
-        )}
-      </Upload>
+      <div className="form-comments">
+        <div className="form-comments__content">
+          <Upload
+            name="media"
+            listType="picture-card"
+            className="media-uploader"
+            beforeUpload={getBase64.beforeUpload}
+            customRequest={handleUpload}
+            onChange={handleChange}
+            onPreview={handlePreview}
+            fileList={file?.fileList || []}
+            maxCount={1}
+          >
+            {file ? (
+              <img
+                src={file?.file?.preview}
+                alt="media"
+                style={{ width: "100%" }}
+              />
+            ) : file?.fileList?.length >= 1 ? null : (
+              "+ Upload"
+            )}
+          </Upload>
 
-      <Button style={{ marginTop: 10 }} type="primary" onClick={handleSubmit}>
-        Submit
-      </Button>
+          <TextArea
+            showCount
+            className="form-comments__content_textarea"
+            maxLength={100}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="disable resize"
+          />
+        </div>
+
+        <Button style={{ marginTop: 10 }} type="primary" onClick={handleSubmit}>
+          Submit
+        </Button>
+      </div>
     </>
   );
 }

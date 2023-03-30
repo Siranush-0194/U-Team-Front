@@ -2,24 +2,16 @@ import { React, useState, useEffect } from "react";
 import { Form, Card, Modal, Button, Input, List, Avatar } from "antd";
 import { axios_01 } from "../../../../../axios";
 import { useSelector } from "react-redux";
-import { Upload, message } from "antd";
-
-const getBase64 = (data) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.readAsDataURL(data);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-};
+import { Upload } from "antd";
+import useGetBase64 from '../../../../../hooks/useGetBase64';
 
 const Posts = () => {
   const [modal, setModal] = useState({ isOpen: false, data: {} });
   const [post, setPost] = useState([]);
   const [file, setFile] = useState(null);
 
-  
+  const getBase64 = useGetBase64();
+
   const user = useSelector(function (state) {
     return state?.user;
   });
@@ -78,36 +70,13 @@ const Posts = () => {
   const handlePreview = ({ fileList }) => setFile({ ...file, fileList });
   const handleChange = async (data) => {
     if (!data.file.url && !data.file.preview) {
-      data.file.preview = await getBase64(data.file.originFileObj);
+      data.file.preview = await getBase64.init(data.file.originFileObj);
     }
 
     setFile({
       ...file,
       file: data.file
     });
-  };
-
-  const beforeUpload = (file) => {
-    const isJpgOrPng = [
-      "image/jpeg",
-      "image/jpg",
-      "image/gif",
-      "video/mp4",
-      "video/ogg",
-      "image/png",
-    ].includes(file.type);
-
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-
-    const isLt9M = file.size / 1024 / 1024 < 9;
-
-    if (!isLt9M) {
-      message.error("Image must smaller than 9MB!");
-    }
-
-    return isJpgOrPng && isLt9M;
   };
 
   return (
@@ -154,7 +123,7 @@ const Posts = () => {
             name="media"
             listType="picture-card"
             className="media-uploader"
-            beforeUpload={beforeUpload}
+            beforeUpload={getBase64.beforeUpload}
             customRequest={handleUpload}
             onChange={handleChange}
             onPreview={handlePreview}

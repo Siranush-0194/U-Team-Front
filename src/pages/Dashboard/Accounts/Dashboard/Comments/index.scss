@@ -1,0 +1,22 @@
+.form-comments { 
+    &__content {
+        display: flex;
+        gap: 5px;
+
+        .media-uploader {
+            width: 20%;
+            margin-top: 10px;
+
+            .ant-upload-select {
+                height: 120px !important;
+                width: 120px !important;
+            }
+        }
+
+        &_textarea {
+            margin-top: 10px;
+            height: 120px;
+            width: 100%;
+        }
+    }
+}
