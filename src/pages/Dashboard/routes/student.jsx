@@ -7,17 +7,16 @@ import Notes from "../Accounts/Dashboard/Notes/Notes";
 import GlobalStorage from "../Accounts/Dashboard/Storage/GlobalStorage";
 import Account from "../Accounts/Information/Account";
 import Questions from "../Accounts/Dashboard/Questions/questions";
-import StudentForum from '../Accounts/Dashboard/Students/Forum';
-import Post from '../Accounts/Dashboard/Posts/posts';
-import LocalStorage from '../Accounts/Dashboard/Storage/LocalStorage';
-import Tags from '../Accounts/Dashboard/Tags/Tags';
+import StudentForum from "../Accounts/Dashboard/Students/Forum";
+import Post from "../Accounts/Dashboard/Posts/posts";
+import LocalStorage from "../Accounts/Dashboard/Storage/LocalStorage";
 
 // Pages
 const StudentRoutes = () => {
   return (
     <>
       <Route exact path="/dashboard">
-       <StudentForum/>
+        <StudentForum />
       </Route>
 
       <Route path="/dashboard/account">
@@ -37,7 +36,7 @@ const StudentRoutes = () => {
       </Route>
 
       <Route path="/dashboard/local">
-        <LocalStorage/>
+        <LocalStorage />
       </Route>
 
       <Route path="/dashboard/global">
@@ -49,11 +48,7 @@ const StudentRoutes = () => {
       </Route>
 
       <Route path="/dashboard/posts">
-      <Post/>  
-      </Route>
-      
-      <Route path="/dashboard/questions">
-        <Tags/>
+        <Post />
       </Route>
     </>
   );
