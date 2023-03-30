@@ -53,26 +53,6 @@ const AccountHeader = () => {
     i18n.changeLanguage(i18n.language === "am" ? "en" : "am");
   };
 
-  const onChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
-
-  const onPreview = async (file) => {
-    let src = file.url;
-
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  };
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await (file.originFileObj);

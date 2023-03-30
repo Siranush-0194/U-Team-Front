@@ -14,9 +14,8 @@ import { useSelector } from 'react-redux';
 const AdminInvitation = () => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
-  const [messages,setMessages] = useState();
   const [messageApi, contextHolder] = message.useMessage();
-  const [type, setType] = useState("admin");
+  const [type] = useState("admin");
 
   const rules = useSelector(function (state) {
     return state.rules;

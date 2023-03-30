@@ -58,6 +58,7 @@ const StudentForum = () => {
                 
                 <img src={item.media} alt="logo" style={{ width: 300, height: 300, objectFit: 'cover' }} />
 
+               
                 {item.commentsUrl ? <CommentForm question={item} /> : null}
               </Card>
             </List.Item>

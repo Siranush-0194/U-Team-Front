@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Card, message } from "antd";
+import { Button, Checkbox, Form, Input, Card } from "antd";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
@@ -8,7 +8,6 @@ import "./style.scss";
 
 function Login() {
   const dispatch = useDispatch();
-  const [messageApi, contextHolder] = message.useMessage();
   const { t } = useTranslation();
 
   const [form] = Form.useForm();
@@ -20,13 +19,6 @@ function Login() {
   const rule = useSelector(function (state) {
     return state.rule;
   });
-
-  const error = (message) => {
-    messageApi.open({
-      type: "error",
-      content: message,
-    });
-  };
 
   const onFinish = async (values) => {
     try {
@@ -129,7 +121,6 @@ function Login() {
           </Form.Item>
 
           <Form.Item>
-            {contextHolder}
             <Button
               type="primary"
               htmlType="submit"

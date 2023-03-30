@@ -18,7 +18,6 @@ import {
   TagsOutlined
 } from "@ant-design/icons";
 import axios from "../../axios";
-import { useTranslation } from "react-i18next";
 import "../../i18n";
 import "./App.scss";
 
@@ -29,13 +28,8 @@ function getItem(label, key, icon, children, type) {
 const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
   const { Sider } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { i18n } = useTranslation();
-  const rules = useSelector(function (state) {
-    return state.rules;
-  });
   const rule = useSelector(function (state) {
     return state.rule;
   });
@@ -95,8 +89,6 @@ const NavBar = () => {
         departments: () => history.push("/dashboard/departments"),
         courses: () => history.push("/dashboard/courses"),
         groups: () => history.push("/dashboard/groups"),
-        logout: () => history.push("/"),
-
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);
@@ -117,7 +109,6 @@ const NavBar = () => {
         teachers: () => history.push("/dashboard/teachers"),
         students: () => history.push("/dashboard/students"),
         accounts: () => history.push("/dashboard/account"),
-        logout: () => history.push("/"),
         notes: () => history.push("/dashboard/notes"),
         localStorage: () => history.push("/dashboard/local"),
         globalStorage: () => history.push("/dashboard/global"),
@@ -141,7 +132,6 @@ const NavBar = () => {
       },
       teacher: {
         home: () => history.push("/dashboard"),
-        logout: () => history.push("/"),
         teachers: () => history.push("/dashboard/teachers"),
         students: () => history.push("/dashboard/students"),
         accounts: () => history.push("/dashboard/account"),
@@ -168,7 +158,7 @@ const NavBar = () => {
     };
 
     return menuData[rule];
-  }, [rule]);
+  }, [rule, history, setIsModalOpen, dispatch]);
 
   const onClick = (e) => {
     if (menu[e.key] && typeof menu[e.key] === "function") {

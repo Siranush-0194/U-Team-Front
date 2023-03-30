@@ -1,8 +1,7 @@
 
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from '../../../axios';
-import { useSelector } from 'react-redux';
 import {
   Form,
   Input,
@@ -13,9 +12,7 @@ import {
   message
 } from 'antd';
 
-import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
 
 const TeacherInvitation = () => {
   const { t } = useTranslation();
@@ -26,7 +23,6 @@ const TeacherInvitation = () => {
   const [courses, setCourses] = useState(null);
   const [groups, setGroups] = useState(null);
   const [subgroup, setSubGroup] = useState(null);
-  const [type, setType] = useState("admin");
   const [messageApi, contextHolder] = message.useMessage();
 
 
@@ -97,14 +93,6 @@ const TeacherInvitation = () => {
       }).catch(() => setDepartments([]));
     }
   };
-
-  const rules = useSelector(function (state) {
-    return state.rules;
-  });
-
-  const rule = useMemo(() => {
-    return rules[type];
-  }, [type, rules]);
   
   const onFinish = async () => {
     const values = await form.validateFields();

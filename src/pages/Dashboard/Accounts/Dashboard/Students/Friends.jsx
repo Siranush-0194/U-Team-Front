@@ -1,17 +1,15 @@
 import { React } from "react";
 import { useEffect, useState } from "react";
+
+import { Avatar, List, Card } from "antd";
+import { useSelector } from "react-redux";
+
 import axios from "../../../../../axios";
 
-import { Avatar, List, Card, Table } from "antd";
 import "../../style.scss";
-import { useParams, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { UserOutlined } from "@ant-design/icons";
 
 const Friends = () => {
   const [students, setStudents] = useState(null);
-  const { courseId } = useParams();
-  //   const form = Form.useForm()
 
   const user = useSelector(function (state) {
     return state?.user;

@@ -116,8 +116,11 @@ const Questions = () => {
 
   return (
     <Card style={{ height: "100%" }}>
-      <Form>
-        <Button type="primary" onClick={toggleModal}>
+      <Form style={{marginTop:10}}>
+        
+        <Button
+        
+        type="primary" onClick={toggleModal}>
           + Question
         </Button>
 
@@ -128,7 +131,8 @@ const Questions = () => {
           onCancel={toggleModal}
         >
           <Input
-            style={{ gap: 10 }}
+        style={{marginTop:10}}
+
             placeholder="Question Title"
             value={modal?.data?.title}
             onChange={(event) => {
@@ -142,6 +146,8 @@ const Questions = () => {
             }}
           />
           <Input
+        style={{marginTop:10}}
+
             placeholder="Content"
             value={modal?.data?.content}
             onChange={(event) => {
@@ -154,7 +160,27 @@ const Questions = () => {
               });
             }}
           />
+
+
+<Input
+        style={{marginTop:10}}
+
+            placeholder="Tags"
+            value={modal?.data?.tags}
+            onChange={(event) => {
+              setModal({
+                ...modal,
+                data: {
+                  ...modal.data,
+                  tags: event.target.value,
+                },
+              });
+            }}
+          />
+
           <Upload
+        style={{marginTop:10}}
+
             name="media"
             listType="picture-card"
             className="media-uploader"
