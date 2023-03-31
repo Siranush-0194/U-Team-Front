@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import { Upload } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
 import Tags from "../../../../../components/Tags/index";
+import Item from "../../../../../components/Other/Item";
+import login from "../../../../../components/Login";
 
 const Questions = () => {
   const [modal, setModal] = useState({ isOpen: false, data: {} });
@@ -198,20 +200,7 @@ const Questions = () => {
               className="demo-loadmore-list"
               itemLayout="vertical"
               dataSource={question}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar />}
-                    title={item.user.firstName}
-                    description={item.title}
-                  />
-                  <Tags lists={item.tags} />
-
-                  <div className="content">{item.content}</div>
-
-                  <Image width="100%" style={{ objectFit: 'cover' }} src={item.media} alt="" />
-                </List.Item>
-              )}
+              renderItem={(item) => <Item item={item} />}
             />
           )}
         </Card>
