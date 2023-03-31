@@ -6,9 +6,7 @@ import {
   Button,
   Input,
   List,
-  Avatar,
   Pagination,
-  Image
 } from "antd";
 import { axios_01 } from "../../../../../axios";
 import { useSelector } from "react-redux";
@@ -16,7 +14,7 @@ import { Upload } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
 import Tags from "../../../../../components/Tags/index";
 import Item from "../../../../../components/Other/Item";
-import login from "../../../../../components/Login";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const Questions = () => {
   const [modal, setModal] = useState({ isOpen: false, data: {} });
@@ -51,21 +49,29 @@ const Questions = () => {
       formData.append("title", modal.data.title);
       formData.append("content", modal.data.content);
       file?.file?.originFileObj && formData.append("media", file?.file?.originFileObj);
-      formData.append("courseId", user.course.id);
+      !modal.data.id && formData.append("courseId", user.course.id);
 
-      modal?.data?.tags.forEach((tag) => {
+      (modal?.data?.tags || []).forEach((tag) => {
         formData.append("tags[]", tag);
       });
 
       axios_01
-        .post(`/api/question`, formData, {
+        .post(`/api/question${modal.data.id ? `/${modal.data.id}` : ''}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((response) => {
           if (response.status === 201) {
-            question.unshift(response.data);
+            if (modal.data.id) {
+              for (let i = 0; i < question.length; i++) {
+                if (modal.data.id === response.data.id) {
+                  question[i] = response.data;
+                }
+              }
+            } else {
+              question.unshift(response.data);
+            }
             setQuestion(question);
             setModal({ isOpen: false, data: {} });
 
@@ -143,8 +149,8 @@ const Questions = () => {
           <Form.Item>
             <Tags
               name="tags"
+              list={modal.data.tags}
               onChange={(values) => {
-                console.log(values)
                 setModal({
                   ...modal,
                   data: {
@@ -168,11 +174,11 @@ const Questions = () => {
               fileList={file?.fileList || []}
               maxCount={1}
             >
-              {file ? (
+              {file || (modal.data?.id && modal.data?.media?.split('question')[1]) ? (
                 <img
-                  src={file?.file?.preview}
+                  src={file?.file?.preview || modal.data?.media}
                   alt="media"
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", height: '100%', borderRadius: '6px' }}
                 />
               ) : file?.fileList?.length >= 1 ? null : (
                 "+ Upload"
@@ -189,22 +195,33 @@ const Questions = () => {
           padding: "0 16px",
         }}
       >
-        <Card>
           {!question ? (
             <> </>
           ) : (
             <List
-              style={{
-                height: 650,
-                width: 500,
-              }}
               className="demo-loadmore-list"
               itemLayout="vertical"
               dataSource={question}
-              renderItem={(item) => <Item item={item} />}
+              renderItem={(item) => {
+                  return <Card style={{ marginBottom: 10 }} actions={[
+                    <EditOutlined
+                        key="edit"
+                        style={{ color: 'blue' }}
+                        onClick={() => setModal({
+                          isOpen: true,
+                          data: {
+                            ...item,
+                            tags: item.tags.map(t => t.name)
+                          },
+                        })}
+                    />,
+                    <DeleteOutlined key="delete" style={{ color: 'red' }} />,
+                  ]}>
+                    <Item item={item} mediaKey={'question'} />
+                  </Card>
+              }}
             />
-          )}
-        </Card>
+            )}
       </div>
       <Pagination defaultCurrent={6} total={500} />
     </Card>

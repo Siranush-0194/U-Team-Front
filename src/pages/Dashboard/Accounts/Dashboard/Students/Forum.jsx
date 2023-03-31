@@ -40,7 +40,7 @@ const StudentForum = () => {
           dataSource={data}
           renderItem={(item) => (
               <Card key={item.id}>
-                <Item item={item} />
+                <Item item={item} mediaKey={'question'} />
               </Card>
           )}
         />

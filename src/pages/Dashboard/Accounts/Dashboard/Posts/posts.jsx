@@ -150,10 +150,6 @@ const Posts = () => {
             <> </>
           ) : (
             <List
-            style={{
-              height: 650,
-              width: 500
-          }}
               className="demo-loadmore-list"
               itemLayout="vertical"
               dataSource={post}

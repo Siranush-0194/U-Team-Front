@@ -19,7 +19,6 @@ const Friends = () => {
     axios
       .get(`/api/course/get/${user.course.id}/students`)
       .then((response) => {
-        console.log(response.data);
         setStudents(response.data);
         // console.log(response.data[0]);
       })

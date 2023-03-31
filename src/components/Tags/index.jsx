@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { axios_01 } from "../../axios";
 import { useSelector } from "react-redux";
 
-const Tags = ({ lists, onChange }) => {
+const Tags = ({ list, lists, onChange }) => {
   const [tags, setTags] = useState([]);
 
   const user = useSelector(function (state) {
@@ -32,6 +32,7 @@ const Tags = ({ lists, onChange }) => {
       style={{
         width: "100%",
       }}
+      defaultValue={list}
       placeholder="Tags Mode"
       onChange={onChange}
       options={tags}
