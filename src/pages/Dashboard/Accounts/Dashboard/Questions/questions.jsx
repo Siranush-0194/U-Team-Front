@@ -45,15 +45,15 @@ const Questions = () => {
 
   const submit = () => {
     if (modal.data.title) {
+      console.log(modal.data)
       const formData = new FormData();
 
       formData.append("title", modal.data.title);
       formData.append("content", modal.data.content);
-      formData.append("media", file.file.originFileObj);
+      file?.file?.originFileObj && formData.append("media", file?.file?.originFileObj);
       formData.append("courseId", user.course.id);
 
-      // modal.data.tags
-      [1, 2].forEach((tag) => {
+      modal?.data?.tags.forEach((tag) => {
         formData.append("tags[]", tag);
       });
 
@@ -144,6 +144,7 @@ const Questions = () => {
             <Tags
               name="tags"
               onChange={(values) => {
+                console.log(values)
                 setModal({
                   ...modal,
                   data: {

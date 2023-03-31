@@ -39,11 +39,9 @@ const StudentForum = () => {
           itemLayout="vertical"
           dataSource={data}
           renderItem={(item) => (
-            <List.Item>
-              <Card>
+              <Card key={item.id}>
                 <Item item={item} />
               </Card>
-            </List.Item>
           )}
         />
       )}

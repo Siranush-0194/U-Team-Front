@@ -8,7 +8,6 @@ import axios from "./axios";
 
 import "./App.scss";
 import "./i18n";
-import { useTranslation } from "react-i18next";
 
 // Components
 import Login from "./components/Login";
@@ -22,7 +21,6 @@ import ResetPassword from "./pages/Dashboard/Invitation/resetPass";
 import AccountHeader from "./pages/Dashboard/Accounts/Dashboard/accountsHeader";
 
 const App = () => {
-  const { i18n } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
 

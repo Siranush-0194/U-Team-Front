@@ -146,8 +146,9 @@ const AccountHeader = () => {
             onClose={onClose}
             open={open}
           >
-            <Card style={{ backgroundColor: "#aaaaaa" }}>
+            <Card  style={{ backgroundColor: "#aaaaaa" }}>
               <Avatar
+                  className="avatar-edit"
                 size={200}
                 src={imageUrl}
                 icon={
