@@ -23,7 +23,7 @@ import AccountHeader from "./pages/Dashboard/Accounts/Dashboard/accountsHeader";
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
+//pordzarkum
   const query = useQuery();
   const [token] = useState(query.get("token"));
 
