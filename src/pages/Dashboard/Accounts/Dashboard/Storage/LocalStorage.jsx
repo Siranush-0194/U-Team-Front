@@ -1,83 +1,68 @@
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, message, Upload, Card } from 'antd';
-import ImgCrop from 'antd-img-crop';
-import { useState } from 'react';
-import "../../style.scss";
+// import { Upload, Button, Form } from 'antd';
+// import { useState } from 'react';
+// import { axios_02 } from '../../../../../axios';
+// import useGetBase64 from '../../../../../hooks/useGetBase64';
 
+// const LocalStorage = () => {
+  
+//   const getBase64 = useGetBase64();
+//   const [file, setFile] = useState(null);
 
-const LocalStorage = () => {
-    const [fileList, setFileList] = useState([
-        {
-          uid: '-1',
-          name: 'image.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-      ]);
-      const onChange = ({ fileList: newFileList }) => {
-        setFileList(newFileList);
-      };
-      const onPreview = async (file) => {
-        let src = file.url;
-        if (!src) {
-          src = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file.originFileObj);
-            reader.onload = () => resolve(reader.result);
-          });
-        }
-        const image = new Image();
-        image.src = src;
-        const imgWindow = window.open(src);
-        imgWindow?.document.write(image.outerHTML);
-      };
+//   const formData = new FormData();
 
-    const props = {
-        name: 'file',
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-        headers: {
-          authorization: 'authorization-text',
-        },
-        onChange(info) {
-          if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-          } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-        },
-      };
-     
+//       // formData.append("title", modal.data.title);
+//       // formData.append("content", modal.data.content);
+//       // file?.file?.originFileObj && formData.append("media", file?.file?.originFileObj);
+//       // !modal.data.id && formData.append("courseId", user.course.id);
 
-  return( 
-   
-
-    <>
-    <Card className="uploads">
-    <ImgCrop rotate>
-      <Upload 
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        listType="picture-card"
-        fileList={fileList}
-        onChange={onChange}
-        onPreview={onPreview}
-      >
-        {fileList.length < 5 && '+ Upload'}
-      </Upload>
-    </ImgCrop>
-
-     <Upload >
-     <Button type="primary"  icon={<UploadOutlined />}>Click to Upload</Button>
-   </Upload>
-   </Card>
-    
-    </>
-   
-   
-  )
+//   axios_02
+//         .post(`/api/storage`, formData, {
+//           headers: {
+//             "Content-Type": "multipart/form-data",
+//           },
+//         }).then((response) => {
+//           console.log(response);
+//         })
 
   
-  };
-export default LocalStorage ;
+//   const handleUpload = async (data) => setFile(data.file);
+//   const handlePreview = ({ fileList }) => setFile({ ...file, fileList });
+//   const handleChange = async (data) => {
+//     if (!data.file.url && !data.file.preview) {
+//       data.file.preview = await getBase64.init(data.file.originFileObj);
+//     }
+
+//     setFile({
+//       ...file,
+//       file: data.file,
+//     });
+//   };
+
+//   return (
+//     <Form.Item>
+//     <Upload
+//       name="media"
+//       listType="picture-card"
+//       className="media-uploader"
+//       beforeUpload={getBase64.beforeUpload}
+//       customRequest={handleUpload}
+//       onChange={handleChange}
+//       onPreview={handlePreview}
+//       fileList={file?.fileList || []}
+//       maxCount={1}
+//     >
+//       {file  ? (
+//         <img
+//           src={file?.file?.preview }
+//           alt="media"
+//           style={{ width: "100%", height: '100%', borderRadius: '6px' }}
+//         />
+//       ) : file?.fileList?.length >= 1 ? null : (
+//         "+ Upload"
+//       )}
+//     </Upload>
+//   </Form.Item>
+//   );
+// }
+
+// export default LocalStorage;

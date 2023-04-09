@@ -15,7 +15,8 @@ import {
   DatabaseOutlined,
   QuestionOutlined,
   BarsOutlined,
-  TagsOutlined
+  TagsOutlined,
+  CalendarOutlined 
 } from "@ant-design/icons";
 import axios from "../../axios";
 import "../../i18n";
@@ -59,9 +60,11 @@ const NavBar = () => {
         getItem("Questions", "questions", <QuestionOutlined />),
         getItem("Posts", "posts", <BarsOutlined />),
         getItem("Tags", "tags", <TagsOutlined />),
+        getItem("Calendar", "calendar", <CalendarOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
       teacher: [
+        getItem("Home", "home", <HomeOutlined />),
         getItem("Account", "accounts", <UserOutlined />),
         getItem("Teachers", "teachers", <TeamOutlined />),
         getItem("Students", "students", <TeamOutlined />),
@@ -115,6 +118,7 @@ const NavBar = () => {
         questions: () => history.push("/dashboard/questions"),
         posts: () => history.push("/dashboard/posts"),
         tags: () => history.push("/dashboard/tags"),
+        calendar: () => history.push("/dashboard/calendar"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);

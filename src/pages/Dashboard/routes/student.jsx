@@ -4,12 +4,13 @@ import { Route } from "react-router-dom";
 import Friends from "../Accounts/Dashboard/Students/Friends";
 import Lecturer from "../Accounts/Dashboard/Students/Lecturer";
 import Notes from "../Accounts/Dashboard/Notes/Notes";
-import GlobalStorage from "../Accounts/Dashboard/Storage/GlobalStorage";
+import UploadForm from "../Accounts/Dashboard/Storage/GlobalStorage";
 import Account from "../Accounts/Information/Account";
 import Questions from "../Accounts/Dashboard/Questions/questions";
 import StudentForum from "../Accounts/Dashboard/Students/Forum";
 import Post from "../Accounts/Dashboard/Posts/posts";
 import LocalStorage from "../Accounts/Dashboard/Storage/LocalStorage";
+import MyCalendar from "../Calendar/Calendar";
 
 // Pages
 const StudentRoutes = () => {
@@ -40,7 +41,7 @@ const StudentRoutes = () => {
       </Route>
 
       <Route path="/dashboard/global">
-        <GlobalStorage />
+        <UploadForm />
       </Route>
 
       <Route path="/dashboard/questions">
@@ -49,6 +50,10 @@ const StudentRoutes = () => {
 
       <Route path="/dashboard/posts">
         <Post />
+      </Route>
+
+      <Route path="/dashboard/calendar">
+        <MyCalendar />
       </Route>
     </>
   );

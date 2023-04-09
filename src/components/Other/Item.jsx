@@ -9,7 +9,7 @@ const Item = ({ item, mediaKey }) => {
         <List.Item>
             <List.Item.Meta
                 avatar={<Avatar />}
-                title={item.user.firstName}
+                title={item.author.firstName}
                 description={item.title}
             />
             <Tags lists={item.tags} />

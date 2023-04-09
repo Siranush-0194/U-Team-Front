@@ -5,8 +5,7 @@ import {
   Modal,
   Button,
   Input,
-  List,
-  Pagination,
+  List
 } from "antd";
 import { axios_01 } from "../../../../../axios";
 import { useSelector } from "react-redux";
@@ -15,6 +14,7 @@ import useGetBase64 from "../../../../../hooks/useGetBase64";
 import Tags from "../../../../../components/Tags/index";
 import Item from "../../../../../components/Other/Item";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import Likes from "../Likes/Like";
 
 const Questions = () => {
   const [modal, setModal] = useState({ isOpen: false, data: {} });
@@ -204,6 +204,7 @@ const Questions = () => {
               dataSource={question}
               renderItem={(item) => {
                   return <Card style={{ marginBottom: 10 }} actions={[
+                    <Likes id={item.id} likedByMe={item.likedByMe}/>,
                     <EditOutlined
                         key="edit"
                         style={{ color: 'blue' }}
@@ -223,7 +224,6 @@ const Questions = () => {
             />
             )}
       </div>
-      <Pagination defaultCurrent={6} total={500} />
     </Card>
   );
 };

@@ -3,14 +3,15 @@ import { Route } from "react-router-dom";
 // Components
 import Account from "../Accounts/Information/Account";
 import Questions from "../Accounts/Dashboard/Questions/questions";
-
+import TeacherForum from "../Accounts/Dashboard/Teachers/TeacherForum";
+import Studyies from "../Accounts/Dashboard/Teachers/Students";
 // Pages
 
 const TeacherRoutes = () => {
   return (
     <>
       <Route exact path="/dashboard">
-        <div className="welcome">Welocome to Techer dashboard</div>
+        <TeacherForum />
       </Route>
 
       <Route path="/dashboard/account">
@@ -19,7 +20,9 @@ const TeacherRoutes = () => {
 
       <Route path="/dashboard/local">{/*  */}</Route>
 
-      <Route path="/dashboard/global">{/*  */}</Route>
+      {/* <Route path="/dashboard/students">
+        <Studyies />
+      </Route> */}
 
       <Route path="/dashboard/questions">
         <Questions />

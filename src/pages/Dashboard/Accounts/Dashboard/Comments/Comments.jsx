@@ -119,8 +119,8 @@ function CommentForm({ question, onClick }) {
               >
                 <List.Item.Meta
                   // avatar={<Avatar src={item.user} />}
-                  title={`${item.user.firstName} ${item.user.lastName}`}
-                  description={item.user.role}
+                  title={`${item.author.firstName} ${item.author.lastName}`}
+                  description={item.author.role}
                 />
                 {item.content}
               </List.Item>
