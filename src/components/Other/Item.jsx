@@ -12,11 +12,17 @@ const Item = ({ item, mediaKey }) => {
                 title={item.author.firstName}
                 description={item.title}
             />
-            <Tags lists={item.tags} />
 
-            <div className="item-content">{item.content}</div>
 
-            {item.media.split(mediaKey)[1] ? <Image width="100%" style={{ objectFit: 'cover' }} src={item.media} alt="" /> : null}
+            <div className="item-content">
+                <div className="item-content-description">{item.content}</div>
+
+                {item.media.split(mediaKey)[1] ? <Image width="300px" style={{ objectFit: 'cover' }} src={item.media} alt="" /> : null}
+            </div>
+
+            <div className="item-tags">
+                <Tags lists={item.tags} />
+            </div>
 
             {item.commentsUrl ? <CommentForm question={item} /> : null}
         </List.Item>

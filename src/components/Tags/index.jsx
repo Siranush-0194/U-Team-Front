@@ -40,7 +40,7 @@ const Tags = ({ list, lists, onChange }) => {
   ) : (
     <Space wrap size={[0, 8]}>
       {lists.map((tag) => (
-        <Tag key={tag.id}>{tag.name}</Tag>
+        <Tag color="#108ee9" key={tag.id}>{tag.name}</Tag>
       ))}
     </Space>
   );
