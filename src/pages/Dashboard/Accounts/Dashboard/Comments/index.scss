@@ -1,4 +1,4 @@
-.form-comments { 
+.form-comments {
     &__content {
         display: flex;
         gap: 5px;
@@ -11,6 +11,12 @@
                 height: 120px !important;
                 width: 120px !important;
             }
+        }
+
+        .image-upload {
+            max-width: -webkit-fill-available;
+            max-height: -webkit-fill-available;
+            object-fit: cover;
         }
 
         &_textarea {

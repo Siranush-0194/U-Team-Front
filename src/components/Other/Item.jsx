@@ -1,6 +1,5 @@
 import { Avatar, Image, List } from "antd";
 import Tags from "../Tags";
-import CommentForm from "../../pages/Dashboard/Accounts/Dashboard/Comments/Comments";
 import { React } from "react";
 import './style.scss';
 
@@ -23,8 +22,6 @@ const Item = ({ item, mediaKey }) => {
             <div className="item-tags">
                 <Tags lists={item.tags} />
             </div>
-
-            {item.commentsUrl ? <CommentForm question={item} /> : null}
         </List.Item>
     )
 };

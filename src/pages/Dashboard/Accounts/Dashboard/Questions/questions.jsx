@@ -13,7 +13,7 @@ import { Upload } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
 import Tags from "../../../../../components/Tags/index";
 import Item from "../../../../../components/Other/Item";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { CommentOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Likes from "../Likes/Like";
 
 const Questions = () => {
@@ -216,6 +216,7 @@ const Questions = () => {
                           },
                         })}
                     />,
+                    <CommentOutlined key='comment' />,
                     <DeleteOutlined key="delete" style={{ color: 'red' }} />,
                   ]}>
                     <Item item={item} mediaKey={'question'} />

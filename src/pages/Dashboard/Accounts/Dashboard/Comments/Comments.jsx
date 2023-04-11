@@ -4,11 +4,12 @@ import { Input, Button, Collapse, List, Upload, Image, message } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
 
 import "./index.scss";
+import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
 
-function CommentForm({ question, onClick }) {
+function CommentForm({ question, onClick,  isOpen }) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState({
     data: [],
@@ -90,6 +91,32 @@ function CommentForm({ question, onClick }) {
     });
   };
 
+  const [rateLoading, setRateLoading] = useState(false);
+
+  const submitRate = (value, rate, index) => {
+    if (rateLoading) return
+    setRateLoading(true);
+    axios_01.put('/api/comment-rate/', {
+      commentId: comments.data[index].id,
+      value
+    }).then((response) => {
+      setRateLoading(false);
+      if (response.status === 200) {
+        const comment = { ...comments };
+
+        comment.data[index].ratedByMe = response.data;
+
+        if (rate === -1) {
+          comment.data[index].rate = comments.data[index].rate - 1;
+        } else {
+          comment.data[index].rate = comments.data[index].rate + 1;
+        }
+    
+        setComments(comment);
+      }
+    }).catch(() => setRateLoading(false));
+  }
+
   return (
     <>
       <Collapse
@@ -101,7 +128,7 @@ function CommentForm({ question, onClick }) {
             itemLayout="vertical"
             size="small"
             dataSource={comments.data}
-            renderItem={(item) => (
+            renderItem={(item, index) => (
               <List.Item
                 key={item.id}
                 actions={[]}
@@ -117,12 +144,29 @@ function CommentForm({ question, onClick }) {
                   ) : null
                 }
               >
-                <List.Item.Meta
-                  // avatar={<Avatar src={item.user} />}
-                  title={`${item.author.firstName} ${item.author.lastName}`}
-                  description={item.author.role}
-                />
-                {item.content}
+                <div style={{
+                  display: 'flex',
+                  flex: 1
+                }}>
+                  <div style={{
+                    width: 50,
+                    height: 50,
+                    display: 'grid',
+                    justifyContent: 'space-between'
+                  }}>
+                    <CaretUpOutlined style={{ display: 'block' }} onClick={() => item.ratedByMe <= 0 && submitRate(item.ratedByMe + 1, 1, index)} />
+                    <span style={{ display: 'flex', justifyContent: 'center' }}>{item.rate}</span>
+                    <CaretDownOutlined style={{ display: 'block' }} onClick={() => item.ratedByMe >= 0 && submitRate(item.ratedByMe - 1, -1, index)} />
+                  </div>
+                  <div style={{ width: '100%' }}>
+                    <List.Item.Meta
+                      // avatar={<Avatar src={item.user} />}
+                      title={`${item.author.firstName} ${item.author.lastName}`}
+                      description={item.author.role}
+                    />
+                    {item.content}
+                  </div>
+                </div>
               </List.Item>
             )}
           />
@@ -139,44 +183,45 @@ function CommentForm({ question, onClick }) {
         </Panel>
       </Collapse>
 
-      <div className="form-comments">
-        <div className="form-comments__content">
-          <Upload
-            name="media"
-            listType="picture-card"
-            className="media-uploader"
-            beforeUpload={getBase64.beforeUpload}
-            customRequest={handleUpload}
-            onChange={handleChange}
-            onPreview={handlePreview}
-            fileList={file?.fileList || []}
-            maxCount={1}
-          >
-            {file ? (
-              <img
-                src={file?.file?.preview}
-                alt="media"
-                style={{ width: "100%" }}
-              />
-            ) : file?.fileList?.length >= 1 ? null : (
-              "+ Upload"
-            )}
-          </Upload>
+      {isOpen && <div className="form-comments">
+      <div className="form-comments__content">
+        <Upload
+          name="media"
+          listType="picture-card"
+          className="media-uploader"
+          beforeUpload={getBase64.beforeUpload}
+          customRequest={handleUpload}
+          onChange={handleChange}
+          onPreview={handlePreview}
+          fileList={file?.fileList || []}
+          maxCount={1}
+        >
+          {file ? (
+            <img
+              src={file?.file?.preview}
+              alt="media"
+              className="image-upload"
+              style={{ width: "100%" }}
+            />
+          ) : file?.fileList?.length >= 1 ? null : (
+            "+ Upload"
+          )}
+        </Upload>
 
-          <TextArea
-            showCount
-            className="form-comments__content_textarea"
-            maxLength={100}
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="disable resize"
-          />
-        </div>
-
-        <Button style={{ marginTop: 10 }} type="primary" onClick={handleSubmit}>
-          Submit
-        </Button>
+        <TextArea
+          showCount
+          className="form-comments__content_textarea"
+          maxLength={100}
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder="disable resize"
+        />
       </div>
+
+      <Button style={{ marginTop: 10 }} type="primary" onClick={handleSubmit}>
+        Submit
+      </Button>
+      </div>}
     </>
   );
 }
