@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form } from 'antd';
+import { Upload, Form, List, Button } from 'antd';
 import { axios_02 } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { useSelector } from "react-redux";
+import { FilePdfOutlined, FileTextOutlined, FileWordOutlined, UploadOutlined } from '@ant-design/icons';
+import TextArea from 'antd/es/input/TextArea';
+
 
 const LocalStorage = () => {
     const getBase64 = useGetBase64();
@@ -67,6 +70,25 @@ const LocalStorage = () => {
             });
     }, [user.course.id]);
 
+
+    const getFileIcon = (mimeType) => {
+        switch (mimeType) {
+            case 'application/pdf':
+                return <FilePdfOutlined />;
+            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                return <FileWordOutlined/>
+            case "application/vnd.oasis.opendocument.spreadsheet":
+                return <FileTextOutlined />
+            case 'text/plain':
+                return <FileTextOutlined />;
+            default:
+                return null;
+        }
+    };
+
+
+
+
     return (
         <>
             <Form>
@@ -75,21 +97,32 @@ const LocalStorage = () => {
                         name="media"
                         listType="picture-card"
                         className="media-uploader"
-                        customRequest={() => {}}
+                        customRequest={() => { }}
                         beforeUpload={getBase64.beforeUploadFile}
                         onChange={handleChange}
                         fileList={file?.fileList || []}
                         maxCount={10}
                         multiple={true}
                     >
-                        + Upload
+                       Upload File
                     </Upload>
                 </Form.Item>
             </Form>
+            <List
+                itemLayout="horizontal"
+                dataSource={media}
+                renderItem={item => (
+                    <List.Item>
+                        <List.Item.Meta
+                            avatar={
+                                getFileIcon(item.mimeType)
+                            }
+                            title={item.name}
 
-            {media.map(m => {
-                return <img type={m.mimeType} key={m.id} data={m.path} width="50" height="50"/>
-            })}
+                        />
+                    </List.Item>
+                )}
+            />
         </>
     );
 }
