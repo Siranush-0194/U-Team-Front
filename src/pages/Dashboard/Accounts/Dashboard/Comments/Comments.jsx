@@ -189,7 +189,7 @@ function CommentForm({ question, onClick,  isOpen }) {
           name="media"
           listType="picture-card"
           className="media-uploader"
-          beforeUpload={getBase64.beforeUpload}
+          beforeUpload={getBase64.beforeUploadMedia}
           customRequest={handleUpload}
           onChange={handleChange}
           onPreview={handlePreview}

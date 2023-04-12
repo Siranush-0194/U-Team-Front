@@ -49,10 +49,10 @@ const StudentForum = () => {
                 <Card actions={[
                   <Likes id={item.id} likedByMe={item.likedByMe} />,
                   <EditOutlined />,
-                  <CommentOutlined key='comment' onClick={() => setCommentIsOpen({
+                  ...(item.commentsUrl ? [<CommentOutlined key='comment' onClick={() => setCommentIsOpen({
                     ...commentIsOpen,
                     [item.id]: !commentIsOpen[item.id]
-                  })} />,
+                  })} />] : []),
                   <DeleteOutlined key="delete" style={{ color: 'red' }} />,
                 ]}>
                   <Item item={item} mediaKey={'question'} />

@@ -1,98 +1,96 @@
-import { useState, useEffect } from 'react';
-import { Upload, Button, Form } from 'antd';
+import { useEffect, useState } from 'react';
+import { Upload, Form } from 'antd';
 import { axios_02 } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { useSelector } from "react-redux";
 
 const LocalStorage = () => {
-
     const getBase64 = useGetBase64();
+
+    const [media, setMedia] = useState([]);
     const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
+    const [post, setPost] = useState([]);
 
     const user = useSelector(function (state) {
         return state?.user;
     });
 
-    const handleUpload = async (data) => setFile(data.file);
-    const handlePreview = ({ fileList }) => setFile({ ...file, fileList });
     const handleChange = async (data) => {
-        if (!data.file.url && !data.file.preview) {
-            data.file.preview = await getBase64.init(data.file.originFileObj);
-        }
+        const file = await getBase64.init(data.file.originFileObj);
 
-        setFile({
-            ...file,
-            file: data.file
+        files.push({
+            file,
+            code: getBase64.isMedia.includes(data.file.type),
+            name: data.file.name,
+            type: data.file.type,
+            dataFile: data.file.originFileObj
         });
+
+        setFiles(files);
+
+        if (files.length === data.fileList.length) {
+            files.forEach((e) => {
+                const formData = new FormData();
+
+                formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
+                formData.append("type", 'local');
+                formData.append("courseId", user.course.id);
+
+                post.push(new Promise((resolve, reject) => {
+                    axios_02.post('/api/storage', formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        }
+                    }).then((response) => resolve(response)).catch((e) => reject(e))
+                }));
+
+                setPost(post);
+            });
+
+            Promise.all(post).finally((response) => {
+                setFiles([]);
+                setPost([]);
+                setFile([])
+            })
+        }
     };
 
     useEffect(() => {
         axios_02
             .get(`/api/storage/${user.course.id}/local`)
             .then((response) => {
-                console.log(response);
+                setMedia(response.data)
             })
             .catch(() => {
                 console.log('error');
             });
     }, [user.course.id]);
 
-    // const formData = new FormData();
-
-    // formData.append("title", modal.data.title);
-    // formData.append("content", modal.data.content);
-    // file?.file?.originFileObj && formData.append("media", file?.file?.originFileObj);
-    // !modal.data.id && formData.append("courseId", user.course.id);
-
-    // axios_02
-    //     .post(`/api/storage`, formData, {
-    //         headers: {
-    //             "Content-Type": "multipart/form-data",
-    //         },
-    //     }).then((response) => {
-    //         console.log(response);
-    //     })
-
-
-    // const handleUpload = async (data) => setFile(data.file);
-    // const handlePreview = ({ fileList }) => setFile({ ...file, fileList });
-    // const handleChange = async (data) => {
-    //     if (!data.file.url && !data.file.preview) {
-    //         data.file.preview = await getBase64.init(data.file.originFileObj);
-    //     }
-
-    //     setFile({
-    //         ...file,
-    //         file: data.file,
-    //     });
-    // };
-
     return (
-        <Form>
-            <Form.Item>
-                <Upload
-                    name="media"
-                    listType="picture-card"
-                    className="media-uploader"
-                    beforeUpload={getBase64.beforeUpload}
-                    customRequest={handleUpload}
-                    onChange={handleChange}
-                    onPreview={handlePreview}
-                    fileList={file?.fileList || []}
-                    maxCount={1}
-                >
-                    {file ? (
-                        <img
-                            src={file?.file?.preview}
-                            alt="media"
-                            style={{ width: "100%", height: '100%', borderRadius: '6px' }}
-                        />
-                    ) : file?.fileList?.length >= 1 ? null : (
-                        "+ Upload"
-                    )}
-                </Upload>
-            </Form.Item>
-        </Form>
+        <>
+            <Form>
+                <Form.Item>
+                    <Upload
+                        name="media"
+                        listType="picture-card"
+                        className="media-uploader"
+                        customRequest={() => {}}
+                        beforeUpload={getBase64.beforeUploadFile}
+                        onChange={handleChange}
+                        fileList={file?.fileList || []}
+                        maxCount={10}
+                        multiple={true}
+                    >
+                        + Upload
+                    </Upload>
+                </Form.Item>
+            </Form>
+
+            {media.map(m => {
+                return <img type={m.mimeType} key={m.id} data={m.path} width="50" height="50"/>
+            })}
+        </>
     );
 }
 
