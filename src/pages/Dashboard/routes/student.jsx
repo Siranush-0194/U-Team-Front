@@ -51,9 +51,9 @@ const StudentRoutes = () => {
         <Post />
       </Route>
 
-      <Route path="/dashboard/calendar">
+      {/* <Route path="/dashboard/calendar">
         <Calendar />
-      </Route>
+      </Route> */}
     </>
   );
 };

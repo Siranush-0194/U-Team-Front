@@ -1,41 +1,102 @@
-import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
-import axios from "axios";
+import { useEffect, useState } from "react";
+
+import Note from "./Note";
+import { v4 as uuid } from "uuid";
+import './style.css'
+import TextArea from "antd/es/input/TextArea";
 
 const Notes = () => {
-  const [form] = Form.useForm();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notes, setNotes] = useState(['']);
+  const [inputText, setInputText] = useState("");
 
-  // const handleSubmit = async (values) => {
-  //   setIsSubmitting(true);
-  //   try {
-  //     const response = await axios.post("/api/notes", values);
-  //     console.log("Note created:", response.data);
-  //     form.resetFields();
-  //     // TODO: Display success message to the user
-  //   } catch (error) {
-  //     console.error("Error creating note:", error);
-  //     // TODO: Display error message to the user
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
-  return (
-    <Form form={form} >
-      <Form.Item name="title" label="Title" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item name="content" label="Content" rules={[{ required: true }]}>
-        <Input.TextArea />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" loading={isSubmitting}>
-          Create Note
-        </Button>
-      </Form.Item>
-    </Form>
-  );
-};
+  useEffect(() => {
+    const storedNotes = JSON.parse(localStorage.getItem("notes"));
+    if (storedNotes) {
+      setNotes(storedNotes);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }, [notes]);
+  const deleteNote = (id) => {
+    const filteredNotes = notes.filter((note) => note.id !== id);
+    setNotes(filteredNotes);
+  };
+
+  const saveHandler = () => {
+    setNotes((prevState) => [
+      ...prevState,
+      {
+        id: uuid(),
+        text: inputText,
+      },
+    ]);
+    //clear the textarea
+    setInputText("");
+  };
+
+  const textHandler = (e) => {
+    setInputText(e.target.value);
+  };
+
+ 
+
+  const charLimit = 100;
+  const charLeft = charLimit - inputText.length;
+  return(
+    <>
+    <div className="header">
+      <h1 className="notes__title">Notes</h1>
+    </div>
+  
+     
+    <div className="notes">
+     
+      {notes.map((note) => (
+      <Note
+        key={note.id}
+        id={note.id}
+        text={note.text}
+        deleteNote={deleteNote}
+      />
+    ))}
+     
+  <div className="note" >
+  {/* <div className="note-title" >
+      <TextArea
+        cols="10"
+        rows="5"
+        value={inputText}
+        placeholder="Type...."
+        onChange={textHandlerTitle}
+        maxLength="100"
+      ></TextArea>
+      </div> */}
+      <TextArea
+        cols="10"
+        rows="5"
+        value={inputText}
+        placeholder="Type...."
+        onChange={textHandler}
+        maxLength="100"
+      ></TextArea>
+      <div className="note__footer">
+        <span className="label">{charLeft} left</span>
+        <button className="note__save" onClick={saveHandler}>
+          Save
+        </button>
+      </div>
+     
+    </div>
+  
+  </div>
+    
+    </>
+   
+  )
+}
+
 
 export default Notes;
