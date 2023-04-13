@@ -1,45 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { axios_03 } from '../../../axios';
-import Calendar from 'react-calendar';
-import "react-calendar/dist/Calendar.css"
+import ApiCalendar from "react-google-calendar-api";
+import { GoogleConfig } from '../../../utils/google';
 
-const  MyCalendar = () => {
-  const [events, setEvents] = useState([]);
+const apiCalendar = new ApiCalendar(GoogleConfig);
 
-  useEffect(() => {
-     function fetchEvents() {
-              axios_03.get('/google/oauth2')
-             .then(response => {
-                console.log(response);
-                setEvents(response.data);
-                       })
-        
-    }
-
-    fetchEvents();
-  }, []);
-
-  function renderTileContent({ date, view }) {
-    const event = events.find((event) => event.date === date.toISOString());
-
-    if (view === 'month' && event) {
-      return (
-        <div>
-          {event.title}
-        </div>
-      );
-    }
-
-    return null;
-  }
-
-  return (
-    <Calendar
-      onChange={(value) => console.log(value)}
-      tileContent={renderTileContent}
-    />
-  );
+const Calendar = () => {
+  return apiCalendar.getEvent('Ro5QAnZSfH2BcMxD3VBHSWF3iHkz').then((r) => console.log(r));
 }
 
-
-export default MyCalendar;
+export default Calendar;
