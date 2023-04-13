@@ -4,12 +4,12 @@ import { Input, Button, Collapse, List, Upload, Image, message } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
 
 import "./index.scss";
-import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
+import { DownOutlined,  UpOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
 
-function CommentForm({ question, onClick,  isOpen }) {
+function CommentForm({ question, onClick, isOpen }) {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState({
     data: [],
@@ -111,7 +111,7 @@ function CommentForm({ question, onClick,  isOpen }) {
         } else {
           comment.data[index].rate = comments.data[index].rate + 1;
         }
-    
+
         setComments(comment);
       }
     }).catch(() => setRateLoading(false));
@@ -154,9 +154,17 @@ function CommentForm({ question, onClick,  isOpen }) {
                     display: 'grid',
                     justifyContent: 'space-between'
                   }}>
-                    <CaretUpOutlined style={{ display: 'block' }} onClick={() => item.ratedByMe <= 0 && submitRate(item.ratedByMe + 1, 1, index)} />
+                    <UpOutlined style={{ display: 'block', color: item.ratedByMe === 1 ? 'gray' : 'inherit' }} onClick={() => {
+                      if (item.ratedByMe !== 1) {
+                        submitRate(item.ratedByMe + 1, 1, index);
+                      }
+                    }} disabled={item.ratedByMe === 1} />
                     <span style={{ display: 'flex', justifyContent: 'center' }}>{item.rate}</span>
-                    <CaretDownOutlined style={{ display: 'block' }} onClick={() => item.ratedByMe >= 0 && submitRate(item.ratedByMe - 1, -1, index)} />
+                    <DownOutlined style={{ display: 'block', color: item.ratedByMe === -1 ? 'gray' : 'inherit' }} onClick={() => {
+                      if (item.ratedByMe !== -1) {
+                        submitRate(item.ratedByMe - 1, -1, index);
+                      }
+                    }} disabled={item.ratedByMe === -1} />
                   </div>
                   <div style={{ width: '100%' }}>
                     <List.Item.Meta
@@ -184,43 +192,43 @@ function CommentForm({ question, onClick,  isOpen }) {
       </Collapse>
 
       {isOpen && <div className="form-comments">
-      <div className="form-comments__content">
-        <Upload
-          name="media"
-          listType="picture-card"
-          className="media-uploader"
-          beforeUpload={getBase64.beforeUploadMedia}
-          customRequest={handleUpload}
-          onChange={handleChange}
-          onPreview={handlePreview}
-          fileList={file?.fileList || []}
-          maxCount={1}
-        >
-          {file ? (
-            <img
-              src={file?.file?.preview}
-              alt="media"
-              className="image-upload"
-              style={{ width: "100%" }}
-            />
-          ) : file?.fileList?.length >= 1 ? null : (
-            "+ Upload"
-          )}
-        </Upload>
+        <div className="form-comments__content">
+          <Upload
+            name="media"
+            listType="picture-card"
+            className="media-uploader"
+            beforeUpload={getBase64.beforeUploadMedia}
+            customRequest={handleUpload}
+            onChange={handleChange}
+            onPreview={handlePreview}
+            fileList={file?.fileList || []}
+            maxCount={1}
+          >
+            {file ? (
+              <img
+                src={file?.file?.preview}
+                alt="media"
+                className="image-upload"
+                style={{ width: "100%" }}
+              />
+            ) : file?.fileList?.length >= 1 ? null : (
+              "+ Upload"
+            )}
+          </Upload>
 
-        <TextArea
-          showCount
-          className="form-comments__content_textarea"
-          maxLength={100}
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="disable resize"
-        />
-      </div>
+          <TextArea
+            showCount
+            className="form-comments__content_textarea"
+            maxLength={100}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="disable resize"
+          />
+        </div>
 
-      <Button style={{ marginTop: 10 }} type="primary" onClick={handleSubmit}>
-        Submit
-      </Button>
+        <Button style={{ marginTop: 10 }} type="primary" onClick={handleSubmit}>
+          Submit
+        </Button>
       </div>}
     </>
   );

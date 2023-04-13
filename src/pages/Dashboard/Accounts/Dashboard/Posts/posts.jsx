@@ -7,7 +7,7 @@ import {
   Input,
   List
 } from "antd";
-import { axios_01 } from "../../../../../axios";
+import { axios_01} from "../../../../../axios";
 import { useSelector } from "react-redux";
 import { Upload } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
@@ -32,6 +32,7 @@ const Posts = () => {
       .get(`/api/post?courseId=${user.course.id}`)
       .then((response) => {
         setPost(response.data.posts);
+        console.log(response.data.posts.id);
       })
       .catch(() => setPost([]));
   }, [user.course.id]);
@@ -40,6 +41,9 @@ const Posts = () => {
     setModal({ isOpen: !modal.isOpen, data: {} });
     setFile(null);
   };
+
+ 
+  
 
   const submit = () => {
     if (modal.data.title) {
@@ -98,6 +102,8 @@ const Posts = () => {
       file: data.file,
     });
   };
+
+  
 
   return (
     <Card style={{ height: "100%" }}>

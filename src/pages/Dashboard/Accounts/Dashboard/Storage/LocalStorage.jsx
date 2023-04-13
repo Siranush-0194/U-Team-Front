@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List, Button } from 'antd';
+import { Upload, Form, List} from 'antd';
 import { axios_02 } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { useSelector } from "react-redux";
-import { FilePdfOutlined, FileTextOutlined, FileWordOutlined, UploadOutlined } from '@ant-design/icons';
-import TextArea from 'antd/es/input/TextArea';
+import { FilePdfOutlined, FileTextOutlined, FileWordOutlined} from '@ant-design/icons';
+
 
 
 const LocalStorage = () => {
