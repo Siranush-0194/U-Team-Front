@@ -8,9 +8,8 @@ import Account from "../Accounts/Information/Account";
 import Questions from "../Accounts/Dashboard/Questions/questions";
 import StudentForum from "../Accounts/Dashboard/Students/Forum";
 import Post from "../Accounts/Dashboard/Posts/posts";
-import LocalStorage from "../Accounts/Dashboard/Storage/LocalStorage";
 import MyCalendar from "../Calendar/Calendar";
-import GlobalStorage from "../Accounts/Dashboard/Storage/GlobalStorage";
+import Storage from "../Accounts/Dashboard/Storage";
 
 // Pages
 const StudentRoutes = () => {
@@ -37,11 +36,11 @@ const StudentRoutes = () => {
       </Route>
 
       <Route path="/dashboard/local">
-        <LocalStorage />
+        <Storage type={'local'} />
       </Route>
 
       <Route path="/dashboard/global">
-       <GlobalStorage/>
+       <Storage type={'global'}/>
       </Route>
 
       <Route path="/dashboard/questions">

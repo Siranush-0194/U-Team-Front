@@ -1,13 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List} from 'antd';
-import { axios_02 } from '../../../../../axios';
+import { Upload, Form, List } from 'antd';
+import { axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { useSelector } from "react-redux";
-import { FilePdfOutlined, FileTextOutlined, FileWordOutlined} from '@ant-design/icons';
+import { FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 
+import './style.scss';
 
+const getFileIcon = (mimeType) => {
+    switch (mimeType) {
+        case 'application/pdf':
+            return <FilePdfOutlined size="32" />;
+        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            return <FileWordOutlined size="32" />
+        case "application/vnd.oasis.opendocument.spreadsheet":
+            return <FileTextOutlined size="32" />
+        case 'text/plain':
+            return <FileTextOutlined size="32" />;
+        default:
+            return null;
+    }
+};
 
-const LocalStorage = () => {
+const Storage = ({ type }) => {
     const getBase64 = useGetBase64();
 
     const [media, setMedia] = useState([]);
@@ -37,7 +52,7 @@ const LocalStorage = () => {
                 const formData = new FormData();
 
                 formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append("type", 'local');
+                formData.append("type", type);
                 formData.append("courseId", user.course.id);
 
                 post.push(new Promise((resolve, reject) => {
@@ -51,43 +66,29 @@ const LocalStorage = () => {
                 setPost(post);
             });
 
-            Promise.all(post).finally((response) => {
+            Promise.all(post).finally(() => {
+                getMedia();
                 setFiles([]);
                 setPost([]);
-                setFile([])
+                setFile([]);
             })
         }
     };
 
-    useEffect(() => {
+    const getMedia = () => {
         axios_02
-            .get(`/api/storage/${user.course.id}/local`)
+            .get(`/api/storage/${user.course.id}/${type}`)
             .then((response) => {
                 setMedia(response.data)
             })
             .catch(() => {
                 console.log('error');
             });
+    }
+
+    useEffect(() => {
+        getMedia();
     }, [user.course.id]);
-
-
-    const getFileIcon = (mimeType) => {
-        switch (mimeType) {
-            case 'application/pdf':
-                return <FilePdfOutlined />;
-            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                return <FileWordOutlined/>
-            case "application/vnd.oasis.opendocument.spreadsheet":
-                return <FileTextOutlined />
-            case 'text/plain':
-                return <FileTextOutlined />;
-            default:
-                return null;
-        }
-    };
-
-
-
 
     return (
         <>
@@ -104,21 +105,23 @@ const LocalStorage = () => {
                         maxCount={10}
                         multiple={true}
                     >
-                       Upload File
+                        Upload File
                     </Upload>
                 </Form.Item>
             </Form>
             <List
-                itemLayout="horizontal"
+                itemLayout="vertical"
                 dataSource={media}
+                className='storage-lists'
+                grid={{ gutter: 16, column: 3 }}
                 renderItem={item => (
                     <List.Item>
                         <List.Item.Meta
-                            avatar={
-                                getFileIcon(item.mimeType)
-                            }
+                            onClick={() => {
+                                window.open(PORTS[8003] + item.path, "_blank")
+                            }}
+                            avatar={getFileIcon(item.mimeType)}
                             title={item.name}
-
                         />
                     </List.Item>
                 )}
@@ -127,4 +130,4 @@ const LocalStorage = () => {
     );
 }
 
-export default LocalStorage;
+export default Storage;
