@@ -10,6 +10,7 @@ import StudentForum from "../Accounts/Dashboard/Students/Forum";
 import Post from "../Accounts/Dashboard/Posts/posts";
 import Calendar from "../Calendar/Calendar";
 import Storage from "../Accounts/Dashboard/Storage";
+import MyCalendar from "../Calendar/Calendar";
 
 // Pages
 const StudentRoutes = () => {
@@ -51,9 +52,9 @@ const StudentRoutes = () => {
         <Post />
       </Route>
 
-      {/* <Route path="/dashboard/calendar">
-        <Calendar />
-      </Route> */}
+      <Route path="/dashboard/calendar">
+        <MyCalendar />
+      </Route>
     </>
   );
 };
