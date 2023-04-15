@@ -16,7 +16,7 @@ const Item = ({ item, mediaKey }) => {
             <div className="item-content">
                 <div className="item-content-description">{item.content}</div>
 
-                {item.media.split(mediaKey)[1] ? <Image width="300px" style={{ objectFit: 'cover' }} src={item.media} alt="" /> : null}
+                {item.media.split(mediaKey) ? <Image width="300px" style={{ objectFit: 'cover' }} src={item.media} alt="" /> : null}
             </div>
 
             <div className="item-tags">
