@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Calendar } from 'antd';
+import { Button, Calendar } from 'antd';
 import moment from 'moment';
-import { axios_03 } from '../../../axios';
+import { axios_02, axios_03 } from '../../../axios';
 import './style.css';
 
 const MyCalendar = () => {
-  // const [event, setEvent] = useState();
 
 
   const [events, setEvents] = useState([]);
+  const [calendar,setCalendar] = useState();
 
   useEffect(() => {
     axios_03.get('/api/getAll').then((response) => {
-      console.log(response);
+      // console.log(response);
       const events = response.data.map((event) => ({
         title: event.subject,
         start: moment(event.startTime),
@@ -24,6 +24,18 @@ const MyCalendar = () => {
     });
   }, []);
 
+  const handleGoogleOAuthClick = () => {
+    axios_03.get('/google/oauth2')
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        // Handle the error
+      });
+  }
+   
+    
+
 
 
 
@@ -32,7 +44,8 @@ const MyCalendar = () => {
 
 
   return (
-    
+    <>
+    <Button type='primary'onClick={handleGoogleOAuthClick}>Sign in with Google</Button>
     <div style={{ overflow: 'hidden' }}>
       <Calendar
         events={events}
@@ -46,8 +59,8 @@ const MyCalendar = () => {
             return (
               <>
               <div>
-                {event.title}
-                {event.lecturer}
+                <span >{event.title}</span>
+                <span>{event.lecturer}</span>
                 <div
                   style={{
                     position: 'absolute',
@@ -70,7 +83,9 @@ const MyCalendar = () => {
         }}
       />
     </div>
+    </>
+    
   );
 };
 
-export default MyCalendar
+export default MyCalendar;

@@ -1,51 +1,49 @@
-import React, { useEffect, useState } from "react";
-import axios from "../../../../../axios";
+import { React } from "react";
+import { useEffect, useState } from "react";
+
+import { Avatar, List, Card } from "antd";
 import { useSelector } from "react-redux";
-import { Avatar, Card, List } from "antd";
+
+import axios from "../../../../../axios";
+
+import "../../style.scss";
+
+const Courses = () => {
+  const [course, setCourses] = useState(null);
 
 
 
-const Studyies = () => {
-    const user = useSelector(function (state) {
-        return state?.user;
-      });
-      const [students, setStudents] = useState();
-    useEffect(() => {
-        axios
-          .get(`/api/course/get/${user.course.id}/students`)
-          .then((response) => {
-            // setStudents(response.data);
-            console.log(response);
-          })
-          .catch(() => setStudents([]));
-      }, [user]);
+  useEffect(() => {
+    axios
+      .get(`/api/teacher/courses`)
+      .then((response) => {
+        setCourses(response.data);
+        // console.log(response.data[0]);
+      })
+      .catch(() => setCourses([]));
+  }, []);
 
-      return (
-        <Card className="list">
-          {!students ? (
-            <> </>
-          ) : (
-            <List
-              className="demo-loadmore-list"
-              itemLayout="horizontal"
-              dataSource={students}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    // avatar={<Avatar />}
-                    title={item.firstName + " " + item.lastName}
-                    description
-                  />
-                </List.Item>
-              )}
-            />
+  return (
+    <Card className="list">
+      {!course? (
+        <> </>
+      ) : (
+        <List
+          className="demo-loadmore-list"
+          itemLayout="horizontal"
+          dataSource={course}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta
+                title={item.degree + " " + item.number + " " + item.type}
+                description
+              />
+            </List.Item>
           )}
-        </Card>
-      );
-}
+        />
+      )}
+    </Card>
+  );
+};
 
-
-export default Studyies;
-
-
-
+export default Courses;

@@ -66,8 +66,7 @@ const NavBar = () => {
       teacher: [
         getItem("Home", "home", <HomeOutlined />),
         getItem("Account", "accounts", <UserOutlined />),
-        getItem("Teachers", "teachers", <TeamOutlined />),
-        getItem("Students", "students", <TeamOutlined />),
+        getItem("Courses", "courses", <BankOutlined />),
         getItem("Notes", "notes", <CarryOutOutlined />),
         getItem("Local Storage", "localStorage", <HddOutlined />),
         getItem("Gloabal Storage", "globalStorage", <DatabaseOutlined />),
@@ -136,8 +135,7 @@ const NavBar = () => {
       },
       teacher: {
         home: () => history.push("/dashboard"),
-        teachers: () => history.push("/dashboard/teachers"),
-        students: () => history.push("/dashboard/students"),
+        courses: () => history.push("/dashboard/courses"),
         accounts: () => history.push("/dashboard/account"),
         notes: () => history.push("/dashboard/notes"),
         localStorage: () => history.push("/dashboard/local"),
