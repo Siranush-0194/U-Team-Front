@@ -11,12 +11,15 @@ import Post from "../Accounts/Dashboard/Posts/posts";
 import Calendar from "../Calendar/Calendar";
 import Storage from "../Accounts/Dashboard/Storage";
 import MyCalendar from "../Calendar/Calendar";
+import AccountHeader from "../Accounts/Dashboard/accountsHeader";
 
 // Pages
 const StudentRoutes = () => {
   return (
     <>
       <Route exact path="/dashboard">
+      {/* <AccountHeader /> */}
+
         <StudentForum />
       </Route>
 

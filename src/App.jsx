@@ -75,7 +75,7 @@ const App = () => {
 
       {/* PRIVATE ROUTES */}
       <PrivateRoute path="/dashboard">
-        <AccountHeader />
+      <AccountHeader />
 
         <Dashboard />
       </PrivateRoute>

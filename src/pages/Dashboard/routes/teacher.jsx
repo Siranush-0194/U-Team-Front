@@ -7,12 +7,15 @@ import TeacherForum from "../Accounts/Dashboard/Teachers/TeacherForum";
 import Studyies from "../Accounts/Dashboard/Teachers/Students";
 import Storage from "../Accounts/Dashboard/Storage";
 import Courses from "../Accounts/Dashboard/Teachers/Students";
+import AccountHeader from "../Accounts/Dashboard/accountsHeader";
+import './app.scss'
 // Pages
 
 const TeacherRoutes = () => {
   return (
     <>
       <Route exact path="/dashboard">
+        {/* <AccountHeader/> */}
         <TeacherForum />
       </Route>
 
