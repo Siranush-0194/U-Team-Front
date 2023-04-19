@@ -4,7 +4,7 @@ import { Input, Button, Collapse, List, Upload, Image, message } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
 
 import "./index.scss";
-import { DownOutlined,  UpOutlined } from "@ant-design/icons";
+import { DeleteOutlined, DownOutlined,  EditOutlined,  UpOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -15,6 +15,8 @@ function CommentForm({ question, onClick, isOpen }) {
     data: [],
     next: question.commentsUrl,
   });
+  const [modal, setModal] = useState({ isOpen: false, data: {} });
+
   const [active, setActive] = useState([]);
   const [file, setFile] = useState(null);
 
@@ -116,7 +118,17 @@ function CommentForm({ question, onClick, isOpen }) {
       }
     }).catch(() => setRateLoading(false));
   }
-
+  const deleteComment = (id) => {
+ 
+    axios_01.delete(`/api/comment/${id}`)
+      .then(response => {
+        const updatedComments = comment.filter(comment => comment.id !== id);
+        setComment(updatedComments);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   return (
     <>
       <Collapse
@@ -172,11 +184,27 @@ function CommentForm({ question, onClick, isOpen }) {
                       title={`${item.author.firstName} ${item.author.lastName}`}
                       description={item.author.role}
                     />
-                    {item.content}
+                    <div style={{gap:10, margin:10}}>
+                    {item.content} 
+                    <EditOutlined
+                    key="edit"
+                    style={{ color: 'blue' }}
+                    onClick={() => setModal({
+                      isOpen: true,
+                      data: {
+                        ...item,
+                        tags: item.tags.map(t => t.name)
+                      },
+                    })}
+                    />
+                    </div>
                   </div>
                 </div>
+                <DeleteOutlined onClick={() => deleteComment(item.id)} />
               </List.Item>
+              
             )}
+            
           />
 
           {comments.next ? (

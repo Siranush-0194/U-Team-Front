@@ -8,10 +8,9 @@ import Account from "../Accounts/Information/Account";
 import Questions from "../Accounts/Dashboard/Questions/questions";
 import StudentForum from "../Accounts/Dashboard/Students/Forum";
 import Post from "../Accounts/Dashboard/Posts/posts";
-import Calendar from "../Calendar/Calendar";
 import Storage from "../Accounts/Dashboard/Storage";
 import MyCalendar from "../Calendar/Calendar";
-import AccountHeader from "../Accounts/Dashboard/accountsHeader";
+
 
 // Pages
 const StudentRoutes = () => {
@@ -40,7 +39,7 @@ const StudentRoutes = () => {
       </Route>
 
       <Route path="/dashboard/local">
-        <Storage type={'local'} />
+        <Storage type={'local'} id={'user.course.id'}/>
       </Route>
 
       <Route path="/dashboard/global">

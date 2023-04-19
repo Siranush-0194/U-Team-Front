@@ -98,7 +98,14 @@ const Questions = () => {
       file: data.file,
     });
   };
-
+  const deleteFile = (id) => {
+    axios_01.delete(`api/question/${id}`).then(() => {
+      // Refresh the media list
+      setQuestion(prevQuestions => prevQuestions.filter(question => question.id !== id));
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
   return (
     <Card style={{ height: "100%" }}>
       <Button type="primary" onClick={toggleModal} style={{ marginBottom: 10 }}>
@@ -217,7 +224,7 @@ const Questions = () => {
                         })}
                     />,
                     <CommentOutlined key='comment' />,
-                    <DeleteOutlined key="delete" style={{ color: 'red' }} />,
+                    <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  danger />
                   ]}>
                     <Item item={item} mediaKey={'question'} />
                   </Card>

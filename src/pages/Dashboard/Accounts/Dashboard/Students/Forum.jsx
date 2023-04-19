@@ -10,6 +10,8 @@ import CommentForm from "../Comments/Comments";
 const StudentForum = () => {
   const [data, setData] = useState([]);
   const [commentIsOpen, setCommentIsOpen] = useState({});
+  const [modal, setModal] = useState({ isOpen: false, data: {} });
+
 
   const user = useSelector(function (state) {
     return state?.user;
@@ -34,6 +36,8 @@ const StudentForum = () => {
     getData().then((data) => setData(data));
   }, []);
 
+
+
   return (
     <Card>
       {data && (
@@ -48,12 +52,21 @@ const StudentForum = () => {
                 key={item.id}>
                 <Card actions={[
                   <Likes id={item.id} likedByMe={item.likedByMe} />,
-                  <EditOutlined/>,
+                  <EditOutlined
+                  key="edit"
+                        style={{ color: 'blue' }}
+                        onClick={() => setModal({
+                          isOpen: true,
+                          data: {
+                            ...item,
+                            tags: item.tags.map(t => t.name)
+                          },
+                        })}/>,
                   ...(item.commentsUrl ? [<CommentOutlined key='comment' onClick={() => setCommentIsOpen({
                     ...commentIsOpen,
                     [item.id]: !commentIsOpen[item.id]
                   })} />] : []),
-                  <DeleteOutlined key="delete" style={{ color: 'red' }} />,
+                  <DeleteOutlined    key="delete" style={{ color: 'red' }} />,
                 ]}>
                   <Item item={item} mediaKey={'question'} />
                 </Card>

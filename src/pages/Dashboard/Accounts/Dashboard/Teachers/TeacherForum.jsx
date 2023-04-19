@@ -32,10 +32,11 @@ const TeacherForum = (item, mediaKey) => {
 
   useEffect(() => {
     if (selectedCourseId) {
-      axios_01.get(`/api/forum?courseId=${selectedCourseId}`)
+      axios_01.get(`/api/forum?courseId=${selectedCourseId} ` )
         .then(response => {
           // console.log(response.data.data);
           setForumData(response.data.data);
+        
         })
         .catch(error => {
           console.log(error);
@@ -51,7 +52,7 @@ const TeacherForum = (item, mediaKey) => {
 
   return (
     <div>
-      <Select  defaultValue={setSelectedCourseId}  style={{ width: '150px' }} onChange={handleChange}>
+      <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={handleChange}>
         {courses.map(course => (
           <Option key={course.id} value={course.id}>
             {course.name}

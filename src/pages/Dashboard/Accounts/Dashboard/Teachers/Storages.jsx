@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List, Button, Card } from 'antd';
+import { Upload, Form, List } from 'antd';
 import { axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { useSelector } from "react-redux";
-import { DeleteOutlined, EditOutlined, EditTwoTone, FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
+import { FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 
 import './style.scss';
 
@@ -88,16 +88,7 @@ const Storage = ({ type }) => {
 
     useEffect(() => {
         getMedia();
-    }, [user.course.id]);
-
-    const deleteFile = (id) => {
-        axios_02.delete(`/api/storage/${user.course.id}/${type}/${id}`).then(() => {
-          // Refresh the media list
-          getMedia();
-        }).catch((error) => {
-          console.log(error);
-        });
-      }
+    }, []);
 
     return (
         <>
@@ -124,26 +115,15 @@ const Storage = ({ type }) => {
                 className='storage-lists'
                 grid={{ gutter: 16, column: 3 }}
                 renderItem={item => (
-
-                    <>
-                        <List.Item>
-                            <List.Item.Meta
-
-                                onClick={() => {
-                                    window.open(PORTS[8003] + item.path, "_blank")
-
-                                }}
-                                avatar={getFileIcon(item.mimeType)}
-                                title={item.name}
-                            />
-                            <div>
-                               
-                                <Button icon={<DeleteOutlined />} danger onClick={() => deleteFile(item.id)}>Delete</Button>
-                            </div>
-                        </List.Item>
-
-                    </>
-
+                    <List.Item>
+                        <List.Item.Meta
+                            onClick={() => {
+                                window.open(PORTS[8003] + item.path, "_blank")
+                            }}
+                            avatar={getFileIcon(item.mimeType)}
+                            title={item.name}
+                        />
+                    </List.Item>
                 )}
             />
         </>
