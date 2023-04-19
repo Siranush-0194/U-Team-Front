@@ -42,6 +42,15 @@ const Posts = () => {
     setFile(null);
   };
 
+  const deleteFile = (id) => {
+    axios_01.delete(`api/post/${id}`).then(() => {
+      // Refresh the media list
+      setPost(prevPosts => prevPosts.filter(post => post.id !== id));
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
  
   
 
@@ -222,7 +231,7 @@ const Posts = () => {
                           },
                         })}
                     />,
-                    <DeleteOutlined key="delete" style={{ color: 'red' }} />,
+                    <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  danger />
                   ]}>
                     <Item item={item} mediaKey={'post'} />
                   </Card>
