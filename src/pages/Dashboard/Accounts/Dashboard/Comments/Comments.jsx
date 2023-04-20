@@ -20,7 +20,9 @@ function CommentForm({ question, onClick, isOpen }) {
   const [active, setActive] = useState([]);
   const [file, setFile] = useState(null);
 
+
   const getBase64 = useGetBase64();
+  const formData = new FormData();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,7 +33,6 @@ function CommentForm({ question, onClick, isOpen }) {
       return;
     }
 
-    const formData = new FormData();
 
     formData.append("content", comment);
     formData.append("questionId", question.id);
@@ -129,6 +130,10 @@ function CommentForm({ question, onClick, isOpen }) {
         console.error(error);
       });
   };
+
+
+
+
   return (
     <>
       <Collapse
@@ -186,21 +191,15 @@ function CommentForm({ question, onClick, isOpen }) {
                     />
                     <div style={{gap:10, margin:10}}>
                     {item.content} 
-                    <EditOutlined
-                    key="edit"
-                    style={{ color: 'blue' }}
-                    onClick={() => setModal({
-                      isOpen: true,
-                      data: {
-                        ...item,
-                        tags: item.tags.map(t => t.name)
-                      },
-                    })}
-                    />
+                   
                     </div>
                   </div>
                 </div>
                 <DeleteOutlined onClick={() => deleteComment(item.id)} />
+                <EditOutlined
+                    key="edit"
+                    
+                    />
               </List.Item>
               
             )}

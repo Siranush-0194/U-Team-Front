@@ -22,7 +22,7 @@ const getFileIcon = (mimeType) => {
     }
 };
 
-const Storage = ({ type }) => {
+const GlobalStorage= ({ type }) => {
     const getBase64 = useGetBase64();
 
     const [media, setMedia] = useState([]);
@@ -41,7 +41,7 @@ const Storage = ({ type }) => {
             file,
             code: getBase64.isMedia.includes(data.file.type),
             name: data.file.name,
-            type: data.file.type,
+            // type: data.file.type,
             dataFile: data.file.originFileObj
         });
 
@@ -52,7 +52,7 @@ const Storage = ({ type }) => {
                 const formData = new FormData();
 
                 formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append("type", type);
+                formData.append("type", 'global');
                 formData.append("courseId", user.course.id);
 
                 post.push(new Promise((resolve, reject) => {
@@ -61,7 +61,9 @@ const Storage = ({ type }) => {
                             "Content-Type": "multipart/form-data",
                         }
                     }).then((response) => resolve(response)).catch((e) => reject(e))
-                }));
+                    // <Storage type={'local'} id={'user.course.id'}/>  
+                }
+                    ));
 
                 setPost(post);
             });
@@ -77,7 +79,7 @@ const Storage = ({ type }) => {
 
     const getMedia = () => {
         axios_02
-            .get(`/api/storage/${user.course.id}/${type}`)
+            .get(`/api/storage/global/${user.course.id}`)
             .then((response) => {
                 setMedia(response.data)
             })
@@ -85,13 +87,14 @@ const Storage = ({ type }) => {
                 console.log('error');
             });
     }
+  
 
     useEffect(() => {
         getMedia();
     }, [user.course.id]);
 
     const deleteFile = (id) => {
-        axios_02.delete(`/api/storage/${user.course.id}/${type}/${id}`).then(() => {
+        axios_02.delete(`/api/storage/${id}`).then(() => {
           // Refresh the media list
           getMedia();
         }).catch((error) => {
@@ -150,4 +153,4 @@ const Storage = ({ type }) => {
     );
 }
 
-export default Storage;
+export default GlobalStorage;

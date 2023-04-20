@@ -5,7 +5,7 @@ import Account from "../Accounts/Information/Account";
 import Questions from "../Accounts/Dashboard/Questions/questions";
 import TeacherForum from "../Accounts/Dashboard/Teachers/TeacherForum";
 import Studyies from "../Accounts/Dashboard/Teachers/Students";
-import Storage from "../Accounts/Dashboard/Storage";
+
 import Courses from "../Accounts/Dashboard/Teachers/Students";
 import AccountHeader from "../Accounts/Dashboard/accountsHeader";
 import './app.scss'
@@ -24,11 +24,11 @@ const TeacherRoutes = () => {
       </Route>
 
       <Route path="/dashboard/local">
-      <Storage  type={'local'}/>
+      {/* <Storage  type={'local'}/> */}
         </Route>
 
         <Route path="/dashboard/global">
-        <Storage type={'global'}/>
+        {/* <Storage type={'global'}/> */}
         </Route>
 
       <Route path="/dashboard/courses">

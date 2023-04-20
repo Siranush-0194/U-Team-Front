@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List } from 'antd';
+import { Upload, Form, List, Button, Card } from 'antd';
 import { axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { useSelector } from "react-redux";
-import { FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EditTwoTone, FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 
 import './style.scss';
 
@@ -22,7 +22,7 @@ const getFileIcon = (mimeType) => {
     }
 };
 
-const Storage = ({ type }) => {
+const LocalStorage = ({ type }) => {
     const getBase64 = useGetBase64();
 
     const [media, setMedia] = useState([]);
@@ -41,7 +41,7 @@ const Storage = ({ type }) => {
             file,
             code: getBase64.isMedia.includes(data.file.type),
             name: data.file.name,
-            type: data.file.type,
+            // type: data.file.type,
             dataFile: data.file.originFileObj
         });
 
@@ -52,7 +52,7 @@ const Storage = ({ type }) => {
                 const formData = new FormData();
 
                 formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append("type", type);
+                formData.append("type", 'local');
                 formData.append("courseId", user.course.id);
 
                 post.push(new Promise((resolve, reject) => {
@@ -61,7 +61,9 @@ const Storage = ({ type }) => {
                             "Content-Type": "multipart/form-data",
                         }
                     }).then((response) => resolve(response)).catch((e) => reject(e))
-                }));
+                    // <Storage type={'local'} id={'user.course.id'}/>  
+                }
+                    ));
 
                 setPost(post);
             });
@@ -77,7 +79,7 @@ const Storage = ({ type }) => {
 
     const getMedia = () => {
         axios_02
-            .get(`/api/storage/${user.course.id}/${type}`)
+            .get(`/api/storage/local`)
             .then((response) => {
                 setMedia(response.data)
             })
@@ -85,10 +87,20 @@ const Storage = ({ type }) => {
                 console.log('error');
             });
     }
+  
 
     useEffect(() => {
         getMedia();
-    }, []);
+    }, [user.course.id]);
+
+    const deleteFile = (id) => {
+        axios_02.delete(`/api/storage/${id}`).then(() => {
+          // Refresh the media list
+          getMedia();
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
 
     return (
         <>
@@ -115,19 +127,30 @@ const Storage = ({ type }) => {
                 className='storage-lists'
                 grid={{ gutter: 16, column: 3 }}
                 renderItem={item => (
-                    <List.Item>
-                        <List.Item.Meta
-                            onClick={() => {
-                                window.open(PORTS[8003] + item.path, "_blank")
-                            }}
-                            avatar={getFileIcon(item.mimeType)}
-                            title={item.name}
-                        />
-                    </List.Item>
+
+                    <>
+                        <List.Item>
+                            <List.Item.Meta
+
+                                onClick={() => {
+                                    window.open(PORTS[8003] + item.path, "_blank")
+
+                                }}
+                                avatar={getFileIcon(item.mimeType)}
+                                title={item.name}
+                            />
+                            <div>
+                               
+                                <Button icon={<DeleteOutlined />} danger onClick={() => deleteFile(item.id)}>Delete</Button>
+                            </div>
+                        </List.Item>
+
+                    </>
+
                 )}
             />
         </>
     );
 }
 
-export default Storage;
+export default LocalStorage;
