@@ -5,6 +5,7 @@ import Likes from '../Likes/Like';
 import { CommentOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import Item from '../../../../../components/Other/Item';
 import Tags from '../../../../../components/Tags';
+import CommentForm from '../Comments/Comments';
 
 const { Option } = Select;
 
@@ -92,6 +93,9 @@ const TeacherForum = (item, mediaKey) => {
 
                       {item?.media.split(mediaKey) ? <Image width="300px" style={{ objectFit: 'cover' }} src={item?.media} alt="" /> : null}
                     </div>
+                    <div style={{ marginTop: 10 }}>
+                  {item.commentsUrl ? <CommentForm question={item} isOpen={commentIsOpen[item.id]} /> : null}
+                </div>
                     {/* <div className="item-tags">
                 <Tags lists={forumData?.data[4]?.tags} />
             </div> */}

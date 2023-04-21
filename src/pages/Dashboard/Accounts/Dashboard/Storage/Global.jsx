@@ -8,15 +8,16 @@ import { DeleteOutlined, EditOutlined, EditTwoTone, FilePdfOutlined, FileTextOut
 import './style.scss';
 
 const getFileIcon = (mimeType) => {
+  
     switch (mimeType) {
         case 'application/pdf':
-            return <FilePdfOutlined size="32" />;
+            return <FilePdfOutlined   style={{ fontSize: '24px' }} />;
         case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            return <FileWordOutlined size="32" />
+            return <FileWordOutlined style={{ fontSize: '24px' }} />
         case "application/vnd.oasis.opendocument.spreadsheet":
-            return <FileTextOutlined size="32" />
+            return <FileTextOutlined style={{ fontSize: '24px' }} />
         case 'text/plain':
-            return <FileTextOutlined size="32" />;
+            return <FileTextOutlined style={{ fontSize: '24px' }} />;
         default:
             return null;
     }

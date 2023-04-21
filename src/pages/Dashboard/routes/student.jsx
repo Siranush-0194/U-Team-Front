@@ -12,6 +12,7 @@ import Post from "../Accounts/Dashboard/Posts/posts";
 import MyCalendar from "../Calendar/Calendar";
 import LocalStorage from "../Accounts/Dashboard/Storage/Local";
 import GlobalStorage from "../Accounts/Dashboard/Storage/Global";
+import Tags from "../../../components/Tags";
 
 
 // Pages
@@ -58,6 +59,10 @@ const StudentRoutes = () => {
 
       <Route path="/dashboard/calendar">
         <MyCalendar />
+      </Route>
+
+      <Route path="/dashboard/tags">
+        <Tags/>
       </Route>
     </>
   );

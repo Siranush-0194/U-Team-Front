@@ -9,6 +9,8 @@ import Studyies from "../Accounts/Dashboard/Teachers/Students";
 import Courses from "../Accounts/Dashboard/Teachers/Students";
 import AccountHeader from "../Accounts/Dashboard/accountsHeader";
 import './app.scss'
+import GlobalStorage from "../Accounts/Dashboard/Storage/Global";
+import LocalStorage from "../Accounts/Dashboard/Storage/Local";
 // Pages
 
 const TeacherRoutes = () => {
@@ -24,11 +26,11 @@ const TeacherRoutes = () => {
       </Route>
 
       <Route path="/dashboard/local">
-      {/* <Storage  type={'local'}/> */}
+      {/* <LocalStorage/> */}
         </Route>
 
         <Route path="/dashboard/global">
-        {/* <Storage type={'global'}/> */}
+        {/* <GlobalStorage/> */}
         </Route>
 
       <Route path="/dashboard/courses">
