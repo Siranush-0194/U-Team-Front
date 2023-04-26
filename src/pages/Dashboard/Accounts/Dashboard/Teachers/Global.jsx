@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List } from 'antd';
-import { axios_02, PORTS } from '../../../../../axios';
+import { Upload, Form, List, Select } from 'antd';
+import axios, { axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { useSelector } from "react-redux";
 import { FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
+import { Option } from 'antd/es/mentions';
 
-import './style.scss';
+// import './style.scss';
 
 const getFileIcon = (mimeType) => {
     switch (mimeType) {
@@ -22,17 +23,39 @@ const getFileIcon = (mimeType) => {
     }
 };
 
-const Storage = ({ type }) => {
+const TeacherGlobalStorage = ({ type }) => {
     const getBase64 = useGetBase64();
 
     const [media, setMedia] = useState([]);
     const [file, setFile] = useState(null);
     const [files, setFiles] = useState([]);
     const [post, setPost] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [forumData, setForumData] = useState([]);
 
     const user = useSelector(function (state) {
         return state?.user;
     });
+
+    useEffect(() => {
+        axios.get('/api/teacher/courses')
+          .then(response => {
+            setCourses(response.data);
+            setSelectedCourseId(response.data?.[0].id)
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }, []);
+    
+    
+
+  
+
+    useEffect(() => {
+        getMedia();
+    }, [selectedCourseId]);
 
     const handleChange = async (data) => {
         const file = await getBase64.init(data.file.originFileObj);
@@ -52,8 +75,8 @@ const Storage = ({ type }) => {
                 const formData = new FormData();
 
                 formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append("type", type);
-                formData.append("courseId", user.course.id);
+                formData.append(`type`, 'global');
+                formData.append(`courseId`, selectedCourseId);
 
                 post.push(new Promise((resolve, reject) => {
                     axios_02.post('/api/storage', formData, {
@@ -77,7 +100,7 @@ const Storage = ({ type }) => {
 
     const getMedia = () => {
         axios_02
-            .get(`/api/storage/${user.course.id}/${type}`)
+            .get(`/api/storage/global/${selectedCourseId}`)
             .then((response) => {
                 setMedia(response.data)
             })
@@ -92,6 +115,14 @@ const Storage = ({ type }) => {
 
     return (
         <>
+       <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={handleChange}>
+        {courses.map(course => (
+          <Option key={course.id} value={course.id}>
+            {course.name}
+          </Option>
+        ))}
+      </Select>
+      
             <Form>
                 <Form.Item>
                     <Upload
@@ -130,4 +161,4 @@ const Storage = ({ type }) => {
     );
 }
 
-export default Storage;
+export default TeacherGlobalStorage;

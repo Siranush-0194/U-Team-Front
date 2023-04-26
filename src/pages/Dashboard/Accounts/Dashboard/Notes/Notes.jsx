@@ -11,8 +11,7 @@ import { Card } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const Notes = () => {
-
-  const [notes, setNotes] = useState({});
+  const [notes, setNotes] = useState({ notes: [], nextUrl: null });
   const [inputText, setInputText] = useState("");
   const [inputTitle, setInputTitle] = useState("");
 
@@ -22,6 +21,7 @@ const Notes = () => {
 
   const createNote = (title, content) => {
     const formData = new FormData();
+
     formData.append('title', inputTitle);
     formData.append('content', inputText);
 
@@ -31,28 +31,29 @@ const Notes = () => {
       },
     })
       .then(response => {
-        // const newNote = response.data;
-        // setNotes({...notes, newNote});
-     
+        setNotes({
+          notes: [
+            response.data,
+            ...notes.notes
+          ],
+          nextUrl: notes.nextUrl
+        });
         setInputText("");
         setInputTitle("");
       })
       .catch(error => console.error(error));
   }
-  console.log(notes);
 
   useEffect(() => {
     axios_04
-      .get(`/api/notes/${user.id}`)
+      .get(`/api/notes/tag/?from=0&offset=5`)
       .then((response) => {
-       setNotes(response.data);
-        
+        setNotes(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-
 
   const textHandler = (e) => {
     setInputText(e.target.value);
@@ -62,54 +63,23 @@ const Notes = () => {
     setInputTitle(e.target.value);
   };
 
-
-  function Note({ id, content, deleteNote,title}) {
-    return (
-      <div className="note">
-         <div className="noteTitle">{title}</div>
-        <div className="note__body">{content}{title}</div>
-        <div className="note__footer" style={{ justifyContent: "flex-end" }}>
-          <DeleteOutlined
-            className="note__delete"
-            onClick={() => deleteNote(id)}
-            aria-hidden="true"
-          ></DeleteOutlined>
-          <EditOutlined
-          className="note__edit"        
-          />
-        </div>
-      </div>
-    );
-  }
-
-
   const charLimit = 3000;
   const charLeft = charLimit - inputText.length;
+
   return (
     <>
       <div className="header">
         <h1 className="notes__title">Notes</h1>
       </div>
-
       <div className="notes">
-{/*        
-        {notes.map((note) => (
-          <Note
-            key={note.id}
-            id={note.id}
+        {notes?.notes?.map(note => {
+          return <Note
             title={note.title}
             text={note.text}
+            key={note.id}
+            id={note.id}
           />
-        ))}
-     */}
-
-     <Note
-     title={notes.title}
-     text={notes.text}
-     key={notes.id}
-     id={notes.id}
-     />
-       
+        })}
 
         <div className="note" >
           <input className="noteTitle"
@@ -117,24 +87,25 @@ const Notes = () => {
             placeholder="Title"
             value={inputTitle}
             onChange={titleHandler}
+            maxLength={100}
           />
+
           <TextArea
             cols="10"
             rows="5"
             value={inputText}
             placeholder="Type...."
             onChange={textHandler}
-            maxLength="100"
-          ></TextArea>
+            maxLength={charLimit}
+          />
+
           <div className="note__footer">
             <span className="label">{charLeft} left</span>
             <button className="note__save" onClick={createNote}>
               Save
             </button>
           </div>
-
         </div>
-
       </div>
     </>
   )

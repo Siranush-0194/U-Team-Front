@@ -3,7 +3,7 @@ import Tags from "../Tags";
 import { React } from "react";
 import './style.scss';
 
-const Item = ({ item, mediaKey }) => {
+const Item = ({ item, mediaKey, onClickTag }) => {
     return (
         <List.Item>
             <List.Item.Meta
@@ -11,22 +11,12 @@ const Item = ({ item, mediaKey }) => {
                 title={item.author.firstName}
                 description={item.title}
             />
-
-
             <div className="item-content">
                 <div className="item-content-description">{item.content}</div>
-              
-                    {!item.media ? (
-                        <></>
-                    ) : (
-                        item.media.split(mediaKey) ? <Image   style={{ objectFit: 'cover', width:"900px",  height:"500px" }} src={item.media} alt="" /> : null
-
-                    )}
-               
+                {item.media.split(mediaKey)[1] ? <Image style={{ objectFit: 'cover', width: "900px", height: "500px" }} src={item.media} alt="" /> : null}
             </div>
-
             <div className="item-tags">
-                <Tags lists={item.tags} />
+                <Tags lists={item.tags} onClickTag={onClickTag} />
             </div>
         </List.Item>
     )

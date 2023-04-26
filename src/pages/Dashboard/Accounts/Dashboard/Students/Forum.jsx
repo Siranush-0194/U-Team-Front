@@ -1,17 +1,19 @@
 import { React, useState, useCallback, useEffect } from "react";
 import { axios_01 } from "../../../../../axios";
 import { useSelector } from "react-redux";
-import { Card, List } from "antd";
+import { Button, Card, List } from "antd";
 import Item from "../../../../../components/Other/Item";
-import { CommentOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { CommentOutlined } from "@ant-design/icons";
 import Likes from "../Likes/Like";
 import CommentForm from "../Comments/Comments";
+import { useHistory } from "react-router-dom";
 
 const StudentForum = () => {
   const [data, setData] = useState([]);
   const [commentIsOpen, setCommentIsOpen] = useState({});
   const [modal, setModal] = useState({ isOpen: false, data: {} });
 
+  const history = useHistory();
 
   const user = useSelector(function (state) {
     return state?.user;
@@ -20,7 +22,7 @@ const StudentForum = () => {
   const getData = useCallback(() => {
     return new Promise((resolve, reject) => {
       axios_01
-        .get(`/api/forum?courseId=${user.course.id}`)
+        .get(`/api/forum?courseId=${user.course.id}${(history.location.search || '').replace('?', "&")}`)
         .then((response) => {
           if (response.status === 200) {
             return resolve(response.data.data);
@@ -30,16 +32,20 @@ const StudentForum = () => {
         })
         .catch((error) => reject(error));
     });
-  }, [user.course.id]);
+  }, [user.course.id, history.location.search]);
 
   useEffect(() => {
     getData().then((data) => setData(data));
   }, []);
 
-
+  const getFilter = function (tag) {
+    history.push({ search: tag ? `&filter=${tag}` : '' });
+    getData().then((data) => setData(data));
+  }
 
   return (
     <Card>
+      <Button onClick={()=> getFilter()}>Clear Filter</Button>
       {data && (
         <List
           className="demo-loadmore-list"
@@ -52,23 +58,12 @@ const StudentForum = () => {
                 key={item.id}>
                 <Card actions={[
                   <Likes id={item.id} likedByMe={item.likedByMe} />,
-                  // <EditOutlined
-                  // key="edit"
-                  //       style={{ color: 'blue' }}
-                  //       onClick={() => setModal({
-                  //         isOpen: true,
-                  //         data: {
-                  //           ...item,
-                  //           tags: item.tags.map(t => t.name)
-                  //         },
-                  //       })}/>,
                   ...(item.commentsUrl ? [<CommentOutlined key='comment' onClick={() => setCommentIsOpen({
                     ...commentIsOpen,
                     [item.id]: !commentIsOpen[item.id]
                   })} />] : []),
-                  // <DeleteOutlined    key="delete" style={{ color: 'red' }} />,
                 ]}>
-                  <Item item={item} mediaKey={'question'} />
+                  <Item item={item} mediaKey={'question'} onClickTag={(tag) => getFilter(tag)} />
                 </Card>
 
                 <div style={{ marginTop: 10 }}>

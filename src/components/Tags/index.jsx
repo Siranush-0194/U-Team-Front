@@ -1,11 +1,11 @@
 import { Select, Space, Tag } from "antd";
 import { useState, useEffect } from "react";
-
 import { axios_01 } from "../../axios";
 import { useSelector } from "react-redux";
 
-const Tags = ({ list, lists, onChange }) => {
+const Tags = ({ list, lists, onChange, onClickTag }) => {
   const [tags, setTags] = useState([]);
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
 
   const user = useSelector(function (state) {
     return state?.user;
@@ -21,9 +21,23 @@ const Tags = ({ list, lists, onChange }) => {
               label: tag.name,
             }))
           );
+
         }
       });
   }, [lists, user.course.id]);
+
+  useEffect(() => {
+    if (selectedCourseId) {
+      axios_01.get(`/api/forum?courseId=${selectedCourseId} `)
+        .then(response => {
+          setSelectedCourseId(response.data?.id)
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }, [selectedCourseId]);
 
   return !lists ? (
     <Select
@@ -40,7 +54,7 @@ const Tags = ({ list, lists, onChange }) => {
   ) : (
     <Space wrap size={[0, 8]}>
       {lists.map((tag) => (
-        <Tag color="#108ee9" key={tag.id}>{tag.name}</Tag>
+        <Tag color="#108ee9" key={tag.id} onClick={() => onClickTag?.(tag.name)}>{tag.name}</Tag>
       ))}
     </Space>
   );

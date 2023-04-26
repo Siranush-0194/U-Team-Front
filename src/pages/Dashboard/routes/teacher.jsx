@@ -4,13 +4,16 @@ import { Route } from "react-router-dom";
 import Account from "../Accounts/Information/Account";
 import Questions from "../Accounts/Dashboard/Questions/questions";
 import TeacherForum from "../Accounts/Dashboard/Teachers/TeacherForum";
-import Studyies from "../Accounts/Dashboard/Teachers/Students";
+import Students from "../Accounts/Dashboard/Teachers/Students";
 
 import Courses from "../Accounts/Dashboard/Teachers/Students";
-import AccountHeader from "../Accounts/Dashboard/accountsHeader";
+
 import './app.scss'
-import GlobalStorage from "../Accounts/Dashboard/Storage/Global";
-import LocalStorage from "../Accounts/Dashboard/Storage/Local";
+
+
+import TeacherGlobalStorage from "../Accounts/Dashboard/Teachers/Global";
+import TeacherLocalStorage from "../Accounts/Dashboard/Teachers/Local";
+import Notes from "../Accounts/Dashboard/Notes/Notes";
 // Pages
 
 const TeacherRoutes = () => {
@@ -26,16 +29,24 @@ const TeacherRoutes = () => {
       </Route>
 
       <Route path="/dashboard/local">
-      {/* <LocalStorage/> */}
-        </Route>
+        {/* <LocalStorage/> */}
+        <TeacherLocalStorage />
+      </Route>
 
-        <Route path="/dashboard/global">
+      <Route path="/dashboard/global">
+        <TeacherGlobalStorage />
+
         {/* <GlobalStorage/> */}
-        </Route>
+      </Route>
 
       <Route path="/dashboard/courses">
-       <Courses/>
+        <Courses />
       </Route>
+
+      <Route path="/dashboard/notes">
+        <Notes />
+      </Route>
+
 
       <Route path="/dashboard/questions">
         <Questions />

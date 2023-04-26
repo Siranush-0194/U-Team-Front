@@ -34,9 +34,9 @@ const Dashboard = () => {
   }, [rule]);
 
   return (
-      <div className="dashboard">
-        <Menu />
 
+      <div className="dashboard">
+        <Menu/>
         <section style={{ width: "100%", padding: 10 }}>
           <Suspense>{RouteRules}</Suspense>
         </section>
