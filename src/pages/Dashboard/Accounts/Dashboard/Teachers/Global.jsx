@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Upload, Form, List, Select } from 'antd';
-import axios, { axios_02, PORTS } from '../../../../../axios';
+import axios, { axios_01, axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
-import { useSelector } from "react-redux";
 import { FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 import { Option } from 'antd/es/mentions';
 
@@ -32,32 +31,43 @@ const TeacherGlobalStorage = ({ type }) => {
     const [post, setPost] = useState([]);
     const [courses, setCourses] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
-  const [forumData, setForumData] = useState([]);
+    const [forumData, setForumData] = useState([]);
 
-    const user = useSelector(function (state) {
-        return state?.user;
-    });
 
     useEffect(() => {
         axios.get('/api/teacher/courses')
-          .then(response => {
-            setCourses(response.data);
-            setSelectedCourseId(response.data?.[0].id)
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }, []);
-    
-    
+            .then(response => {
+                setCourses(response.data);
+                setSelectedCourseId(response.data?.[0].id)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
-  
+    useEffect(() => {
+        if (selectedCourseId) {
+            axios_01.get(`/api/forum?courseId=${selectedCourseId} `)
+                .then(response => {
+                    setForumData(response.data.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }, [selectedCourseId]);
+
+
+
+
 
     useEffect(() => {
         getMedia();
     }, [selectedCourseId]);
 
     const handleChange = async (data) => {
+        setSelectedCourseId(data);
+
         const file = await getBase64.init(data.file.originFileObj);
 
         files.push({
@@ -115,14 +125,14 @@ const TeacherGlobalStorage = ({ type }) => {
 
     return (
         <>
-       <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={handleChange}>
-        {courses.map(course => (
-          <Option key={course.id} value={course.id}>
-            {course.name}
-          </Option>
-        ))}
-      </Select>
-      
+            <Select defaultValue={selectedCourseId} style={{ width: '150px' }} onChange={handleChange}>
+                {courses.map(course => (
+                    <Option key={course.id} value={course.id}>
+                        {course.name}
+                    </Option>
+                ))}
+            </Select>
+
             <Form>
                 <Form.Item>
                     <Upload
