@@ -6,18 +6,19 @@ import './style.css'
 import TextArea from "antd/es/input/TextArea";
 
 import { axios_04 } from "../../../../../axios";
+import { useSelector } from "react-redux";
+import { Card } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const Notes = () => {
 
-  const [notes, setNotes] = useState(['']);
+  const [notes, setNotes] = useState({});
   const [inputText, setInputText] = useState("");
   const [inputTitle, setInputTitle] = useState("");
 
-
-
-
-
-
+  const user = useSelector(function (state) {
+    return state?.user;
+  });
 
   const createNote = (title, content) => {
     const formData = new FormData();
@@ -30,12 +31,29 @@ const Notes = () => {
       },
     })
       .then(response => {
-        // console.log(response.data);
-        const noteId = response.data.id;
+        // const newNote = response.data;
+        // setNotes({...notes, newNote});
+     
+        setInputText("");
+        setInputTitle("");
       })
       .catch(error => console.error(error));
   }
-  
+  console.log(notes);
+
+  useEffect(() => {
+    axios_04
+      .get(`/api/notes/${user.id}`)
+      .then((response) => {
+       setNotes(response.data);
+        
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+
   const textHandler = (e) => {
     setInputText(e.target.value);
   };
@@ -43,17 +61,28 @@ const Notes = () => {
   const titleHandler = (e) => {
     setInputTitle(e.target.value);
   };
-  const getNoteById = (id) => {
-    axios_04.get(`/api/notes/${id}`)
-      .then(response => {
-        console.log(response.data);
-        setNotes(response.data)
-        // do something with the retrieved note, such as update the UI
-      })
-      .catch(error => console.error(error));
-  };
 
-  console.log(notes);
+
+  function Note({ id, content, deleteNote,title}) {
+    return (
+      <div className="note">
+         <div className="noteTitle">{title}</div>
+        <div className="note__body">{content}{title}</div>
+        <div className="note__footer" style={{ justifyContent: "flex-end" }}>
+          <DeleteOutlined
+            className="note__delete"
+            onClick={() => deleteNote(id)}
+            aria-hidden="true"
+          ></DeleteOutlined>
+          <EditOutlined
+          className="note__edit"        
+          />
+        </div>
+      </div>
+    );
+  }
+
+
   const charLimit = 3000;
   const charLeft = charLimit - inputText.length;
   return (
@@ -63,15 +92,24 @@ const Notes = () => {
       </div>
 
       <div className="notes">
+{/*        
         {notes.map((note) => (
           <Note
             key={note.id}
             id={note.id}
             title={note.title}
             text={note.text}
-          // deleteNote={deleteNote}
           />
         ))}
+     */}
+
+     <Note
+     title={notes.title}
+     text={notes.text}
+     key={notes.id}
+     id={notes.id}
+     />
+       
 
         <div className="note" >
           <input className="noteTitle"
@@ -101,6 +139,5 @@ const Notes = () => {
     </>
   )
 }
-
 
 export default Notes;

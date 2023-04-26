@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List, Button, Card } from 'antd';
+import { Upload, Form, List, Button } from 'antd';
 import { axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
-import { useSelector } from "react-redux";
-import { DeleteOutlined, EditOutlined, EditTwoTone, FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
+import { DeleteOutlined,  FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 
 import './style.scss';
+import { useSelector } from 'react-redux';
 
 const getFileIcon = (mimeType) => {
     switch (mimeType) {
         case 'application/pdf':
-            return <FilePdfOutlined size="32" />;
+            return <FilePdfOutlined style={{ fontSize: '24px' }} />;
         case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            return <FileWordOutlined size="32" />
+            return <FileWordOutlined style={{ fontSize: '24px' }} />
         case "application/vnd.oasis.opendocument.spreadsheet":
-            return <FileTextOutlined size="32" />
+            return <FileTextOutlined style={{ fontSize: '24px' }} />
         case 'text/plain':
-            return <FileTextOutlined size="32" />;
+            return <FileTextOutlined style={{ fontSize: '24px' }} />;
         default:
             return null;
     }
@@ -29,10 +29,9 @@ const LocalStorage = ({ type }) => {
     const [file, setFile] = useState(null);
     const [files, setFiles] = useState([]);
     const [post, setPost] = useState([]);
-
     const user = useSelector(function (state) {
         return state?.user;
-    });
+      });
 
     const handleChange = async (data) => {
         const file = await getBase64.init(data.file.originFileObj);
@@ -52,8 +51,8 @@ const LocalStorage = ({ type }) => {
                 const formData = new FormData();
 
                 formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append("type", 'local');
-                formData.append("courseId", user.course.id);
+                formData.append(`type`, 'local');
+             
 
                 post.push(new Promise((resolve, reject) => {
                     axios_02.post('/api/storage', formData, {
@@ -61,7 +60,7 @@ const LocalStorage = ({ type }) => {
                             "Content-Type": "multipart/form-data",
                         }
                     }).then((response) => resolve(response)).catch((e) => reject(e))
-                    // <Storage type={'local'} id={'user.course.id'}/>  
+                   
                 }
                     ));
 
@@ -91,7 +90,7 @@ const LocalStorage = ({ type }) => {
 
     useEffect(() => {
         getMedia();
-    }, [user.course.id]);
+    }, [user.id]);
 
     const deleteFile = (id) => {
         axios_02.delete(`/api/storage/${id}`).then(() => {

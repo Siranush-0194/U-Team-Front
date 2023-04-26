@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List, Button, Card } from 'antd';
+import { Upload, Form, List, Button} from 'antd';
 import { axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { useSelector } from "react-redux";
-import { DeleteOutlined, EditOutlined, EditTwoTone, FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
+import { DeleteOutlined,  FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 
 import './style.scss';
 
@@ -42,7 +42,7 @@ const GlobalStorage= ({ type }) => {
             file,
             code: getBase64.isMedia.includes(data.file.type),
             name: data.file.name,
-            // type: data.file.type,
+            type: data.file.type,
             dataFile: data.file.originFileObj
         });
 
@@ -53,8 +53,8 @@ const GlobalStorage= ({ type }) => {
                 const formData = new FormData();
 
                 formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append("type", 'global');
-                formData.append("courseId", user.course.id);
+                formData.append(`type`, 'global');
+                formData.append(`courseId`, user.course.id);
 
                 post.push(new Promise((resolve, reject) => {
                     axios_02.post('/api/storage', formData, {
@@ -62,7 +62,7 @@ const GlobalStorage= ({ type }) => {
                             "Content-Type": "multipart/form-data",
                         }
                     }).then((response) => resolve(response)).catch((e) => reject(e))
-                    // <Storage type={'local'} id={'user.course.id'}/>  
+             
                 }
                     ));
 

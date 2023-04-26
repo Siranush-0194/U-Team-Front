@@ -52,21 +52,21 @@ const StudentForum = () => {
                 key={item.id}>
                 <Card actions={[
                   <Likes id={item.id} likedByMe={item.likedByMe} />,
-                  <EditOutlined
-                  key="edit"
-                        style={{ color: 'blue' }}
-                        onClick={() => setModal({
-                          isOpen: true,
-                          data: {
-                            ...item,
-                            tags: item.tags.map(t => t.name)
-                          },
-                        })}/>,
+                  // <EditOutlined
+                  // key="edit"
+                  //       style={{ color: 'blue' }}
+                  //       onClick={() => setModal({
+                  //         isOpen: true,
+                  //         data: {
+                  //           ...item,
+                  //           tags: item.tags.map(t => t.name)
+                  //         },
+                  //       })}/>,
                   ...(item.commentsUrl ? [<CommentOutlined key='comment' onClick={() => setCommentIsOpen({
                     ...commentIsOpen,
                     [item.id]: !commentIsOpen[item.id]
                   })} />] : []),
-                  <DeleteOutlined    key="delete" style={{ color: 'red' }} />,
+                  // <DeleteOutlined    key="delete" style={{ color: 'red' }} />,
                 ]}>
                   <Item item={item} mediaKey={'question'} />
                 </Card>

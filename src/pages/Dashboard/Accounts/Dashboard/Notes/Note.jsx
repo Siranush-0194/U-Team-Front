@@ -12,8 +12,7 @@ function Note({ id, content, deleteNote,title}) {
           aria-hidden="true"
         ></DeleteOutlined>
         <EditOutlined
-        className="note__edit"
-        
+        className="note__edit"        
         />
       </div>
     </div>
