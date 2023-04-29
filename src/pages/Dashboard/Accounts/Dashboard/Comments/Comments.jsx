@@ -119,8 +119,7 @@ function CommentForm({ question, onClick, isOpen }) {
       }
     }).catch(() => setRateLoading(false));
   }
-  const deleteComment = (id) => {
- 
+  const deleteComment = (id) => { 
     axios_01.delete(`/api/comment/${id}`)
       .then(response => {
         const updatedComments = comment.filter(comment => comment.id !== id);

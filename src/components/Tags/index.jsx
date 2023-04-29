@@ -24,13 +24,13 @@ const Tags = ({ list, lists, onChange, onClickTag }) => {
 
         }
       });
-  }, [lists, user.course.id]);
+  }, [lists]);
 
   useEffect(() => {
     if (selectedCourseId) {
       axios_01.get(`/api/forum?courseId=${selectedCourseId} `)
         .then(response => {
-          setSelectedCourseId(response.data?.id)
+          setSelectedCourseId(response?.data?.id)
 
         })
         .catch(error => {

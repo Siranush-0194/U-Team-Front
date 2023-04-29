@@ -58,11 +58,11 @@ body {
     word-wrap: break-word;
 }
 .noteTitle {
-    background: rgba(202, 239, 18, 0.915);
+    background: rgba(23, 45, 239, 0.241);
     backdrop-filter: blur(5px);
     box-shadow: inset -6px -4px 2px rgba(102, 72, 193, 0.03);
     border-radius: 15px;
-    border: 1.5px solid rgba(23, 179, 41, 0.945);
+    border: 1.5px solid rgba(15, 84, 231, 0.945);
     color: #460d17;
     padding: 6px;
     height: 36px;
