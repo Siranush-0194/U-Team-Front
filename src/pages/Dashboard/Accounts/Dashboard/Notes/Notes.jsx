@@ -83,7 +83,37 @@ const Notes = () => {
     setInputTitle(e.target.value);
   };
 
-
+  const editNote = (id, updatedNote) => {
+    const formData = new FormData();
+  
+    formData.append("title", updatedNote.title);
+    formData.append("content", updatedNote.content);
+  
+    axios_04
+      .post(`/api/notes/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        // Update the notes state with the updated note
+        const updatedNotes = notes.notes.map((note) => {
+          if (note.id === id) {
+            return response.data;
+          } else {
+            return note;
+          }
+        });
+  
+        setNotes({
+          notes: updatedNotes,
+          nextUrl: notes.nextUrl,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const charLimit = 3000;
   const charLeft = charLimit - inputText.length;
@@ -103,6 +133,7 @@ const Notes = () => {
             key={note.id}
             id={note.id}
             onDelete={deleteNote}
+            onEdit={editNote}
           />
         })}
 
