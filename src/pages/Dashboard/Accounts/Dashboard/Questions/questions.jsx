@@ -223,7 +223,7 @@ const Questions = () => {
                           },
                         })}
                     />,
-                    <CommentOutlined key='comment' />,
+                    
                     <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  danger />
                   ]}>
                     <Item item={item} mediaKey={'question'} />

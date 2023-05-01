@@ -1,31 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Note from "./Note";
 
 import './style.css'
 import TextArea from "antd/es/input/TextArea";
-
 import { axios_04 } from "../../../../../axios";
-import { useSelector } from "react-redux";
-import { Button, Card, Input, Tag } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Upload} from "antd";
+import useGetBase64 from "../../../../../hooks/useGetBase64";
 
 const Notes = () => {
   const [notes, setNotes] = useState({ notes: [], nextUrl: null });
   const [inputText, setInputText] = useState("");
   const [inputTitle, setInputTitle] = useState("");
+  const [tag, setTag] = useState();
 
-  // const [tag, setTag] = useState();
 
-  // const user = useSelector(function (state) {
-  //   return state?.user;
-  // });
-
-  const createNote = (title, content) => {
+  const createNote = (title, content, tags, media) => {
     const formData = new FormData();
 
     formData.append('title', inputTitle);
     formData.append('content', inputText);
+    formData.append('tag', tag);
+
   
 
     axios_04.post('/api/notes', formData, {
@@ -43,9 +39,15 @@ const Notes = () => {
         });
         setInputText("");
         setInputTitle("");
+        setTag();
+      
+       
       })
       .catch(error => console.error(error));      
   }
+ 
+
+ 
 
 
   useEffect(() => {
@@ -83,11 +85,17 @@ const Notes = () => {
     setInputTitle(e.target.value);
   };
 
+  const tagHandler = (e) => {
+    setTag(e.target.value);
+  };
+ 
+
   const editNote = (id, updatedNote) => {
     const formData = new FormData();
   
     formData.append("title", updatedNote.title);
     formData.append("content", updatedNote.content);
+  
   
     axios_04
       .post(`/api/notes/${id}`, formData, {
@@ -115,6 +123,11 @@ const Notes = () => {
       });
   };
 
+ 
+
+
+
+
   const charLimit = 3000;
   const charLeft = charLimit - inputText.length;
 
@@ -123,13 +136,13 @@ const Notes = () => {
       <div className="header">
         <h1 className="notes__title">Notes</h1>
       </div>
-      <div className="notes">
+      <div className="notes" style={{height:'auto'}}>
         {notes?.notes?.map(note => {
 
           return <Note
+           tags={note?.tag?.name}
             title={note.title}
             content={note.content}
-            // tag={note?.tag?.name}
             key={note.id}
             id={note.id}
             onDelete={deleteNote}
@@ -138,6 +151,17 @@ const Notes = () => {
         })}
 
         <div className="note" >
+
+         
+
+        <Input  className="noteTag"
+            type="text"
+            placeholder="Title"
+            value={tag}
+            onChange={tagHandler}
+           
+          />
+
           <Input  className="noteTitle"
             type="text"
             placeholder="Title"
@@ -154,15 +178,19 @@ const Notes = () => {
             onChange={textHandler}
             maxLength={charLimit}
           />
+            
+
 
           <div className="note__footer">
             <span className="label">{charLeft} left</span>
+       
             <Button className="note__save" onClick={createNote}>
               Save
             </Button>
           </div>
         </div>
       </div>
+   
     </>
   )
 }

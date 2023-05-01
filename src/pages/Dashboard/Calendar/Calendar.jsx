@@ -24,17 +24,20 @@ const MyCalendar = () => {
     });
   }, []);
 
-  const handleGoogleOAuthClick = () => {
-    axios_03.get('/google/oauth2')
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        // Handle the error
-      });
-  }
+  // const handleGoogleOAuthClick = () => {
+  //   axios_03.get('/google/oauth2')
+  //     .then(response => {
+  //       console.log(response);
+  //     })
+  //     .catch(error => {
+  //       // Handle the error
+  //     });
+  // }
    
-    
+  const handleButtonClick = () => {
+  
+    window.open(' localhost:8002/google/oauth2');
+  };
 
 
 
@@ -45,7 +48,7 @@ const MyCalendar = () => {
 
   return (
     <>
-    <Button type='primary'onClick={handleGoogleOAuthClick}>Sign in with Google</Button>
+    <Button type='primary'onClick={ handleButtonClick}>Sign in with Google</Button>
     <div style={{ overflow: 'hidden' }}>
       <Calendar
         events={events}
