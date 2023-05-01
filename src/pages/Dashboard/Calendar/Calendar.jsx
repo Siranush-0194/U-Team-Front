@@ -36,7 +36,7 @@ const MyCalendar = () => {
    
   const handleButtonClick = () => {
   
-    window.open(' localhost:8002/google/oauth2');
+    window.location.href = 'http://localhost:8002/google/oauth2/';
   };
 
 
