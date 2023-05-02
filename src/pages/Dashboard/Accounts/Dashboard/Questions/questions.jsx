@@ -43,7 +43,6 @@ const Questions = () => {
 
   const submit = () => {
     if (modal.data.title) {
-      console.log(modal.data)
       const formData = new FormData();
 
       formData.append("title", modal.data.title);
@@ -224,7 +223,7 @@ const Questions = () => {
                         })}
                     />,
                     
-                    <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  danger />
+                    <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  type="danger" />
                   ]}>
                     <Item item={item} mediaKey={'question'} />
                   </Card>

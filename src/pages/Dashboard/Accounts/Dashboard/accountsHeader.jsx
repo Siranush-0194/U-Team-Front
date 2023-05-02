@@ -24,7 +24,6 @@ const { Search } = Input;
 const AccountHeader = () => {
   const { i18n } = useTranslation();
   const [form] = Form.useForm();
-  const { Header } = Layout;
   const [open, setOpen] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -89,8 +88,8 @@ const AccountHeader = () => {
   }, [rule]);
 
   return (
-    <Header>
-      <Card className="header-container">
+    <header>
+      <Card style={{ borderRadius: 0 }} className="header-container">
         <img
           src="../images/Uteam.jpeg"
           className="app-logo"
@@ -145,8 +144,9 @@ const AccountHeader = () => {
             title={"Information"}
             onClose={onClose}
             open={open}
+            style={{ height: '100vh' }}
           >
-            <Card  style={{ backgroundColor: "#aaaaaa" }}>
+            <Card style={{ backgroundColor: "#aaaaaa" }}>
               <Avatar
                   className="avatar-edit"
                 size={200}
@@ -201,7 +201,7 @@ const AccountHeader = () => {
           </Drawer>
         </div>
       </Card>
-    </Header>
+    </header>
   );
 };
 

@@ -72,6 +72,7 @@ const NavBar = () => {
         getItem("Global Storage", "globalStorage", <DatabaseOutlined />),
         getItem("Questions", "questions", <QuestionOutlined />),
         getItem("Posts", "posts", <BarsOutlined />),
+        getItem("Calendar", "calendar", <CalendarOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
     };
@@ -142,6 +143,7 @@ const NavBar = () => {
         globalStorage: () => history.push("/dashboard/global"),
         questions: () => history.push("/dashboard/questions"),
         posts: () => history.push("/dashboard/posts"),
+        calendar: () => history.push("/dashboard/calendar"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);

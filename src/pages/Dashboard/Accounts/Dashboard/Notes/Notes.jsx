@@ -1,19 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Note from "./Note";
 
 import './style.css'
 import TextArea from "antd/es/input/TextArea";
 import { axios_04 } from "../../../../../axios";
-import { Button, Form, Input, Upload} from "antd";
+import { Button, Input, Upload } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
 
 const Notes = () => {
   const [notes, setNotes] = useState({ notes: [], nextUrl: null });
   const [inputText, setInputText] = useState("");
   const [inputTitle, setInputTitle] = useState("");
-  const [tag, setTag] = useState();
+  const [tag, setTag] = useState("");
+  const [media, setMedia] = useState(null);
 
+  const getBase64 = useGetBase64();
 
   const createNote = (title, content, tags, media) => {
     const formData = new FormData();
@@ -21,8 +23,9 @@ const Notes = () => {
     formData.append('title', inputTitle);
     formData.append('content', inputText);
     formData.append('tag', tag);
+    formData.append('media', media);
 
-  
+
 
     axios_04.post('/api/notes', formData, {
       headers: {
@@ -39,28 +42,24 @@ const Notes = () => {
         });
         setInputText("");
         setInputTitle("");
-        setTag();
-      
-       
-      })
-      .catch(error => console.error(error));      
-  }
- 
+        setTag("");
+        setMedia(null);
 
- 
+      })
+      .catch(error => console.error(error));
+  }
 
 
   useEffect(() => {
     axios_04
       .get(`/api/notes/tag/?from=0&offset=5`)
       .then((response) => {
-        setNotes(response.data);       
+        setNotes(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-
 
   const deleteNote = (id) => {
     axios_04
@@ -88,15 +87,14 @@ const Notes = () => {
   const tagHandler = (e) => {
     setTag(e.target.value);
   };
- 
+
 
   const editNote = (id, updatedNote) => {
     const formData = new FormData();
-  
+
     formData.append("title", updatedNote.title);
     formData.append("content", updatedNote.content);
-  
-  
+
     axios_04
       .post(`/api/notes/${id}`, formData, {
         headers: {
@@ -112,7 +110,7 @@ const Notes = () => {
             return note;
           }
         });
-  
+
         setNotes({
           notes: updatedNotes,
           nextUrl: notes.nextUrl,
@@ -123,7 +121,8 @@ const Notes = () => {
       });
   };
 
- 
+  const handleUpload = async (data) => setMedia(notes?.media);
+
 
 
 
@@ -136,12 +135,12 @@ const Notes = () => {
       <div className="header">
         <h1 className="notes__title">Notes</h1>
       </div>
-      <div className="notes" style={{height:'auto'}}>
+      <div className="notes" style={{ height: 'auto' }}>
         {notes?.notes?.map(note => {
-
           return <Note
-           tags={note?.tag?.name}
+            tags={note?.tag?.name}
             title={note.title}
+            media={note.media}
             content={note.content}
             key={note.id}
             id={note.id}
@@ -150,19 +149,16 @@ const Notes = () => {
           />
         })}
 
-        <div className="note" >
-
-         
-
-        <Input  className="noteTag"
+        <div className="note">
+          <Input className="noteTag"
             type="text"
             placeholder="Title"
             value={tag}
             onChange={tagHandler}
-           
+
           />
 
-          <Input  className="noteTitle"
+          <Input className="noteTitle"
             type="text"
             placeholder="Title"
             value={inputTitle}
@@ -178,19 +174,28 @@ const Notes = () => {
             onChange={textHandler}
             maxLength={charLimit}
           />
-            
 
+          <Upload
+            beforeUpload={(file) => {
+              getBase64.beforeUploadMedia(file, (result) => setMedia(result));
+              return false;
+            }}
+            showUploadList={true}
+            // beforeUpload={getBase64.beforeUploadMedia}
+            customRequest={handleUpload}
+          >
+            <Button>Upload Image</Button>
+          </Upload>
 
           <div className="note__footer">
             <span className="label">{charLeft} left</span>
-       
+
             <Button className="note__save" onClick={createNote}>
               Save
             </Button>
           </div>
         </div>
       </div>
-   
     </>
   )
 }

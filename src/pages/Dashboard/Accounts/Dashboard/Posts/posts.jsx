@@ -32,7 +32,6 @@ const Posts = () => {
       .get(`/api/post?courseId=${user.course.id}`)
       .then((response) => {
         setPost(response.data.posts);
-        console.log(response.data.posts.id);
       })
       .catch(() => setPost([]));
   }, [user.course.id]);
@@ -56,7 +55,6 @@ const Posts = () => {
 
   const submit = () => {
     if (modal.data.title) {
-      console.log(modal.data)
       const formData = new FormData();
 
       formData.append("title", modal.data.title);
@@ -231,7 +229,7 @@ const Posts = () => {
                           },
                         })}
                     />,
-                    <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  danger />
+                    <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  type="danger" />
                   ]}>
                     <Item item={item} mediaKey={'post'} />
                   </Card>

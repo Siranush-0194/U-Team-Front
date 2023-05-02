@@ -37,7 +37,7 @@ const Dashboard = () => {
 
       <div className="dashboard">
         <Menu/>
-        <section style={{ width: "100%", padding: 10 }}>
+        <section className="dashboard-section">
           <Suspense>{RouteRules}</Suspense>
         </section>
       </div>

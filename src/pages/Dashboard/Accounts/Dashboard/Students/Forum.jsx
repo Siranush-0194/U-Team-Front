@@ -63,11 +63,11 @@ const StudentForum = () => {
                     [item.id]: !commentIsOpen[item.id]
                   })} />] : []),
                 ]}>
-                  <Item item={item} mediaKey={'question'} onClickTag={(tag) => getFilter(tag)} />
+                  <Item item={item} mediaKey={item.hasOwnProperty('commentsUrl') ? 'question' : 'post'} onClickTag={(tag) => getFilter(tag)} />
                 </Card>
 
                 <div style={{ marginTop: 10 }}>
-                  {item.commentsUrl ? <CommentForm question={item} isOpen={commentIsOpen[item.id]} /> : null}
+                  {item.hasOwnProperty('commentsUrl') ? <CommentForm question={item} isOpen={commentIsOpen[item.id]} /> : null}
                 </div>
               </Card>
             </>

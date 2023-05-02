@@ -14,6 +14,7 @@ import './app.scss'
 import TeacherGlobalStorage from "../Accounts/Dashboard/Teachers/Global";
 import TeacherLocalStorage from "../Accounts/Dashboard/Teachers/Local";
 import Notes from "../Accounts/Dashboard/Notes/Notes";
+import MyCalendar from "../Calendar/Calendar";
 // Pages
 
 const TeacherRoutes = () => {
@@ -45,6 +46,10 @@ const TeacherRoutes = () => {
 
       <Route path="/dashboard/notes">
         <Notes />
+      </Route>
+
+      <Route path="/dashboard/calendar">
+        <MyCalendar/>
       </Route>
 
 

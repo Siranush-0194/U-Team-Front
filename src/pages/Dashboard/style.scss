@@ -5,10 +5,17 @@
 
   aside {
     height: 100vh;
+    border-right: 1px solid blue;
 
     .navigation {
       height: 100vh;
     }
+  }
+
+  .dashboard-section {
+    width: -webkit-fill-available;
+    max-width: calc(100vw - 201px);
+    padding: 10
   }
 }
 .ant-menu{

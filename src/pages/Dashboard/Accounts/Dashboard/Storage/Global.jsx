@@ -142,7 +142,7 @@ const GlobalStorage= ({ type }) => {
                             />
                             <div>
                                
-                                <Button icon={<DeleteOutlined />} danger onClick={() => deleteFile(item.id)}>Delete</Button>
+                                <Button icon={<DeleteOutlined />} type='danger' onClick={() => deleteFile(item.id)}>Delete</Button>
                             </div>
                         </List.Item>
 

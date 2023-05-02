@@ -4,7 +4,7 @@ import { Button, Input, Tag } from "antd";
 import { useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 
-function Note({ id, content, title, tags,onDelete, onEdit }) {
+function Note({ id, content, title, tags,onDelete, onEdit,media }) {
   const [editing, setEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [newContent, setNewContent] = useState(content);
@@ -57,6 +57,9 @@ function Note({ id, content, title, tags,onDelete, onEdit }) {
 
       <div className="noteTitle">{title}  </div>
       <div className="note__body">{content}</div>
+      <div className="note__image">{media}</div>
+
+
       <div className="note__footer" style={{ justifyContent: "flex-end" }}>
         <DeleteOutlined
           className="note__delete"
