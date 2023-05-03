@@ -13,6 +13,7 @@ import {
 } from 'antd';
 
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 const TeacherInvitation = () => {
   const { t } = useTranslation();
@@ -26,7 +27,10 @@ const TeacherInvitation = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
 
-  
+  const user = useSelector(function (state) {
+    return state?.user;
+  });
+  console.log(user);
 
 
   const success = () => {
@@ -101,7 +105,7 @@ const TeacherInvitation = () => {
       values[key] = values[key].map(element => element[0]);    })
 
 
-    axios.post('/student/send-invitation', values).then((response) => {
+    axios.post('/teacher/send-invitation', values).then((response) => {
       if (response?.status === 200) {
         success(response?.data.message);
         form.resetFields();

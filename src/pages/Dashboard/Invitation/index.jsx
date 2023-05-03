@@ -32,7 +32,7 @@ const Invitation = () => {
     return (
         <>
             <Card
-                className='Login__form wide'
+                className="Login__fully"
                 actions={['admin', 'student', 'teacher'].map(item => {
                     return <Button type="primary" ghost={type !== item} className="form-button" onClick={() => setType(item)}>{t(item)}</Button>;
                 })}

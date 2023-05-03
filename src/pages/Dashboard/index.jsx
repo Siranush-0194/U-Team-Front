@@ -5,6 +5,7 @@ import "./style.scss";
 
 // Components
 import Menu from "../../components/Menu";
+import AccountHeader from "./Accounts/Dashboard/accountsHeader";
 
 // Rule Routes
 const AdminRoutes = lazy(() => import("./routes/admin"));
@@ -34,13 +35,16 @@ const Dashboard = () => {
   }, [rule]);
 
   return (
+    <>
+      <AccountHeader />
 
       <div className="dashboard">
-        <Menu/>
+        <Menu />
         <section className="dashboard-section">
           <Suspense>{RouteRules}</Suspense>
         </section>
       </div>
+    </>
   );
 };
 

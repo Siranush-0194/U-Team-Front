@@ -6,9 +6,7 @@ import {
   Button,
   Card,
   Drawer,
-  Form,
   Input,
-  Layout,
   Switch as AntSwitch,
   Upload,
 } from "antd";
@@ -21,9 +19,14 @@ import { useHistory } from "react-router-dom";
 
 const { Search } = Input;
 
+const forms = {
+  admin: require("./Admin/AdminAcc").default,
+  student: require("./Students/StudentsAcc").default,
+  teacher: require("./Teachers/TeachersAcc").default,
+}
+
 const AccountHeader = () => {
   const { i18n } = useTranslation();
-  const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -79,11 +82,6 @@ const AccountHeader = () => {
   }
 
   const ChangeForms = useMemo(() => {
-    let forms = {
-      student: require("./Students/StudentsAcc").default,
-      teacher: require("./Teachers/TeachersAcc").default,
-    };
-
     return forms[rule];
   }, [rule]);
 
@@ -97,7 +95,7 @@ const AccountHeader = () => {
           style={{ width: 50, height: 70, objecyFit: "cover" }}
         />
 
-        <div className="search-container">
+        {rule !== 'admin' ? <div className="search-container">
           <Search
             placeholder="input search text"
             className="search"
@@ -128,7 +126,7 @@ const AccountHeader = () => {
               Posts
             </Button>
           </div>
-        </div>
+        </div> : <div className="search-container"/>}
 
         <div className="account-container">
           <Avatar
@@ -140,7 +138,6 @@ const AccountHeader = () => {
           />
 
           <Drawer
-            form={form}
             title={"Information"}
             onClose={onClose}
             open={open}
@@ -185,18 +182,7 @@ const AccountHeader = () => {
                   ))
                 }
               />
-              <Form
-                form={form}
-                labelCol={{
-                  span: 8,
-                }}
-                wrapperCol={{
-                  span: 14,
-                }}
-                layout="horizontal"
-              >
-                <ChangeForms />
-              </Form>
+              <ChangeForms />
             </Card>
           </Drawer>
         </div>

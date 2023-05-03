@@ -20,7 +20,6 @@ function CommentForm({ question, onClick, isOpen }) {
   const [active, setActive] = useState([]);
   const [file, setFile] = useState(null);
 
-
   const getBase64 = useGetBase64();
   const formData = new FormData();
 
@@ -129,9 +128,6 @@ function CommentForm({ question, onClick, isOpen }) {
         console.error(error);
       });
   };
-
-
-
 
   return (
     <>

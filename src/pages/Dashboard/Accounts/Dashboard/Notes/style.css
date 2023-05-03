@@ -19,6 +19,7 @@ body {
     margin: 10px 0px;
 }
 .notes__title {
+    margin: 10px 0;
     color: #640bc3;
     font-size: 38px;
     font-family: "Montserrat";

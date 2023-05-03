@@ -17,15 +17,13 @@ const Notes = () => {
 
   const getBase64 = useGetBase64();
 
-  const createNote = (title, content, tags, media) => {
+  const createNote = () => {
     const formData = new FormData();
 
     formData.append('title', inputTitle);
     formData.append('content', inputText);
     formData.append('tag', tag);
-    formData.append('media', media);
-
-
+    media?.file && formData.append('media', media.file.originFileObj);
 
     axios_04.post('/api/notes', formData, {
       headers: {
@@ -123,29 +121,31 @@ const Notes = () => {
 
   const handleUpload = async (data) => setMedia(notes?.media);
 
+  const handlePreview = ({ fileList }) => setMedia({ ...media, fileList });
+  const handleChange = async (data) => {
+    if (!data.file.url && !data.file.preview) {
+      data.file.preview = await getBase64.init(data.file.originFileObj);
+    }
 
-
-
+    setMedia({
+      ...media,
+      file: data.file,
+    });
+  };
 
   const charLimit = 3000;
   const charLeft = charLimit - inputText.length;
 
   return (
     <>
-      <div className="header">
-        <h1 className="notes__title">Notes</h1>
-      </div>
+      <h1 className="notes__title">Notes</h1>
       <div className="notes" style={{ height: 'auto' }}>
         {notes?.notes?.map(note => {
           return <Note
-            tags={note?.tag?.name}
-            title={note.title}
-            media={note.media}
-            content={note.content}
             key={note.id}
-            id={note.id}
-            onDelete={deleteNote}
+            item={note}
             onEdit={editNote}
+            onDelete={deleteNote}
           />
         })}
 
@@ -155,7 +155,6 @@ const Notes = () => {
             placeholder="Title"
             value={tag}
             onChange={tagHandler}
-
           />
 
           <Input className="noteTitle"
@@ -176,12 +175,10 @@ const Notes = () => {
           />
 
           <Upload
-            beforeUpload={(file) => {
-              getBase64.beforeUploadMedia(file, (result) => setMedia(result));
-              return false;
-            }}
+            onChange={handleChange}
+            onPreview={handlePreview}
             showUploadList={true}
-            // beforeUpload={getBase64.beforeUploadMedia}
+            beforeUpload={getBase64.beforeUploadMedia}
             customRequest={handleUpload}
           >
             <Button>Upload Image</Button>

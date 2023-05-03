@@ -1,6 +1,6 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Card } from "antd";
+import { Button, Checkbox, Form, Input, Card, message } from "antd";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
@@ -31,18 +31,22 @@ function Login() {
         });
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        let fields = ["email", "password"];
-        fields.forEach((field) => {
-          if (error.response.data.errors[field]) {
-            form.setFields([
-              {
-                name: field,
-                errors: [t(error.response.data.errors[field][0])],
-              },
-            ]);
-          }
-        });
+      if (error.response && error.response.data) {
+        if (error.response.data.message) {
+          message.error(error.response.data.message);
+        } else if (error.response.data.errors) {
+          let fields = ["email", "password"];
+          fields.forEach((field) => {
+            if (error.response.data.errors[field]) {
+              form.setFields([
+                {
+                  name: field,
+                  errors: [t(error.response.data.errors[field][0])],
+                },
+              ]);
+            }
+          });
+        }
       }
     }
   };

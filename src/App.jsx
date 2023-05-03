@@ -18,7 +18,6 @@ import Login from "./components/Login";
 // Private
 import Dashboard from "./pages/Dashboard/index";
 import ResetPassword from "./pages/Dashboard/Invitation/resetPass";
-import AccountHeader from "./pages/Dashboard/Accounts/Dashboard/accountsHeader";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -75,8 +74,6 @@ const App = () => {
 
       {/* PRIVATE ROUTES */}
       <PrivateRoute path="/dashboard">
-      <AccountHeader />
-
         <Dashboard />
       </PrivateRoute>
       {/* END PRIVATE ROUTES */}
