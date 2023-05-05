@@ -11,11 +11,13 @@ const ResetPassword = () => {
     const [token] = useState(query.get("token"));
 
     useEffect(() => {
-        axios
-            .get(`accept/invitation?token=${token}`)
+        axios.get(`accept/invitation?token=${token}`)
             .then((response) => {
+                console.log(response)
                 let user = response.data[0];
-
+                if (response.status === 404) {
+                    window.location.href = "/";
+                }
                 try {
                     user.payload = JSON.parse(user.payload);
 
@@ -28,7 +30,13 @@ const ResetPassword = () => {
                 }
             })
 
-            .catch(() => setUser([token]));
+            .catch((e) => {
+                    if (e.response.status === 404) {
+                        window.location.href = "/";
+                    }
+                    setUser([token])
+                }
+            );
     }, [token]);
 
     const onFinish = (values) => {
@@ -40,6 +48,7 @@ const ResetPassword = () => {
         axios
             .post("/accept/invitation", values)
             .then((Jsonresponse) => {
+                console.log('  post accept/invitation  ')
                 window.location.href = "/";
                 form.resetFields();
             })
