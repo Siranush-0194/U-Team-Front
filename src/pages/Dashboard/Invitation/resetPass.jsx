@@ -85,7 +85,7 @@ const ResetPassword = () => {
   return (
     <>
       <img
-        src="../images/Uteam.jpeg"
+        src="../images/Uteam.svg"
         className="logo"
         alt="logo"
         width={100}
