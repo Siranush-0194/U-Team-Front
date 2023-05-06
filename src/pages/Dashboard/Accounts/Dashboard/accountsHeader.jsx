@@ -89,7 +89,7 @@ const AccountHeader = () => {
     <header>
       <Card style={{ borderRadius: 0 }} className="header-container">
         <img
-          src="../images/Uteam.jpeg"
+          src="../images/Uteam.svg"
           className="app-logo"
           alt="logo"
           style={{ width: 50, height: 70, objecyFit: "cover" }}
