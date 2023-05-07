@@ -7,7 +7,7 @@ const Item = ({ item, mediaKey, onClickTag }) => {
     return (
         <List.Item>
             <List.Item.Meta
-                avatar={<Avatar />}
+                avatar={<Avatar size={50} src={item.author.thumbnail} />}
                 title={item.author.firstName}
                 description={item.title}
             />
