@@ -72,7 +72,10 @@ const TeacherForum = (item, mediaKey) => {
                     // <DeleteOutlined key="delete" style={{ color: 'red' }} />,
                   ]}
                 >
-                   <Item item={item} mediaKey={'question'} />
+                                     <Item item={item} mediaKey={item.hasOwnProperty('commentsUrl') ? 'question' : 'post'} />
+                                     <div style={{ marginTop: 10 }}>
+                  {item.hasOwnProperty('commentsUrl') ? <CommentForm question={item} isOpen={commentIsOpen[item.id]} /> : null}
+                </div>
                 </Card>
               )}
             />
