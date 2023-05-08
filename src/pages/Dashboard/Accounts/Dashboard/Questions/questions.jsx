@@ -41,6 +41,7 @@ const Questions = () => {
     setFile(null);
   };
 
+
   const submit = () => {
     if (modal.data.title) {
       const formData = new FormData();
@@ -210,7 +211,7 @@ const Questions = () => {
               dataSource={question}
               renderItem={(item) => {
                   return <Card style={{ marginBottom: 10 }} actions={[
-                    <Likes id={item.id} likedByMe={item.likedByMe}/>,
+                    <Likes id={item.id} likedByMe={item.likedByMe} likeCount={item.likes}/>,
                     <EditOutlined
                         key="edit"
                         style={{ color: 'blue' }}

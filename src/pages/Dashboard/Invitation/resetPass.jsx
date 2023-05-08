@@ -109,21 +109,13 @@ const ResetPassword = () => {
               label="Confirm Password"
               
             >
-               <Input.Password  className='passwordInput'/>
-            </Form.Item>
-            <Form.Item>
-              <Button className="register" type="primary" htmlType="submit">
-                Register
-              </Button>
-
-              <Button
-                className="register"
-                type="primary"
-                onClick={goToLogin}
-              >
-                Go to Login
-              </Button>
-            </Form.Item>
+            <Input.Password className='passwordInput'/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button className="register" type="primary" htmlType="submit">
+                                Register
+                            </Button>
+                        </Form.Item>
           </Form>
         </Card>
       )}

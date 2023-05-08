@@ -12,7 +12,6 @@ const Notes = () => {
   const [notes, setNotes] = useState({ notes: [], nextUrl: null });
   const [inputText, setInputText] = useState("");
   const [inputTitle, setInputTitle] = useState("");
-  const [tag, setTag] = useState("");
   const [media, setMedia] = useState(null);
 
   const getBase64 = useGetBase64();
@@ -22,7 +21,6 @@ const Notes = () => {
 
     formData.append('title', inputTitle);
     formData.append('content', inputText);
-    formData.append('tag', tag);
     media?.file && formData.append('media', media.file.originFileObj);
 
     axios_04.post('/api/notes', formData, {
@@ -40,7 +38,6 @@ const Notes = () => {
         });
         setInputText("");
         setInputTitle("");
-        setTag("");
         setMedia(null);
 
       })
@@ -80,10 +77,6 @@ const Notes = () => {
 
   const titleHandler = (e) => {
     setInputTitle(e.target.value);
-  };
-
-  const tagHandler = (e) => {
-    setTag(e.target.value);
   };
 
 
@@ -150,12 +143,6 @@ const Notes = () => {
         })}
 
         <div className="note">
-          <Input className="noteTag"
-            type="text"
-            placeholder="Title"
-            value={tag}
-            onChange={tagHandler}
-          />
 
           <Input className="noteTitle"
             type="text"
@@ -181,7 +168,7 @@ const Notes = () => {
             beforeUpload={getBase64.beforeUploadMedia}
             customRequest={handleUpload}
           >
-            <Button>Upload Image</Button>
+            <Button type="primary" >Upload Image</Button>
           </Upload>
 
           <div className="note__footer">

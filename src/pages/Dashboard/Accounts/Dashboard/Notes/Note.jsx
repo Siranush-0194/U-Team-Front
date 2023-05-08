@@ -48,9 +48,6 @@ function Note({ item, onEdit, onDelete }) {
         </div>
       ) : (
         <>
-          {/* <Tag  key={id} style={{height:'30px', width:"265px"}}  color="#108ee9" >{tag}</Tag>
-     */}
-          <div className="noteTag">{item?.tag?.name} </div>
           <div className="noteTitle">{item.title}  </div>
           <div className="note__body">{item.content}</div>
 

@@ -63,7 +63,7 @@ const TeacherForum = (item, mediaKey) => {
                   style={{ marginTop: 10 }}
                   key={item.id}
                   actions={[
-                    <Likes id={item?.id} likedByMe={item?.likedByMe} />,
+                    <Likes id={item?.id} likedByMe={item?.likedByMe} likeCount={item?.likes}/>,
                     // <EditOutlined />,
                     ...(item.commentsUrl ? [<CommentOutlined key='comment' onClick={() => setCommentIsOpen({
                       ...commentIsOpen,

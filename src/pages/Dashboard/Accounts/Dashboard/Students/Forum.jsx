@@ -57,7 +57,7 @@ const StudentForum = () => {
                 style={{ marginTop: 10 }}
                 key={item.id}>
                 <Card actions={[
-                  <Likes id={item.id} likedByMe={item.likedByMe} />,
+                  <Likes id={item.id} likedByMe={item.likedByMe} likeCount={item.likes} />,
                   ...(item.commentsUrl ? [<CommentOutlined key='comment' onClick={() => setCommentIsOpen({
                     ...commentIsOpen,
                     [item.id]: !commentIsOpen[item.id]
