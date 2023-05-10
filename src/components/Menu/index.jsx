@@ -16,7 +16,8 @@ import {
   QuestionOutlined,
   BarsOutlined,
   TagsOutlined,
-  CalendarOutlined 
+  CalendarOutlined, 
+  ScheduleOutlined
 } from "@ant-design/icons";
 import axios from "../../axios";
 import "../../i18n";
@@ -47,6 +48,7 @@ const NavBar = () => {
         getItem("Institutes", "allInstitutes", <BankOutlined />),
         getItem("Departments", "departments", <BankOutlined />),
         getItem("Courses", "courses", <BankOutlined />),
+        getItem("Schedule", "schedule", <ScheduleOutlined/>),
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
       student: [
@@ -92,6 +94,7 @@ const NavBar = () => {
         departments: () => history.push("/dashboard/departments"),
         courses: () => history.push("/dashboard/courses"),
         groups: () => history.push("/dashboard/groups"),
+        schedule: () => history.push("/dashboard/schedule"),
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);

@@ -5,7 +5,7 @@ import useGetBase64 from '../../../../../hooks/useGetBase64';
 import { FileExcelOutlined, FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 import { Option } from 'antd/es/mentions';
 
-import './style.scss';
+// import './style.scss';
 
 
 
@@ -129,7 +129,7 @@ console.log(groups);
 
     return (
         <>
-            <Select defaultValue={groups} style={{ width: '150px' }} onChange={handleChange} options={groups}/>
+            <Select  style={{ width: '150px' }} onChange={handleChange} options={groups}/>
 
             <Form>
                 <Form.Item>
@@ -159,8 +159,8 @@ console.log(groups);
                             onClick={() => {
                                 window.open(PORTS[8000] + item.path, "_blank")
                             }}
-                            avatar={<FileExcelOutlined  size={32}  />}
-                            title={item.name}
+                            avatar={<FileExcelOutlined size="32"/> }
+                            title={"excel"}
                         />
                     </List.Item>
                 )}

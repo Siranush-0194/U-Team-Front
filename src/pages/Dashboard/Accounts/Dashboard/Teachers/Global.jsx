@@ -35,7 +35,7 @@ const TeacherGlobalStorage = ({ type }) => {
 
 
     useEffect(() => {
-        axios.get('/api/teacher/courses')
+        axios.get('/api/courses')
             .then(response => {
                 setCourses(response.data);
                 setSelectedCourseId(response.data?.[0].id)
@@ -56,10 +56,6 @@ const TeacherGlobalStorage = ({ type }) => {
                 });
         }
     }, [selectedCourseId]);
-
-
-
-
 
     useEffect(() => {
         getMedia();
