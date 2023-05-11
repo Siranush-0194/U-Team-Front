@@ -21,6 +21,7 @@ const Schedule = ({ type }) => {
     const [courses, setCourses] = useState([]);
   const [groups, setGroups] = useState();
     const [selectedCourseId, setSelectedCourseId] = useState(null);
+    const [courseId, setCourseId] = useState(null);
     const [forumData, setForumData] = useState([]);
 
 
@@ -55,6 +56,10 @@ console.log(groups);
             axios.get(`/api/schedule/get/${selectedCourseId} `)
                 .then(response => {
                     console.log(selectedCourseId);
+                    let $courseId
+                    $courseId = response.data
+                    setCourseId(response.data)
+
                     setForumData(response.data.data);
                 })
                 .catch(error => {
@@ -89,7 +94,8 @@ console.log(groups);
                 formData.append(`schedule`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
                 formData.append(`role`, `student`);
                 formData.append(`groupId`, selectedCourseId);            
-                
+                formData.append(`courseId`, courseId);
+
 
                 post.push(new Promise((resolve, reject) => {
                     axios.post('/api/schedule/store', formData, {
