@@ -217,7 +217,7 @@ const Posts = () => {
               dataSource={post}
               renderItem={(item) => {
                   return <Card style={{ marginBottom: 10 }} actions={[
-                    <Likes id={item.id} likedByMe={item.likedByMe} likeCount={item.likes} />,                    
+                    <Likes id={item.id} likedByMe={false} likeCount={0} />,                    
                     <EditOutlined
                         key="edit"
                         style={{ color: 'blue' }}

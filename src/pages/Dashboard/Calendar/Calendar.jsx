@@ -9,6 +9,8 @@ const MyCalendar = () => {
 
   const [events, setEvents] = useState([]);
   const [calendar,setCalendar] = useState();
+  const [buttonColor, setButtonColor] = useState(null);
+  const [buttonState, setButtonState] = useState(null);
 
   useEffect(() => {
     axios_03.get('/api/getAll').then((response) => {
@@ -23,6 +25,27 @@ const MyCalendar = () => {
       setEvents(events);
     });
   }, []);
+
+    useEffect(() => {
+        axios_03.get('/api/buttonState').then((response) => {
+            // console.log(response);
+            if (response.data === 1){
+                setButtonColor('green')
+                setButtonState('')
+            }
+
+            if (response.data === 0){
+                setButtonColor('gray')
+                setButtonState('none')
+            }
+
+            if (response.data === -1){
+                setButtonColor('red')
+                setButtonState('none')
+            }
+            console.log(response.data)
+        });
+    }, []);
 
   // const handleGoogleOAuthClick = () => {
   //   axios_03.get('/google/oauth2')
@@ -46,10 +69,10 @@ const MyCalendar = () => {
   const colors = ['#f5222d', '#fa8c16', '#1890ff', '#52c41a', '#722ed1', '#eb2f96'];
 
 
-  return (
+    return (
     <>
-    <Button type='primary'onClick={ handleButtonClick}>Sign in with Google</Button>
-    <div style={{ overflow: 'hidden' }}>
+    <Button type='primary'onClick={ handleButtonClick} style={{backgroundColor: buttonColor, pointerEvents: buttonState}}>Sign in with Google</Button>
+    <div style={{ overflow: 'hidden'}}>
       <Calendar
         events={events}
         style={{ height: '100vh' }}

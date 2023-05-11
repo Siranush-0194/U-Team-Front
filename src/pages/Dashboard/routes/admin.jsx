@@ -11,12 +11,13 @@ import Teacher from "./../All/teachers";
 import Departments from "./../All/departments";
 import Courses from "./../All/courses";
 import Groups from "./../All/groups";
+import Schedule from "../Accounts/Dashboard/Admin/Schedule";
 
 const AdminRoutes = () => {
   return (
       <>
         <Route exact path="/dashboard">
-          <div className="welcome">Welocome to Admin dashboard</div>
+          <div className="welcome">Welcome to Admin dashboard</div>
         </Route>
 
         <Route path="/dashboard/editAdmins">
@@ -53,6 +54,9 @@ const AdminRoutes = () => {
 
         <Route path="/dashboard/groups">
           <Groups />
+        </Route>
+        <Route path="/dashboard/schedule">
+          <Schedule/>
         </Route>
       </>
   );

@@ -2,27 +2,16 @@ import { useEffect, useState } from 'react';
 import { Upload, Form, List, Select } from 'antd';
 import axios, { axios_01, axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
-import { FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
+import { FileExcelOutlined, FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 import { Option } from 'antd/es/mentions';
 
 // import './style.scss';
 
-const getFileIcon = (mimeType) => {
-    switch (mimeType) {
-        case 'application/pdf':
-            return <FilePdfOutlined size="32" />;
-        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            return <FileWordOutlined size="32" />
-        case "application/vnd.oasis.opendocument.spreadsheet":
-            return <FileTextOutlined size="32" />
-        case 'text/plain':
-            return <FileTextOutlined size="32" />;
-        default:
-            return null;
-    }
-};
 
-const TeacherGlobalStorage = ({ type }) => {
+
+
+
+const Schedule = ({ type }) => {
     const getBase64 = useGetBase64();
 
     const [media, setMedia] = useState([]);
@@ -30,25 +19,47 @@ const TeacherGlobalStorage = ({ type }) => {
     const [files, setFiles] = useState([]);
     const [post, setPost] = useState([]);
     const [courses, setCourses] = useState([]);
+  const [groups, setGroups] = useState();
     const [selectedCourseId, setSelectedCourseId] = useState(null);
+    const [courseId, setCourseId] = useState(null);
     const [forumData, setForumData] = useState([]);
 
 
     useEffect(() => {
-        axios.get('/api/courses')
-            .then(response => {
-                setCourses(response.data);
-                setSelectedCourseId(response.data?.[0].id)
-            })
-            .catch(error => {
-                console.log(error);
+        axios.get("/api/group/get-course").then((response) => {
+            let groups = [], subgroups = [];
+      
+            response.data.forEach(group => {
+              if (!group.parentId) {
+                groups.push({
+                  value: group.id,
+                  label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
+                  children: []
+                })
+              } else {
+                subgroups.push({
+                  value: group.id,
+                  label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
+                  children: []
+                })
+              }
             });
+      
+            setGroups(groups);
+            setSelectedCourseId(response.data?.[0].id)
+           
+          }).catch(() => setCourses([]));
     }, []);
-
+console.log(groups);
     useEffect(() => {
         if (selectedCourseId) {
-            axios_01.get(`/api/forum?courseId=${selectedCourseId} `)
+            axios.get(`/api/schedule/get/${selectedCourseId} `)
                 .then(response => {
+                    console.log(selectedCourseId);
+                    let $courseId
+                    $courseId = response.data
+                    setCourseId(response.data)
+
                     setForumData(response.data.data);
                 })
                 .catch(error => {
@@ -80,12 +91,14 @@ const TeacherGlobalStorage = ({ type }) => {
             files.forEach((e) => {
                 const formData = new FormData();
 
-                formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append(`type`, 'global');
-                formData.append(`courseId`, selectedCourseId);
+                formData.append(`schedule`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
+                formData.append(`role`, `student`);
+                formData.append(`groupId`, selectedCourseId);            
+                formData.append(`courseId`, courseId);
+
 
                 post.push(new Promise((resolve, reject) => {
-                    axios_02.post('/api/storage', formData, {
+                    axios.post('/api/schedule/store', formData, {
                         headers: {
                             "Content-Type": "multipart/form-data",
                         }
@@ -105,8 +118,8 @@ const TeacherGlobalStorage = ({ type }) => {
     };
 
     const getMedia = () => {
-        axios_02
-            .get(`/api/storage/global/${selectedCourseId}`)
+        axios
+            .get(`/api/schedule/get`)
             .then((response) => {
                 setMedia(response.data)
             })
@@ -119,15 +132,10 @@ const TeacherGlobalStorage = ({ type }) => {
         getMedia();
     }, []);
 
+
     return (
         <>
-            <Select defaultValue={selectedCourseId} style={{ width: '150px' }} onChange={handleChange}>
-                {courses.map(course => (
-                    <Option key={course.id} value={course.id}>
-                        {course.name}
-                    </Option>
-                ))}
-            </Select>
+            <Select  style={{ width: '150px' }} onChange={handleChange} options={groups}/>
 
             <Form>
                 <Form.Item>
@@ -155,10 +163,10 @@ const TeacherGlobalStorage = ({ type }) => {
                     <List.Item>
                         <List.Item.Meta
                             onClick={() => {
-                                window.open(PORTS[8003] + item.path, "_blank")
+                                window.open(PORTS[8000] + item.path, "_blank")
                             }}
-                            avatar={getFileIcon(item.mimeType)}
-                            title={item.name}
+                            avatar={<FileExcelOutlined size="32"/> }
+                            title={"excel"}
                         />
                     </List.Item>
                 )}
@@ -167,4 +175,4 @@ const TeacherGlobalStorage = ({ type }) => {
     );
 }
 
-export default TeacherGlobalStorage;
+export default Schedule;
