@@ -16,6 +16,7 @@ import TeacherLocalStorage from "../Accounts/Dashboard/Teachers/Local";
 import Notes from "../Accounts/Dashboard/Notes/Notes";
 import MyCalendar from "../Calendar/Calendar";
 import TeachQuestion from "../Accounts/Dashboard/Teachers/TeachQuestion";
+import TeachPosts from "../Accounts/Dashboard/Teachers/TeachPost";
 // Pages
 
 const TeacherRoutes = () => {
@@ -53,6 +54,10 @@ const TeacherRoutes = () => {
         <MyCalendar/>
       </Route>
 
+
+      <Route path="/dashboard/posts">
+        <TeachPosts/>
+      </Route>
 
       <Route path="/dashboard/questions">
         <TeachQuestion/>

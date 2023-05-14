@@ -1,131 +1,156 @@
-import { useEffect, useState } from "react";
-import axios, { axios_01 } from "../../../../../axios";
-import { Button, Card, Form, Input, List, Modal, Select, Upload } from "antd";
-import Tags from "../../../../../components/Tags";
-import Likes from "../Likes/Like";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import Item from "../../../../../components/Other/Item";
+import { React, useState, useEffect } from "react";
+import {
+  Form,
+  Card,
+  Modal,
+  Button,
+  Input,
+  List,
+  Select
+} from "antd";
+import axios, { axios_01} from "../../../../../axios";
+import { useSelector } from "react-redux";
+import { Upload } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
-
-const { Option } = Select;
+import Tags from "../../../../../components/Tags/index";
+import Likes from "../Likes/Like";
+import Item from "../../../../../components/Other/Item";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const TeachQuestion = () => {
     const [courses, setCourses] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
-    const [questions, setQuestions] = useState([]);
-    const [modal, setModal] = useState({ isOpen: false, data: {} });
+  const [modal, setModal] = useState({ isOpen: false, data: {} });
+  const [question, setQuestion] = useState([]);
   const [file, setFile] = useState(null);
-
+  const { Option } = Select;
   const getBase64 = useGetBase64();
-  
-    const handleChangeCourse = (value) => {
-      setSelectedCourseId(value);
-    };
 
+  
+
+
+  const handleChangeCourse = (value) => {
+    setSelectedCourseId(value);
+  };
+
+  useEffect(() => {
+      axios.get('/api/teacher/courses')
+        .then(response => {
+          setCourses(response.data);
+          setSelectedCourseId(response.data?.[0].id)
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }, []);
+  
     useEffect(() => {
-        axios.get('/api/teacher/courses')
+      if (selectedCourseId) {
+        axios_01.get(`/api/question?courseId=${selectedCourseId} ` )
           .then(response => {
-            setCourses(response.data);
-            setSelectedCourseId(response.data?.[0].id)
+            setQuestion(response.data.data);
           })
           .catch(error => {
             console.log(error);
           });
-      }, []);
-    
-      useEffect(() => {
-        if (selectedCourseId) {
-          axios_01.get(`/api/question?courseId=${selectedCourseId} ` )
-            .then(response => {
-              setQuestions(response.data.data);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-      }, [selectedCourseId]);
-      const toggleModal = () => {
-        setModal({ isOpen: !modal.isOpen, data: {} });
-        setFile(null);
-      };
-    
-    
-      const submit = () => {
-        if (modal.data.title) {
-          const formData = new FormData();
-    
-          formData.append("title", modal.data.title);
-          formData.append("content", modal.data.content);
-          file?.file?.originFileObj && formData.append("media", file?.file?.originFileObj);
-          !modal.data.id && formData.append("courseId", selectedCourseId);
-    
-          (modal?.data?.tags || []).forEach((tag) => {
-            formData.append("tags[]", tag);
-          });
-    
-          axios_01
-            .post(`/api/question${modal.data.id ? `/${modal.data.id}` : ''}`, formData, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((response) => {
-              if (response.status === 201) {
-                if (modal.data.id) {
-                  for (let i = 0; i < questions.length; i++) {
-                    if (modal.data.id === response.data.id) {
-                      questions[i] = response.data;
-                    }
-                  }
-                } else {
-                  questions.unshift(response.data);
+      }
+    }, [selectedCourseId]);
+
+  useEffect(() => {
+    axios_01
+      .get(`/api/question?courseId=${selectedCourseId}`)
+      .then((response) => {
+        setQuestion(response.data.question);
+      })
+      .catch(() => setQuestion([]));
+  }, [selectedCourseId]);
+
+  const toggleModal = () => {
+    setModal({ isOpen: !modal.isOpen, data: {} });
+    setFile(null);
+  };
+
+  const deleteFile = (id) => {
+    axios_01.delete(`api/question/${id}`).then(() => {
+      // Refresh the media list
+      setQuestion(prevPosts => prevPosts.filter(post => post.id !== id));
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+ 
+  
+
+  const submit = () => {
+    if (modal.data.title) {
+      const formData = new FormData();
+
+      formData.append("title", modal.data.title);
+      formData.append("content", modal.data.content);
+      file?.file?.originFileObj && formData.append("media", file?.file?.originFileObj);
+      !modal.data.id && formData.append("courseId",selectedCourseId);
+
+      (modal?.data?.tags || []).forEach((tag) => {
+        formData.append("tags[]", tag);
+      });
+
+      axios_01
+        .post(`/api/question${modal.data.id ? `/${modal.data.id}` : ''}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            if (modal.data.id) {
+              for (let i = 0; i < question.length; i++) {
+                if (modal.data.id === response.data.id) {
+                  question[i] = response.data;
                 }
-                setQuestions(questions);
-                setModal({ isOpen: false, data: {} });
-    
-                setFile(null);
-              } else {
-                console.log(response);
               }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
-      };
-    
-      const handleUpload = async (data) => setFile(data.file);
-      const handlePreview = ({ fileList }) => setFile({ ...file, fileList });
-      const handleChange = async (data) => {
-        if (!data.file.url && !data.file.preview) {
-          data.file.preview = await getBase64.init(data.file.originFileObj);
-        }
-    
-        setFile({
-          ...file,
-          file: data.file,
-        });
-      };
-      const deleteFile = (id) => {
-        axios_01.delete(`api/question/${id}`).then(() => {
-          // Refresh the media list
-          setQuestions(prevQuestions => prevQuestions.filter(question => question.id !== id));
-        }).catch((error) => {
+            } else {
+              question.unshift(response.data);
+            }
+            setQuestion(question);
+            setModal({ isOpen: false, data: {} });
+
+            setFile(null);
+          } else {
+            console.log(response);
+          }
+        })
+        .catch((error) => {
           console.log(error);
         });
-      }
+    }
+  };
 
+  const handleUpload = async (data) => setFile(data.file);
+  const handlePreview = ({ fileList }) => setFile({ ...file, fileList });
+  const handleChange = async (data) => {
+    if (!data.file.url && !data.file.preview) {
+      data.file.preview = await getBase64.init(data.file.originFileObj);
+    }
 
-      return (
-        <div>
-        <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={handleChangeCourse}>
+    setFile({
+      ...file,
+      file: data.file,
+    });
+  };
+
+  
+
+  return (
+  <>
+    <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={handleChangeCourse}>
         {courses.map(course => (
-          <Option key={course.id} value={course.id}>
-            {course.name}
+          <Option key={course?.id} value={course?.id}>
+            {course?.name}
           </Option>
         ))}
       </Select>
-      <Card style={{ height: "100%" }}>
+    <Card style={{ height: "100%" }}>
       <Button type="primary" onClick={toggleModal} style={{ marginBottom: 10 }}>
         + Question
       </Button>
@@ -171,7 +196,7 @@ const TeachQuestion = () => {
             />
           </Form.Item>
 
-          <Form.Item>
+          {/* <Form.Item>
             <Tags
               name="tags"
               list={modal.data.tags}
@@ -185,7 +210,7 @@ const TeachQuestion = () => {
                 });
               }}
             />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item>
             <Upload
@@ -220,16 +245,16 @@ const TeachQuestion = () => {
           padding: "0 16px",
         }}
       >
-          {!questions ? (
+          {!question ? (
             <> </>
           ) : (
             <List
               className="demo-loadmore-list"
               itemLayout="vertical"
-              dataSource={questions}
+              dataSource={question}
               renderItem={(item) => {
                   return <Card style={{ marginBottom: 10 }} actions={[
-                    <Likes id={item.id} likedByMe={false} likeCount={0} />,
+                    <Likes id={item.id} likedByMe={false} likeCount={0} />,                    
                     <EditOutlined
                         key="edit"
                         style={{ color: 'blue' }}
@@ -241,18 +266,17 @@ const TeachQuestion = () => {
                           },
                         })}
                     />,
-                    
                     <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  type="danger" />
                   ]}>
-                    <Item item={item} mediaKey={'question'} />
+                    <Item item={item} mediaKey={'post'} />
                   </Card>
               }}
             />
             )}
       </div>
     </Card>
-      </div>
-      )
-}
+    </>
+  );
+};
 
 export default TeachQuestion;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List, Select } from 'antd';
+import { Upload, Form, List, Select, Button } from 'antd';
 import axios, { axios_01, axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
-import { FileExcelOutlined, FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
+import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 import { Option } from 'antd/es/mentions';
 
 // import './style.scss';
@@ -131,6 +131,14 @@ console.log(groups);
     useEffect(() => {
         getMedia();
     }, []);
+    const deleteFile = (id) => {
+        axios.delete(`/api/schedule/delete/${id}`).then(() => {
+          // Refresh the media list
+          getMedia();
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
 
 
     return (
@@ -166,8 +174,12 @@ console.log(groups);
                                 window.open(PORTS[8000] + item.path, "_blank")
                             }}
                             avatar={<FileExcelOutlined size="32"/> }
-                            title={"excel"}
+                            title={item.name}
                         />
+                          <div>
+                               
+                               <Button icon={<DeleteOutlined />} danger onClick={() => deleteFile(item.id)}>Delete</Button>
+                           </div>
                     </List.Item>
                 )}
             />
