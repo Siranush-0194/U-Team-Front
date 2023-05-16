@@ -16,6 +16,7 @@ import Tags from "../../../../../components/Tags/index";
 import Likes from "../Likes/Like";
 import Item from "../../../../../components/Other/Item";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import TeachTags from "./TeachTags";
 
 const TeachPosts = () => {
     const [courses, setCourses] = useState([]);
@@ -188,8 +189,8 @@ const TeachPosts = () => {
             />
           </Form.Item>
 
-          {/* <Form.Item>
-            <Tags
+          <Form.Item>
+            <TeachTags
               name="tags"
               list={modal.data.tags}
               onChange={(values) => {
@@ -202,7 +203,7 @@ const TeachPosts = () => {
                 });
               }}
             />
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item>
             <Upload

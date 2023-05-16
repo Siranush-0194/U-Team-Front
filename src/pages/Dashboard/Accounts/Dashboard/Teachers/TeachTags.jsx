@@ -1,10 +1,12 @@
 import { Select, Space, Tag } from "antd";
 import { useState, useEffect } from "react";
-import { axios_01 } from "../../axios";
+import { axios_01 } from "../../../../../axios";
 import { useSelector } from "react-redux";
 
-const Tags = ({ list, lists, onChange, onClickTag }) => {
+const TeachTags = ({ list, lists, onChange, onClickTag }) => {
   const [tags, setTags] = useState([]);
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
+
 
 
   const user = useSelector(function (state) {
@@ -13,7 +15,7 @@ const Tags = ({ list, lists, onChange, onClickTag }) => {
 
   useEffect(() => {
     !lists &&
-      axios_01.get(`/api/tag?courseId=${user.course.id}`).then((response) => {
+      axios_01.get(`/api/tag?courseId=${selectedCourseId}`).then((response) => {
         if (response.status === 200) {
           setTags(
             response.data.tags.map((tag) => ({
@@ -50,4 +52,4 @@ const Tags = ({ list, lists, onChange, onClickTag }) => {
   );
 };
 
-export default Tags;
+export default TeachTags;
