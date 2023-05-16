@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List, Button } from 'antd';
-import { axios_02, PORTS } from '../../../../../axios';
+import { Upload, Form, List, Button, Select} from 'antd';
+import axios, { axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
+import { useSelector } from "react-redux";
 import { DeleteOutlined,  FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 
 
-import { useSelector } from 'react-redux';
 
 const getFileIcon = (mimeType) => {
+  
     switch (mimeType) {
         case 'application/pdf':
-            return <FilePdfOutlined style={{ fontSize: '24px' }} />;
+            return <FilePdfOutlined   style={{ fontSize: '24px' }} />;
         case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             return <FileWordOutlined style={{ fontSize: '24px' }} />
         case "application/vnd.oasis.opendocument.spreadsheet":
@@ -22,16 +23,16 @@ const getFileIcon = (mimeType) => {
     }
 };
 
-const TeacherLocalStorage = ({ type }) => {
+const TeacherLocalStorage= ({ type }) => {
     const getBase64 = useGetBase64();
-
+    const [selectedCourseId, setSelectedCourseId] = useState(null);
     const [media, setMedia] = useState([]);
     const [file, setFile] = useState(null);
     const [files, setFiles] = useState([]);
     const [post, setPost] = useState([]);
-    const user = useSelector(function (state) {
-        return state?.user;
-      });
+
+ 
+
 
     const handleChange = async (data) => {
         const file = await getBase64.init(data.file.originFileObj);
@@ -40,7 +41,7 @@ const TeacherLocalStorage = ({ type }) => {
             file,
             code: getBase64.isMedia.includes(data.file.type),
             name: data.file.name,
-            // type: data.file.type,
+            type: data.file.type,
             dataFile: data.file.originFileObj
         });
 
@@ -52,7 +53,7 @@ const TeacherLocalStorage = ({ type }) => {
 
                 formData.append(`file`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
                 formData.append(`type`, 'local');
-             
+            
 
                 post.push(new Promise((resolve, reject) => {
                     axios_02.post('/api/storage', formData, {
@@ -60,7 +61,7 @@ const TeacherLocalStorage = ({ type }) => {
                             "Content-Type": "multipart/form-data",
                         }
                     }).then((response) => resolve(response)).catch((e) => reject(e))
-                   
+             
                 }
                     ));
 
@@ -90,11 +91,10 @@ const TeacherLocalStorage = ({ type }) => {
 
     useEffect(() => {
         getMedia();
-    }, [user.id]);
+    }, [selectedCourseId]);
 
     const deleteFile = (id) => {
         axios_02.delete(`/api/storage/${id}`).then(() => {
-          // Refresh the media list
           getMedia();
         }).catch((error) => {
           console.log(error);
@@ -140,7 +140,7 @@ const TeacherLocalStorage = ({ type }) => {
                             />
                             <div>
                                
-                                <Button icon={<DeleteOutlined />} type='danger' onClick={() => deleteFile(item.id)}>Delete</Button>
+                                <Button icon={<DeleteOutlined />} danger onClick={() => deleteFile(item.id)}>Delete</Button>
                             </div>
                         </List.Item>
 

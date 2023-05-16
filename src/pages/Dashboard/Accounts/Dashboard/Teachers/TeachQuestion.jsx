@@ -8,17 +8,17 @@ import {
   List,
   Select
 } from "antd";
-import axios, { axios_01} from "../../../../../axios";
+import axios, { axios_01 } from "../../../../../axios";
 import { useSelector } from "react-redux";
 import { Upload } from "antd";
 import useGetBase64 from "../../../../../hooks/useGetBase64";
 import Tags from "../../../../../components/Tags/index";
-import Likes from "../Likes/Like";
 import Item from "../../../../../components/Other/Item";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { CommentOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import Likes from "../Likes/Like";
 
-const TeachQuestion = () => {
-    const [courses, setCourses] = useState([]);
+const TeachQuestions = () => {
+  const [courses, setCourses] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [modal, setModal] = useState({ isOpen: false, data: {} });
   const [question, setQuestion] = useState([]);
@@ -26,41 +26,27 @@ const TeachQuestion = () => {
   const { Option } = Select;
   const getBase64 = useGetBase64();
 
-  
-
-
-  const handleChangeCourse = (value) => {
+  const CoursehandleChange = (value) => {
     setSelectedCourseId(value);
   };
 
+
   useEffect(() => {
-      axios.get('/api/teacher/courses')
-        .then(response => {
-          setCourses(response.data);
-          setSelectedCourseId(response.data?.[0].id)
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }, []);
-  
-    useEffect(() => {
-      if (selectedCourseId) {
-        axios_01.get(`/api/question?courseId=${selectedCourseId} ` )
-          .then(response => {
-            setQuestion(response.data.data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-    }, [selectedCourseId]);
+    axios.get('/api/teacher/courses')
+      .then(response => {
+        setCourses(response.data);
+        setSelectedCourseId(response.data?.[0].id)
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     axios_01
       .get(`/api/question?courseId=${selectedCourseId}`)
       .then((response) => {
-        setQuestion(response.data.question);
+        setQuestion(response.data.questions);
       })
       .catch(() => setQuestion([]));
   }, [selectedCourseId]);
@@ -70,17 +56,6 @@ const TeachQuestion = () => {
     setFile(null);
   };
 
-  const deleteFile = (id) => {
-    axios_01.delete(`api/question/${id}`).then(() => {
-      // Refresh the media list
-      setQuestion(prevPosts => prevPosts.filter(post => post.id !== id));
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
- 
-  
 
   const submit = () => {
     if (modal.data.title) {
@@ -89,7 +64,7 @@ const TeachQuestion = () => {
       formData.append("title", modal.data.title);
       formData.append("content", modal.data.content);
       file?.file?.originFileObj && formData.append("media", file?.file?.originFileObj);
-      !modal.data.id && formData.append("courseId",selectedCourseId);
+      !modal.data.id && formData.append("courseId", selectedCourseId);
 
       (modal?.data?.tags || []).forEach((tag) => {
         formData.append("tags[]", tag);
@@ -138,19 +113,25 @@ const TeachQuestion = () => {
       file: data.file,
     });
   };
-
-  
-
+  const deleteFile = (id) => {
+    axios_01.delete(`api/question/${id}`).then(() => {
+      // Refresh the media list
+      setQuestion(prevQuestions => prevQuestions.filter(question => question.id !== id));
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
   return (
-  <>
-    <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={handleChangeCourse}>
-        {courses.map(course => (
-          <Option key={course?.id} value={course?.id}>
-            {course?.name}
-          </Option>
-        ))}
-      </Select>
+    <>
+    <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={CoursehandleChange}>
+    {courses.map(course => (
+      <Option key={course?.id} value={course?.id}>
+        {course?.name}
+      </Option>
+    ))}
+  </Select>
     <Card style={{ height: "100%" }}>
+     
       <Button type="primary" onClick={toggleModal} style={{ marginBottom: 10 }}>
         + Question
       </Button>
@@ -254,7 +235,7 @@ const TeachQuestion = () => {
               dataSource={question}
               renderItem={(item) => {
                   return <Card style={{ marginBottom: 10 }} actions={[
-                    <Likes id={item.id} likedByMe={false} likeCount={0} />,                    
+                    <Likes id={item.id} likedByMe={false} likeCount={0} />,
                     <EditOutlined
                         key="edit"
                         style={{ color: 'blue' }}
@@ -266,9 +247,10 @@ const TeachQuestion = () => {
                           },
                         })}
                     />,
+                    
                     <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  type="danger" />
                   ]}>
-                    <Item item={item} mediaKey={'post'} />
+                    <Item item={item} mediaKey={'question'} />
                   </Card>
               }}
             />
@@ -279,4 +261,4 @@ const TeachQuestion = () => {
   );
 };
 
-export default TeachQuestion;
+export default TeachQuestions;

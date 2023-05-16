@@ -1,69 +1,57 @@
 import { useEffect, useState } from 'react';
-import { Upload, Form, List, Select } from 'antd';
-import axios, { axios_01, axios_02, PORTS } from '../../../../../axios';
+import { Upload, Form, List, Button, Select} from 'antd';
+import axios, { axios_02, PORTS } from '../../../../../axios';
 import useGetBase64 from '../../../../../hooks/useGetBase64';
-import { FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
-import { Option } from 'antd/es/mentions';
+import { useSelector } from "react-redux";
+import { DeleteOutlined,  FilePdfOutlined, FileTextOutlined, FileWordOutlined } from '@ant-design/icons';
 
-// import './style.scss';
+
 
 const getFileIcon = (mimeType) => {
+  
     switch (mimeType) {
         case 'application/pdf':
-            return <FilePdfOutlined size="32" />;
+            return <FilePdfOutlined   style={{ fontSize: '24px' }} />;
         case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            return <FileWordOutlined size="32" />
+            return <FileWordOutlined style={{ fontSize: '24px' }} />
         case "application/vnd.oasis.opendocument.spreadsheet":
-            return <FileTextOutlined size="32" />
+            return <FileTextOutlined style={{ fontSize: '24px' }} />
         case 'text/plain':
-            return <FileTextOutlined size="32" />;
+            return <FileTextOutlined style={{ fontSize: '24px' }} />;
         default:
             return null;
     }
 };
 
-const TeacherGlobalStorage = ({ type }) => {
+const TeacherGlobalStorage= ({ type }) => {
     const getBase64 = useGetBase64();
-
+    const [courses, setCourses] = useState([]);
+    const [selectedCourseId, setSelectedCourseId] = useState(null);
     const [media, setMedia] = useState([]);
     const [file, setFile] = useState(null);
     const [files, setFiles] = useState([]);
     const [post, setPost] = useState([]);
-    const [courses, setCourses] = useState([]);
-    const [selectedCourseId, setSelectedCourseId] = useState(null);
-    const [forumData, setForumData] = useState([]);
 
+ 
 
+    const { Option } = Select;
+
+    const CoursehandleChange = (value) => {
+      setSelectedCourseId(value);
+    };
+  
     useEffect(() => {
-        axios.get('/api/courses')
-            .then(response => {
-                setCourses(response.data);
-                setSelectedCourseId(response.data?.[0].id)
-            })
-            .catch(error => {
-                console.log(error);
-            });
+      axios.get('/api/teacher/courses')
+        .then(response => {
+          setCourses(response.data);
+          setSelectedCourseId(response.data?.[0].id)
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }, []);
 
-    useEffect(() => {
-        if (selectedCourseId) {
-            axios_01.get(`/api/forum?courseId=${selectedCourseId} `)
-                .then(response => {
-                    setForumData(response.data.data);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        }
-    }, [selectedCourseId]);
-
-    useEffect(() => {
-        getMedia();
-    }, [selectedCourseId]);
-
     const handleChange = async (data) => {
-        setSelectedCourseId(data);
-
         const file = await getBase64.init(data.file.originFileObj);
 
         files.push({
@@ -90,7 +78,9 @@ const TeacherGlobalStorage = ({ type }) => {
                             "Content-Type": "multipart/form-data",
                         }
                     }).then((response) => resolve(response)).catch((e) => reject(e))
-                }));
+             
+                }
+                    ));
 
                 setPost(post);
             });
@@ -114,21 +104,30 @@ const TeacherGlobalStorage = ({ type }) => {
                 console.log('error');
             });
     }
+  
 
     useEffect(() => {
         getMedia();
-    }, []);
+    }, [selectedCourseId]);
+
+    const deleteFile = (id) => {
+        axios_02.delete(`/api/storage/${id}`).then(() => {
+          // Refresh the media list
+          getMedia();
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
 
     return (
         <>
-            <Select defaultValue={selectedCourseId} style={{ width: '150px' }} onChange={handleChange}>
-                {courses.map(course => (
-                    <Option key={course.id} value={course.id}>
-                        {course.name}
-                    </Option>
-                ))}
-            </Select>
-
+         <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={CoursehandleChange}>
+        {courses.map(course => (
+          <Option key={course?.id} value={course?.id}>
+            {course?.name}
+          </Option>
+        ))}
+      </Select>
             <Form>
                 <Form.Item>
                     <Upload
@@ -152,15 +151,26 @@ const TeacherGlobalStorage = ({ type }) => {
                 className='storage-lists'
                 grid={{ gutter: 16, column: 3 }}
                 renderItem={item => (
-                    <List.Item>
-                        <List.Item.Meta
-                            onClick={() => {
-                                window.open(PORTS[8003] + item.path, "_blank")
-                            }}
-                            avatar={getFileIcon(item.mimeType)}
-                            title={item.name}
-                        />
-                    </List.Item>
+
+                    <>
+                        <List.Item>
+                            <List.Item.Meta
+
+                                onClick={() => {
+                                    window.open(PORTS[8003] + item.path, "_blank")
+
+                                }}
+                                avatar={getFileIcon(item.mimeType)}
+                                title={item.name}
+                            />
+                            <div>
+                               
+                                <Button icon={<DeleteOutlined />} danger onClick={() => deleteFile(item.id)}>Delete</Button>
+                            </div>
+                        </List.Item>
+
+                    </>
+
                 )}
             />
         </>

@@ -46,17 +46,7 @@ const TeachPosts = () => {
         });
     }, []);
   
-    useEffect(() => {
-      if (selectedCourseId) {
-        axios_01.get(`/api/question?courseId=${selectedCourseId} ` )
-          .then(response => {
-            setPost(response.data.data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-    }, [selectedCourseId]);
+ 
 
   useEffect(() => {
     axios_01
