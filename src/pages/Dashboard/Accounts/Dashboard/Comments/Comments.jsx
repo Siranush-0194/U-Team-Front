@@ -50,9 +50,9 @@ function CommentForm({ question, onClick, isOpen }) {
 
           setComments({
             ...comments,
-            data: [response.data].concat(comments.data),
-          });
-        }
+            data: [response.data].concat(comments.data),           
+          })             
+        }        
       });
   };
 
@@ -63,6 +63,7 @@ function CommentForm({ question, onClick, isOpen }) {
       setComments({
         next: data.data.nextUrl,
         data: commentsData.data.concat(data.data.comments),
+        
       });
     });
   }, []);
@@ -70,6 +71,7 @@ function CommentForm({ question, onClick, isOpen }) {
   useEffect(() => {
     if (active.length) {
       getComments(comments);
+      
     }
 
     return () => {

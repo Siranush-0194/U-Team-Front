@@ -81,11 +81,11 @@ const TeachQuestions = () => {
           if (response.status === 201) {
             if (modal.data.id) {
               for (let i = 0; i < question.length; i++) {
-                if (modal.data.id === response.data.id) {
+                if (question[i].id === response.data.id) {
                   question[i] = response.data;
-                }
-              }
-            } else {
+                  break
+                }}}
+                else {
               question.unshift(response.data);
             }
             setQuestion(question);
@@ -122,6 +122,20 @@ const TeachQuestions = () => {
       console.log(error);
     });
   }
+
+  const handleEditClick = (uniqueId) => {
+    const itemIndex = question.findIndex((item) => item.id === uniqueId);
+  
+    if (itemIndex !== -1) {
+      const updatedItems = [...question];
+      updatedItems[itemIndex] = {
+        ...updatedItems[itemIndex],
+        // Perform any necessary modifications to the item here
+      };
+  
+    setQuestion(updatedItems);
+    }
+  };
   return (
     <>
     <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={CoursehandleChange}>
@@ -247,8 +261,8 @@ const TeachQuestions = () => {
                             tags: item.tags.map(t => t.name)
                           },
                         })}
-                    />,
-                    
+                        
+                    />,                    
                     <DeleteOutlined key ='delete' style={{color:'red'}} onClick={() => deleteFile(item.id)}  type="danger" />
                   ]}>
                     <Item item={item} mediaKey={'question'} />

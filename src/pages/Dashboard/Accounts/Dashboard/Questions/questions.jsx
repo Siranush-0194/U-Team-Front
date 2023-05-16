@@ -67,6 +67,7 @@ const Questions = () => {
               for (let i = 0; i < question.length; i++) {
                 if (modal.data.id === response.data.id) {
                   question[i] = response.data;
+                  break
                 }
               }
             } else {
