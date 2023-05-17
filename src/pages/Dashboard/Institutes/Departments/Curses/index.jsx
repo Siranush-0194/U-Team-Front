@@ -251,15 +251,15 @@ const Courses = () => {
 
       <Route exact path="/dashboard/institutes/:institutesId/:departmentID">
         <div style={{ display: "flex", gap: 10 }}>
-          <Button type="primary" onClick={showDrawer}>
-            Open
-          </Button>
           <Drawer
             title="Information"
             placement="right"
             onClose={onClose}
             open={open}
-          ></Drawer>
+          >
+
+            <Table/>
+          </Drawer>
           <Button
             type="primary"
             onClick={() => setModal({ isOpen: true, data: {} })}

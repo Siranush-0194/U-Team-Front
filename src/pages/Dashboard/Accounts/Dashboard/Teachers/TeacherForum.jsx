@@ -43,10 +43,10 @@ const TeacherForum = (item, mediaKey) => {
 
   return (
     <div>
-      <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={handleChange}>
+      <Select dropdownMatchSelectWidth={false}  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={handleChange}>
         {courses.map(course => (
-          <Option key={course.id} value={course.id}>
-            {course.name}
+          <Option key={course.id} value={course.number}>
+            { course.number +  course.degree  +   course.type} 
           </Option>
         ))}
       </Select>

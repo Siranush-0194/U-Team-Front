@@ -2,12 +2,13 @@ import { Avatar, Image, List } from "antd";
 import Tags from "../Tags";
 import { React } from "react";
 import './style.scss';
+import { UserOutlined } from "@ant-design/icons";
 
 const Item = ({ item, mediaKey, onClickTag }) => {
     return (
         <List.Item>
             <List.Item.Meta
-                avatar={<Avatar size={50} src={item?.author?.thumbnail} />}
+                avatar={<Avatar  icon={<UserOutlined/>} size={50} src={item?.author?.thumbnail} />}
                 title={item?.author?.firstName}
                 description={item?.title}
             />

@@ -96,20 +96,7 @@ const AccountHeader = () => {
         />
 
         {rule !== 'admin' ? <div className="search-container">
-          <Search
-            placeholder="input search text"
-            className="search"
-            enterButton
-          />
-          <BellOutlined className="notification" style={{ fontSize: "150%" }} />
-          <MailOutlined className="messenger" style={{ fontSize: "150%" }} />
-          <AntSwitch
-            style={{ width: 70 }}
-            checkedChildren="Eng"
-            unCheckedChildren="հայ"
-            defaultChecked
-            onChange={changeLanguage}
-          />
+          
           <div className="search-container-actions">
             <Button
               type="primary"
@@ -126,7 +113,10 @@ const AccountHeader = () => {
               Posts
             </Button>
           </div>
+          
         </div> : <div className="search-container"/>}
+    
+
 
         <div className="account-container">
           <Avatar
@@ -145,6 +135,7 @@ const AccountHeader = () => {
           >
             <Card style={{ backgroundColor: "#aaaaaa" }}>
               <Avatar
+              
                   className="avatar-edit"
                 size={200}
                 src={imageUrl}

@@ -34,14 +34,15 @@
             width: 100%;
             gap: 15px;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-left: auto; 
+            // align-items: center;
+            // justify-content: center;
 
             .search-container-actions {
                 width: 100px;
                 display: flex;
                 gap: 5px;
-                flex-direction: column;
+                flex-direction: row;
 
                 button {
                     width: 100%;

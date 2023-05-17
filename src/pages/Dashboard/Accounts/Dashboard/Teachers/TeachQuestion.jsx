@@ -138,10 +138,11 @@ const TeachQuestions = () => {
   };
   return (
     <>
-    <Select  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={CoursehandleChange}>
+    <Select  dropdownMatchSelectWidth={false}  defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={CoursehandleChange}>
     {courses.map(course => (
       <Option key={course?.id} value={course?.id}>
-        {course?.name}
+                    { course.number +  course.degree  +   course.type} 
+
       </Option>
     ))}
   </Select>

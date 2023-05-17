@@ -26,9 +26,7 @@ const Teacher = () => {
   return (
     <div className='institutes'>
       <Route exact path='/dashboard/teachers'>
-      <Form.Item label= "Institute" name='instituteId'>
-        <Select defaultValue="..."    />
-      </Form.Item>
+     
 
         {!teachers
           ? <></>

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import axios from "../../../../../axios";
 
 import "../../style.scss";
+import { UserOutlined } from "@ant-design/icons";
 
 const Friends = () => {
   const [teachers, setTeachers] = useState(null);
@@ -36,7 +37,7 @@ const Friends = () => {
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar />}
+                avatar={<Avatar icon={<UserOutlined/>} />}
                 title={item.firstName}
                 description
               />

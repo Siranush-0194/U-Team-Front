@@ -114,15 +114,7 @@ function Login() {
               placeholder="Password"
             />
           </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>{t("Remember me")}</Checkbox>
-            </Form.Item>
-
-            <a className="login-form-forgot" href="/">
-              {t("Forgot password")}
-            </a>
-          </Form.Item>
+       
 
           <Form.Item>
             <Button

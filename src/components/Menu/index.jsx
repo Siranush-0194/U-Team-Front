@@ -61,7 +61,6 @@ const NavBar = () => {
         getItem("Global Storage", "globalStorage", <DatabaseOutlined />),
         getItem("Questions", "questions", <QuestionOutlined />),
         getItem("Posts", "posts", <BarsOutlined />),
-        getItem("Tags", "tags", <TagsOutlined />),
         getItem("Calendar", "calendar", <CalendarOutlined />),
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
@@ -120,7 +119,6 @@ const NavBar = () => {
         globalStorage: () => history.push("/dashboard/global"),
         questions: () => history.push("/dashboard/questions"),
         posts: () => history.push("/dashboard/posts"),
-        tags: () => history.push("/dashboard/tags"),
         calendar: () => history.push("/dashboard/calendar"),
         logout: async (action) => {
           try {
