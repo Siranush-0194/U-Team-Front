@@ -19,9 +19,7 @@ const useGetBase64 = () => {
         "application/vnd.oasis.opendocument.spreadsheet"
       ].includes(file.type);
 
-      if (!isFile) {
-        message.error("You can't upload JPG/PNG file!");
-      }
+    
 
       const isLt9M = file.size / 1024 / 1024 < 9;
 
@@ -34,10 +32,7 @@ const useGetBase64 = () => {
     beforeUploadMedia: (file) => {
       const isJpgOrPng = isMedia.includes(file.type);
 
-      if (!isJpgOrPng) {
-        message.error("You can only upload JPG/PNG file!");
-      }
-
+     
       const isLt9M = file.size / 1024 / 1024 < 9;
 
       if (!isLt9M) {
