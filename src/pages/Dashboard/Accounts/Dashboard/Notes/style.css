@@ -17,6 +17,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin: 10px 0px;
+    
 }
 .notes__title {
     margin: 10px 0;
@@ -64,7 +65,7 @@ body {
     box-shadow: inset -6px -4px 2px rgba(102, 72, 193, 0.03);
     border-radius: 15px;
     border: 1.5px solid rgba(84, 85, 87, 0.945);
-    color: #6f6a6e;
+    color: #0d0d0d;
     padding: 6px;
     height: 36px;
     display: flex;
@@ -114,5 +115,5 @@ body {
     transform: scale(1.1);
 }
 /* .char__progress {
-    background-color: #caf0f8!important;
+    background-color: #f8ddca!important;
 } */

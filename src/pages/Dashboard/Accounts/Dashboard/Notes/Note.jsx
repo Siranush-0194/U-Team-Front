@@ -3,6 +3,7 @@ import './style.css';
 import { Button, Image, Input } from "antd";
 import { useState } from "react";
 import TextArea from "antd/es/input/TextArea";
+import Notes from "./Notes";
 
 function Note({ item, onEdit, onDelete }) {
   const [editing, setEditing] = useState(false);
@@ -50,18 +51,18 @@ function Note({ item, onEdit, onDelete }) {
         <>
           <div className="noteTitle">{item.title}  </div>
           <div className="note__body">{item.content}</div>
-          {!item.media ? <></> : (
+          {item.media?.split('note')[1]  && (
             <Image 
               style={{ height: '190px', objectFit: 'cover' }} 
               className="note__image" 
               src={item.media} 
+              fallback={null}
+            status="done"
+
             />
-          )}
-        {/* <Image 
-          style={{ height: '190px', objectFit: 'cover' }} 
-          className="note__image" 
-          src={item?.media} 
-          /> */}
+          ) }
+          {console.log(item.media)}
+       
 
           <div className="note__footer" style={{ justifyContent: "flex-end" }}>
             <DeleteOutlined

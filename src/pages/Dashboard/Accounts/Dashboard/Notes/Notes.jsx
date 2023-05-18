@@ -114,7 +114,10 @@ const Notes = () => {
 
   const handleUpload = async (data) => setMedia(notes?.media);
 
-  const handlePreview = ({ fileList }) => setMedia({ ...media, fileList });
+            
+  const handlePreview = ({ fileList }) => 
+  
+  setMedia({ ...media, fileList }) ;
   const handleChange = async (data) => {
     if (!data.file.url && !data.file.preview) {
       data.file.preview = await getBase64.init(data.file.originFileObj);
@@ -128,6 +131,7 @@ const Notes = () => {
 
   const charLimit = 3000;
   const charLeft = charLimit - inputText.length;
+          
 
   return (
     <>
@@ -139,6 +143,7 @@ const Notes = () => {
             item={note}
             onEdit={editNote}
             onDelete={deleteNote}
+            
           />
         })}
 
@@ -160,7 +165,7 @@ const Notes = () => {
             onChange={textHandler}
             maxLength={charLimit}
           />
-
+{/* 
           <Upload
             onChange={handleChange}
             onPreview={handlePreview}
@@ -168,13 +173,32 @@ const Notes = () => {
             beforeUpload={getBase64.beforeUploadMedia}
             customRequest={handleUpload}
           >
-            <Button type="primary" >Upload Image</Button>
-            {/* <img
-                  src={notes?.file?.preview}
+     
+           <Button>    Upload Image  </Button>
+          
+          </Upload> */}
+           <Upload
+              name="media"
+              listType="picture-card"
+              className="media-uploader"
+              beforeUpload={getBase64.beforeUploadMedia}
+              customRequest={handleUpload}
+              onChange={handleChange}
+              onPreview={handlePreview}
+              fileList={notes?.media|| []}
+              maxCount={1}
+            >
+              {notes?.media ? (
+                <img
+                  src={notes?.media?.preview}
                   alt="media"
-                  style={{ width: "100%", height: '100%', borderRadius: '6px' }}
-                /> */}
-          </Upload>
+                  className="image-upload"
+                  style={{ width: "100%" }}
+                />
+              ) : notes?.media?.length >= 1 ? null : (
+                "+ Upload"
+              )}
+            </Upload>
 
           <div className="note__footer">
             <span className="label">{charLeft} left</span>
