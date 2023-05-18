@@ -75,7 +75,7 @@ const MyCalendar = () => {
     <div style={{ overflow: 'hidden'}}>
       <Calendar
         events={events}
-        style={{ height: '100vh' }}
+        style={{ height: '100%' }}
         dateCellRender={(date, today) => {
           const formattedDate = date.format('YYYY-MM-DD');
           const event = events.find((e) => e.start.format('YYYY-MM-DD') === formattedDate);
@@ -84,22 +84,28 @@ const MyCalendar = () => {
             const index = Math.floor(Math.random() * colors.length);
             return (
               <>
-              <div>
-                <span >{event.title}</span>
-                <span>{event.lecturer}</span>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 35,
-                    right:175,
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    backgroundColor: colors[index],
-                  }}
-                />
-             
-             </div>
+               <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'inherit',
+                      // top: 0,
+                      // left: -15,
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: colors[index],
+                      borderRadius: '50%',
+                      textAlign: 'center',
+                      color: '#fff',
+                    }}
+                  >
+                    
+                  </div>
+                  <div>
+                    <span>{event.title}</span>
+                    <div>{" "}</div>
+                    <span>{event.lecturer}</span>
+                  </div>
+                </div>
               </>
               
             );

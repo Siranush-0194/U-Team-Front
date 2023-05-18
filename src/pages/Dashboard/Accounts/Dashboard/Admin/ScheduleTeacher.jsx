@@ -19,7 +19,6 @@ const ScheduleTeacher = ({ type }) => {
     const [files, setFiles] = useState([]);
     const [post, setPost] = useState([]);
     const [teachers, setTeachers] = useState([]);
-  const [groups, setGroups] = useState();
     const [selectedTeacherId, setSelectedTeacherId] = useState(null);
     const [teacherId, setTeacherId] = useState(null);
     const [forumData, setForumData] = useState([]);
@@ -38,7 +37,7 @@ const ScheduleTeacher = ({ type }) => {
 
     useEffect(() => {
         if (selectedTeacherId) {
-            axios.get(`/api/schedule/get/${selectedTeacherId} `)
+            axios.get(`/api/schedule//${selectedTeacherId} `)
                 .then(response => {
                     console.log(selectedTeacherId);
                     let $teacherId
@@ -77,8 +76,7 @@ const ScheduleTeacher = ({ type }) => {
                 const formData = new FormData();
 
                 formData.append(`schedule`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append(`role`, `teacher`);
-                // formData.append(`groupId`, selectedCourseId);            
+                formData.append(`role`, `teacher`);         
                 formData.append(`userId`, selectedTeacherId);
 
 
@@ -104,7 +102,7 @@ const ScheduleTeacher = ({ type }) => {
 
     const getMedia = () => {
         axios
-            .get(`/api/schedule/get`)
+            .get(`/api/schedule/teachers`)
             .then((response) => {
                 setMedia(response.data)
             })
@@ -128,7 +126,7 @@ const ScheduleTeacher = ({ type }) => {
 
     return (
         <>
-             <Select  placeholder="Teachers"  dropdownMatchSelectWidth={false}  defaultValue={selectedTeacherId}  style={{ width: '150px' }} onChange={handleChange}>
+             <Select  placeholder="Teachers"  dropdownMatchSelectWidth={false}  defaultValue={selectedTeacherId}  style={{ width: '150px' }}  onChange={handleChange} >
         {teachers.map(teacher => (
           <Option key={teacher.id} value={teacher.id}>
             { teacher.firstName + " " + teacher.lastName} 
@@ -164,11 +162,14 @@ const ScheduleTeacher = ({ type }) => {
                                 window.open(PORTS[8000] + item.path, "_blank")
                             }}
                             avatar={<FileExcelOutlined size="32"/> }
-                            title={item.name}
+                            title={item?.teacher?.firstName  + " " +  item?.teacher?.lastName }
+                            description={item.name}
                         />
                           <div>
                                
-                               <Button icon={<DeleteOutlined />} danger onClick={() => deleteFile(item.id)}>Delete</Button>
+                               <Button icon={<DeleteOutlined />} danger 
+                               onClick={() => deleteFile(item.id)}>Delete
+                               </Button>
                            </div>
                     </List.Item>
                 )}

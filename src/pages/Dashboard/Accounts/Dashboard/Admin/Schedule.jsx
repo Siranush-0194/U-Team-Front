@@ -119,7 +119,7 @@ console.log(groups);
 
     const getMedia = () => {
         axios
-            .get(`/api/schedule/get`)
+            .get(`/api/schedule/students`)
             .then((response) => {
                 setMedia(response.data)
             })
