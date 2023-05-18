@@ -40,7 +40,7 @@ function CommentForm({ question, onClick, isOpen }) {
 
     formData.append("content", comment);
     formData.append("questionId", question.id);
-    formData.append("parentId", replyParentId); // Add parent ID for comment reply
+    // formData.append("parentId", replyParentId); // Add parent ID for comment reply
     file && formData.append("media", file.file.originFileObj);
 
     axios_01
@@ -53,7 +53,7 @@ function CommentForm({ question, onClick, isOpen }) {
         if (response.data.id) {
           setComment("");
           setFile(null);
-          setReplyParentId(null);
+          // setReplyParentId(null);
 
           setComments({
             ...comments,
@@ -224,7 +224,7 @@ function CommentForm({ question, onClick, isOpen }) {
         </div>
         <DeleteOutlined onClick={() => deleteComment(item.id)} />
         <EditOutlined key="edit" />
-        {replyParentId === item.id && (
+        {/* {replyParentId === item.id && (
           <ReplyForm
             commentId={item.id}
             parentId={replyParentId}
@@ -233,60 +233,60 @@ function CommentForm({ question, onClick, isOpen }) {
               getComments(comments);
             }}
           />
-        )}
+        )} */}
       </List.Item>
     ));
   };
 
-  const ReplyForm = ({ commentId, parentId, setReplyParentId, onSuccess }) => {
-    const [reply, setReply] = useState("");
+  // const ReplyForm = ({ commentId, parentId, setReplyParentId, onSuccess }) => {
+  //   const [reply, setReply] = useState("");
 
-    const handleReplySubmit = (e) => {
-      e.preventDefault();
+  //   const handleReplySubmit = (e) => {
+  //     e.preventDefault();
 
-      if (!reply?.length) {
-        message.error("Please type a reply");
-        return;
-      }
+  //     if (!reply?.length) {
+  //       message.error("Please type a reply");
+  //       return;
+  //     }
 
-      const replyFormData = new FormData();
-      replyFormData.append("content", reply);
-      replyFormData.append("questionId", question?.id);
-      // replyFormData.append("commentId", commentId);
-      replyFormData.append("parentId", parentId);
+  //     const replyFormData = new FormData();
+  //     replyFormData.append("content", reply);
+  //     replyFormData.append("questionId", question?.id);
+  //     // replyFormData.append("commentId", commentId);
+  //     replyFormData.append("parentId", parentId);
 
-      axios_01
-        .post(`/api/comment`, replyFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          if (response.data.id) {
-            setReply("");
-            setReplyParentId(null);
-            setComments(comments)
-            onSuccess();
-          }
-        });
-    };
+  //     axios_01
+  //       .post(`/api/comment`, replyFormData, {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       })
+  //       .then((response) => {
+  //         if (response.data.id) {
+  //           setReply("");
+  //           setReplyParentId(null);
+  //           setComments(comments)
+  //           onSuccess();
+  //         }
+  //       });
+  //   };
 
-    return (
-      <form onSubmit={handleReplySubmit} className="reply-form">
-        <TextArea
-          showCount
-          className="form-comments__content_textarea"
-          maxLength={100}
-          value={reply}
-          onChange={(e) => setReply(e.target.value)}
-          placeholder="Reply to this comment"
-        />
-        <Button style={{ marginTop: 10 }} type="primary" htmlType="submit">
-          Reply
-        </Button>
-      </form>
-    );
-  };
+  //   return (
+  //     <form onSubmit={handleReplySubmit} className="reply-form">
+  //       <TextArea
+  //         showCount
+  //         className="form-comments__content_textarea"
+  //         maxLength={100}
+  //         value={reply}
+  //         onChange={(e) => setReply(e.target.value)}
+  //         placeholder="Reply to this comment"
+  //       />
+  //       <Button style={{ marginTop: 10 }} type="primary" htmlType="submit">
+  //         Reply
+  //       </Button>
+  //     </form>
+  //   );
+  // };
 
   return (
     <>

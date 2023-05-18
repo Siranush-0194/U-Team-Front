@@ -48,7 +48,8 @@ const NavBar = () => {
         getItem("Institutes", "allInstitutes", <BankOutlined />),
         getItem("Departments", "departments", <BankOutlined />),
         getItem("Courses", "courses", <BankOutlined />),
-        getItem("Schedule", "schedule", <ScheduleOutlined/>),
+        getItem("StudentsSchedule", "schedule", <ScheduleOutlined/>),
+        getItem("TeachersSchedule", "scheduleteach", <ScheduleOutlined/>),
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
       student: [
@@ -94,6 +95,8 @@ const NavBar = () => {
         courses: () => history.push("/dashboard/courses"),
         groups: () => history.push("/dashboard/groups"),
         schedule: () => history.push("/dashboard/schedule"),
+        scheduleteach: () => history.push("/dashboard/scheduleforteacher"),
+
         logout: async (action) => {
           try {
             if (action === 0) return setIsModalOpen(false);

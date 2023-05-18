@@ -12,6 +12,7 @@ import Departments from "./../All/departments";
 import Courses from "./../All/courses";
 import Groups from "./../All/groups";
 import Schedule from "../Accounts/Dashboard/Admin/Schedule";
+import ScheduleTeacher from "../Accounts/Dashboard/Admin/ScheduleTeacher";
 
 const AdminRoutes = () => {
   return (
@@ -57,6 +58,10 @@ const AdminRoutes = () => {
         </Route>
         <Route path="/dashboard/schedule">
           <Schedule/>
+        </Route>
+
+        <Route path="/dashboard/scheduleforteacher">
+          <ScheduleTeacher/>
         </Route>
       </>
   );

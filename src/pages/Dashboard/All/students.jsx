@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Popconfirm, Form} from 'antd';
-import { DeleteOutlined} from '@ant-design/icons';
+import { Table, Popconfirm, Form, Modal, Input} from 'antd';
+import { DeleteOutlined, EditOutlined} from '@ant-design/icons';
 
 import axios from "../../../axios";
 import {  Route } from 'react-router-dom';
@@ -8,6 +8,8 @@ import {  Route } from 'react-router-dom';
 
 const Students = () => {
   const [students, setStudents] = useState(null);
+  const [modal, setModal] = useState({ isOpen: false, data: {} });
+
   const form = Form.useForm()
 
   useEffect(() => {
@@ -28,6 +30,74 @@ const Students = () => {
 
   return (
     <div className='institutes'>
+       <Modal title={ 'Edit Teacher info' } open={modal.isOpen} onOk={() => {
+        if (modal.data.id) {
+          axios.patch(`/api/teacher/edit/${modal.data.id}`, modal.data).then(response => {
+            if (response.status === 200) {
+              let newTeacher = students.map(element => {
+                if (element.id === response.data.id) {
+                  element = response.data
+                }
+
+                return element
+              });
+
+              setStudents(newTeacher);
+
+              setModal({ isOpen: false, data: {} })
+            } else {
+              // console.log(response);
+            }
+          })
+        } 
+      }} onCancel={() => setModal({ isOpen: false, data: {} })}>
+      {/* <Input placeholder="teacher name" value={modal?.data?.name} onChange={(event) => {
+          setModal({
+            ...modal,
+            data: {
+              ...modal.data,
+              name: event.target.value
+            }
+          })
+        }} /> */}
+         <Input placeholder="teacher firtsName" value={modal?.data?.firstName} onChange={(event) => {
+          setModal({
+            ...modal,
+            data: {
+              ...modal.data,
+              firstName: event.target.value
+            }
+          })
+        }} />
+         <Input placeholder="teacher lastName" value={modal?.data?.lastName} onChange={(event) => {
+          setModal({
+            ...modal,
+            data: {
+              ...modal.data,
+              lastName: event.target.value
+            }
+          })
+        }} />
+         <Input placeholder="teacher patronyimic" value={modal?.data?.patronymic} onChange={(event) => {
+          setModal({
+            ...modal,
+            data: {
+              ...modal.data,
+              patronymic: event.target.value
+            }
+          })
+        }} />
+        <Input placeholder="teacher birthDate" value={modal?.data?.birthDate} onChange={(event) => {
+          setModal({
+            ...modal,
+            data: {
+              ...modal.data,
+             birthDate: event.target.value
+            }
+          })
+        }} />
+        
+      </Modal>
       <Route exact path='/dashboard/students'>
         {!students
           ? <></>
@@ -75,7 +145,8 @@ const Students = () => {
                   <div style={{ display: 'flex', gap: 10 }}>
                     <Popconfirm title="Sure to delete?" onConfirm={() => removeStudents(row.id)}>
                       <DeleteOutlined />
-                    </Popconfirm>                  
+                    </Popconfirm>     
+                    <EditOutlined onClick={() => setModal({ isOpen: true, data: row })} />             
                   </div>
               }
             ]}

@@ -121,7 +121,7 @@ const TeacherGlobalStorage= ({ type }) => {
 
     return (
         <>
-         <Select  dropdownMatchSelectWidth={false} defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={CoursehandleChange}>
+         <Select placeholder="Courses"  dropdownMatchSelectWidth={false} defaultValue={selectedCourseId}  style={{ width: '150px' }} onChange={CoursehandleChange}>
         {courses.map(course => (
           <Option key={course?.id} value={course?.id}>
                         { course.number +  course.degree  +   course.type} 

@@ -11,54 +11,39 @@ import { Option } from 'antd/es/mentions';
 
 
 
-const Schedule = ({ type }) => {
+const ScheduleTeacher = ({ type }) => {
     const getBase64 = useGetBase64();
 
     const [media, setMedia] = useState([]);
     const [file, setFile] = useState(null);
     const [files, setFiles] = useState([]);
     const [post, setPost] = useState([]);
-    const [courses, setCourses] = useState([]);
+    const [teachers, setTeachers] = useState([]);
   const [groups, setGroups] = useState();
-    const [selectedCourseId, setSelectedCourseId] = useState(null);
-    const [courseId, setCourseId] = useState(null);
+    const [selectedTeacherId, setSelectedTeacherId] = useState(null);
+    const [teacherId, setTeacherId] = useState(null);
     const [forumData, setForumData] = useState([]);
 
 
     useEffect(() => {
-        axios.get("/api/group/get-course").then((response) => {
-            let groups = [], subgroups = [];
-      
-            response.data.forEach(group => {
-              if (!group.parentId) {
-                groups.push({
-                  value: group.id,
-                  label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
-                  children: []
-                })
-              } else {
-                subgroups.push({
-                  value: group.id,
-                  label: `${group.course.number} - ${group.number} ${group.course.degree} ${group.course.type}`,
-                  children: []
-                })
-              }
-            });
-      
-            setGroups(groups);
-            setSelectedCourseId(response.data?.[0].id)
-           
-          }).catch(() => setCourses([]));
-    }, []);
-console.log(groups);
+        axios.get("/api/teacher/get").then((response) => {
+          setTeachers(response.data)
+          setSelectedTeacherId(response.data?.[0].id)
+
+        }).catch(() => setTeachers([]));
+      }, []);
+      console.log(teachers);
+
+
+
     useEffect(() => {
-        if (selectedCourseId) {
-            axios.get(`/api/schedule/get/${selectedCourseId} `)
+        if (selectedTeacherId) {
+            axios.get(`/api/schedule/get/${selectedTeacherId} `)
                 .then(response => {
-                    console.log(selectedCourseId);
-                    let $courseId
-                    $courseId = response.data
-                    setCourseId(response.data)
+                    console.log(selectedTeacherId);
+                    let $teacherId
+                    $teacherId = response.data
+                    setTeacherId(response.data)
 
                     setForumData(response.data.data);
                 })
@@ -66,14 +51,14 @@ console.log(groups);
                     console.log(error);
                 });
         }
-    }, [selectedCourseId]);
+    }, [selectedTeacherId]);
 
     useEffect(() => {
         getMedia();
-    }, [selectedCourseId]);
+    }, [selectedTeacherId]);
 
     const handleChange = async (data) => {
-        setSelectedCourseId(data);
+        setSelectedTeacherId(data);
 
         const file = await getBase64.init(data.file.originFileObj);
 
@@ -92,9 +77,9 @@ console.log(groups);
                 const formData = new FormData();
 
                 formData.append(`schedule`, e.code ? e.file : e.dataFile, e.code ? undefined : e.name);
-                formData.append(`role`, `student`);
-                formData.append(`groupId`, selectedCourseId);            
-                formData.append(`courseId`, courseId);
+                formData.append(`role`, `teacher`);
+                // formData.append(`groupId`, selectedCourseId);            
+                formData.append(`userId`, selectedTeacherId);
 
 
                 post.push(new Promise((resolve, reject) => {
@@ -143,7 +128,13 @@ console.log(groups);
 
     return (
         <>
-            <Select placeholder="Courses"   style={{ width: '150px' }} onChange={handleChange} options={groups}/>
+             <Select  placeholder="Teachers"  dropdownMatchSelectWidth={false}  defaultValue={selectedTeacherId}  style={{ width: '150px' }} onChange={handleChange}>
+        {teachers.map(teacher => (
+          <Option key={teacher.id} value={teacher.id}>
+            { teacher.firstName + " " + teacher.lastName} 
+          </Option>
+        ))}
+      </Select>
             <Form>
                 <Form.Item>
                     <Upload
@@ -173,8 +164,7 @@ console.log(groups);
                                 window.open(PORTS[8000] + item.path, "_blank")
                             }}
                             avatar={<FileExcelOutlined size="32"/> }
-                            title={ item?.course?.number + "-" + item?.group?.number + item?.course?.degree + " " + item?.course?.type }
-                            description={item.name}
+                            title={item.name}
                         />
                           <div>
                                
@@ -187,4 +177,4 @@ console.log(groups);
     );
 }
 
-export default Schedule;
+export default ScheduleTeacher;
