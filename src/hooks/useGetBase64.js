@@ -16,10 +16,20 @@ const useGetBase64 = () => {
       const isFile = [
         "application/pdf",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/vnd.oasis.opendocument.spreadsheet"
+        "application/vnd.oasis.opendocument.spreadsheet",
+        'text/plain',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+         'application/msword',        
+         'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+         'application/rtf',
+         'application/vnd.ms-powerpoint',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation'
       ].includes(file.type);
 
-    
+      if (!isFile) {
+        message.error("Invalid credentails");
+      }
 
       const isLt9M = file.size / 1024 / 1024 < 9;
 
@@ -32,7 +42,10 @@ const useGetBase64 = () => {
     beforeUploadMedia: (file) => {
       const isJpgOrPng = isMedia.includes(file.type);
 
-     
+      if (!isJpgOrPng) {
+        message.error("Invalid credentails");
+      }
+
       const isLt9M = file.size / 1024 / 1024 < 9;
 
       if (!isLt9M) {
