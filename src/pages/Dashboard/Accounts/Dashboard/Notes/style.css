@@ -25,6 +25,9 @@ body {
     font-size: 38px;
     font-family: "Montserrat";
     font-weight: 400;
+    margin: auto;
+    width: 10%;
+    padding: 10px;
 }
 .notes {
     max-width: 1200px;

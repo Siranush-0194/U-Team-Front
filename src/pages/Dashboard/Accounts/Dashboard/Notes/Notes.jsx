@@ -165,7 +165,7 @@ const Notes = () => {
             onChange={textHandler}
             maxLength={charLimit}
           />
-{/* 
+
           <Upload
             onChange={handleChange}
             onPreview={handlePreview}
@@ -176,29 +176,8 @@ const Notes = () => {
      
            <Button>    Upload Image  </Button>
           
-          </Upload> */}
-           <Upload
-              name="media"
-              listType="picture-card"
-              className="media-uploader"
-              beforeUpload={getBase64.beforeUploadMedia}
-              customRequest={handleUpload}
-              onChange={handleChange}
-              onPreview={handlePreview}
-              fileList={notes?.media|| []}
-              maxCount={1}
-            >
-              {notes?.media ? (
-                <img
-                  src={notes?.media?.preview}
-                  alt="media"
-                  className="image-upload"
-                  style={{ width: "100%" }}
-                />
-              ) : notes?.media?.length >= 1 ? null : (
-                "+ Upload"
-              )}
-            </Upload>
+          </Upload>
+          
 
           <div className="note__footer">
             <span className="label">{charLeft} left</span>
