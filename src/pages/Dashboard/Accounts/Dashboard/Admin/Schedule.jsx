@@ -143,7 +143,7 @@ console.log(groups);
 
     return (
         <>
-            <Select placeholder="Courses"   style={{ width: '150px' }} onChange={handleChange} options={groups}/>
+            <Select placeholder="Courses" dropdownMatchSelectWidth={false}   style={{ width: '150px' }} onChange={handleChange} options={groups}/>
             <Form>
                 <Form.Item>
                     <Upload

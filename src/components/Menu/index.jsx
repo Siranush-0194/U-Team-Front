@@ -53,7 +53,7 @@ const NavBar = () => {
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
       student: [
-        getItem("Home", "home", <HomeOutlined />),
+        getItem("Forum", "home", <HomeOutlined />),
         getItem("Account", "accounts", <UserOutlined />),
         getItem("Teachers", "teachers", <TeamOutlined />),
         getItem("Students", "students", <TeamOutlined />),
@@ -66,9 +66,9 @@ const NavBar = () => {
         getItem("Logout", "logout", <LogoutOutlined />),
       ],
       teacher: [
-        getItem("Home", "home", <HomeOutlined />),
+        getItem("Forum", "home", <HomeOutlined />),
         getItem("Account", "accounts", <UserOutlined />),
-        getItem("Courses", "courses", <BankOutlined />),
+        getItem("Students", "courses", <BankOutlined />),
         getItem("Notes", "notes", <CarryOutOutlined />),
         getItem("Local Storage", "localStorage", <HddOutlined />),
         getItem("Global Storage", "globalStorage", <DatabaseOutlined />),
@@ -175,7 +175,8 @@ const NavBar = () => {
   };
 
   return (
-    <Sider>
+    <Sider  style={{ position: 'sticky',
+    top: 0}}>
       <Modal
         open={isModalOpen}
         onOk={() => menu.logout(2)}
@@ -185,6 +186,7 @@ const NavBar = () => {
       </Modal>
 
       <Menu
+     
         className="navigation"
         onClick={onClick}
         defaultSelectedKeys={["1"]}

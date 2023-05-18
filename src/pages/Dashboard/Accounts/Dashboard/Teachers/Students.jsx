@@ -74,9 +74,10 @@ const Courses = () => {
 
   return (
     <Card className="list">
-      <Select
-        placeholder="Courses"
+      <Select  
         dropdownMatchSelectWidth={false}
+
+        placeholder="Courses"
         value={selectedCourseId}
         style={{ width: "150px" }}
         onChange={handleChangeCourse}
@@ -92,7 +93,7 @@ const Courses = () => {
         renderItem={(student) => (
           <List.Item key={student.id}>
             <List.Item.Meta
-              avatar={<Avatar icon={<UserOutlined/>} size={50} src={student?.author?.thumbnail} />}
+              avatar={<Avatar icon={<UserOutlined/>} size={50} src={student?.thumbnail} />}
               title={student.firstName}
               description={student.email}
             />

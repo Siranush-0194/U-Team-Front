@@ -156,7 +156,6 @@ function CommentForm({ question, onClick, isOpen }) {
             onClick={() => showReplyForm(item.id)}
             key="reply"
           >
-            {item.id}
           </Button>,
         ]}
         extra={
@@ -222,72 +221,12 @@ function CommentForm({ question, onClick, isOpen }) {
             <div style={{ gap: 10, margin: 10 }}>{item.content}</div>
           </div>
         </div>
-        <DeleteOutlined onClick={() => deleteComment(item.id)} />
-        <EditOutlined key="edit" />
-        {/* {replyParentId === item.id && (
-          <ReplyForm
-            commentId={item.id}
-            parentId={replyParentId}
-            setReplyParentId={setReplyParentId}
-            onSuccess={() => {
-              getComments(comments);
-            }}
-          />
-        )} */}
+        {/* <DeleteOutlined onClick={() => deleteComment(item.id)} />
+        <EditOutlined key="edit" /> */}
+      
       </List.Item>
     ));
   };
-
-  // const ReplyForm = ({ commentId, parentId, setReplyParentId, onSuccess }) => {
-  //   const [reply, setReply] = useState("");
-
-  //   const handleReplySubmit = (e) => {
-  //     e.preventDefault();
-
-  //     if (!reply?.length) {
-  //       message.error("Please type a reply");
-  //       return;
-  //     }
-
-  //     const replyFormData = new FormData();
-  //     replyFormData.append("content", reply);
-  //     replyFormData.append("questionId", question?.id);
-  //     // replyFormData.append("commentId", commentId);
-  //     replyFormData.append("parentId", parentId);
-
-  //     axios_01
-  //       .post(`/api/comment`, replyFormData, {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       })
-  //       .then((response) => {
-  //         if (response.data.id) {
-  //           setReply("");
-  //           setReplyParentId(null);
-  //           setComments(comments)
-  //           onSuccess();
-  //         }
-  //       });
-  //   };
-
-  //   return (
-  //     <form onSubmit={handleReplySubmit} className="reply-form">
-  //       <TextArea
-  //         showCount
-  //         className="form-comments__content_textarea"
-  //         maxLength={100}
-  //         value={reply}
-  //         onChange={(e) => setReply(e.target.value)}
-  //         placeholder="Reply to this comment"
-  //       />
-  //       <Button style={{ marginTop: 10 }} type="primary" htmlType="submit">
-  //         Reply
-  //       </Button>
-  //     </form>
-  //   );
-  // };
-
   return (
     <>
       <Collapse defaultActiveKey={active} onChange={(value) => setActive(value)}>

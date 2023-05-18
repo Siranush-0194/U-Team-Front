@@ -50,8 +50,18 @@ function Note({ item, onEdit, onDelete }) {
         <>
           <div className="noteTitle">{item.title}  </div>
           <div className="note__body">{item.content}</div>
-
-          <Image style={{ height: '190px', objectFit: 'cover' }} className="note__image" src={item.media} />
+          {!item.media ? <></> : (
+            <Image 
+              style={{ height: '190px', objectFit: 'cover' }} 
+              className="note__image" 
+              src={item.media} 
+            />
+          )}
+        {/* <Image 
+          style={{ height: '190px', objectFit: 'cover' }} 
+          className="note__image" 
+          src={item?.media} 
+          /> */}
 
           <div className="note__footer" style={{ justifyContent: "flex-end" }}>
             <DeleteOutlined

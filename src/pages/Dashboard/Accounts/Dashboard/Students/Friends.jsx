@@ -38,7 +38,7 @@ const Friends = () => {
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar  icon={<UserOutlined/>}/>}
+                avatar={<Avatar  icon={<UserOutlined/>} src={item?.thumbnail}/>}
                 title={item.firstName + " " + item.lastName}
                 description
               />

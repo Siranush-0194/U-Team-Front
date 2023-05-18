@@ -169,6 +169,11 @@ const Notes = () => {
             customRequest={handleUpload}
           >
             <Button type="primary" >Upload Image</Button>
+            {/* <img
+                  src={notes?.file?.preview}
+                  alt="media"
+                  style={{ width: "100%", height: '100%', borderRadius: '6px' }}
+                /> */}
           </Upload>
 
           <div className="note__footer">

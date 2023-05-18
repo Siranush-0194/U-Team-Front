@@ -151,7 +151,7 @@ const TeacherInvitation = () => {
         <Input />
       </Form.Item>
 
-      <Form.Item label={t("DatePicker")} name='birthDate'>
+      <Form.Item label={t("BirthDate")} name='birthDate'>
         <DatePicker />
       </Form.Item>
 
